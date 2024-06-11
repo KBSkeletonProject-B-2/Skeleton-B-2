@@ -38,7 +38,7 @@ const title = ref('');
 const category = ref([]);
 
 /**
- * 카테고리 목록 마운트
+ * 카테고리 목록 가져오기
  * 
  * json 서버로부터 카테고리 목록을 가져온다.
  */

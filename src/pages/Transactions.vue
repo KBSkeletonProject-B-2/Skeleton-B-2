@@ -17,7 +17,7 @@ const data = ref({
     startDate: '',
     endDate: '',
     category: '',
-    word: '',
+    title: '',
 });
 
 /**
@@ -26,8 +26,8 @@ const data = ref({
  * 날짜 및 카테고리 조건으로 거래 목록을 조회한다.
  * 조건에 맞는 거래 목록을 json서버로부터 가져오고, TransList 컴포넌트에 전달해야 함
  */
-const searchTransByFilter = (startDate, endDate, category, word) => {
-    data.value = { startDate, endDate, category, word };
+const searchTransByFilter = (startDate, endDate, category, title) => {
+    data.value = { startDate, endDate, category, title };
     console.log(data.value)
 
 };
