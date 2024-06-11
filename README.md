@@ -18,3 +18,6 @@
   - 문의 사항은 issue나 comment를 통해 기록한다.
   - 백엔드 서버 : json-server --watch MOCK_DATA.json -p 3000
   - README.me 파일은 모두가 사용가능하니 수정사항은 해당 파일을 통해 작성한다.
+
+- **피그마 링크**
+  - https://www.figma.com/design/hmoETrtI4WTFxwyWor8e6O/KB%EC%8A%A4%EC%BC%88%EB%A0%88%ED%86%A4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=0-1&t=p4N7aXVz73H73PAU-0
