@@ -15,7 +15,7 @@
             카테고리<br/>
             <select v-model="selectedCategory">
                 <option value="">선택</option>
-                <option v-for="c in category">{{ c.kor }}</option>
+                <option v-for="c in category">{{ c.eng }}</option>
             </select>
         </label>
         <label>

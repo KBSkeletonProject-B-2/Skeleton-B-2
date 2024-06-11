@@ -13,8 +13,9 @@
           <td>금액</td>
         </tr>
       </thead>
-      <tbody>
-        <tr @click="openPopup" v-for="trans in items" :key="trans.id">
+      <tbody  v-for="(group, date) in groupedItems" :key="date">
+        <h5>{{ date }}</h5>
+        <tr @click="openPopup" v-for="trans in group" :key="trans.id">
           <td>{{ trans.category }}</td>
           <td>{{ trans.title }}</td>
           <td>{{ trans.amount }}</td>
@@ -25,10 +26,13 @@
 </template>
     
 <script>
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, computed, ref  } from 'vue'
 import axios from 'axios'
 export default {
   name: "TransList",
+  props: {
+    filterCondition: Object
+  },
   setup(props, context) {
     let items = reactive([])
     onMounted(async () => {
@@ -40,6 +44,40 @@ export default {
       console.log(response)
       return response.data
     }
+     /**
+     * 조회 조건 검사
+     */
+     const matchCondition = (trans, condition) => {
+      const { startDate, endDate, category, title } = condition
+      const matchesDate = (!startDate || new Date(trans.date) >= new Date(startDate)) &&
+                          (!endDate || new Date(trans.date) <= new Date(endDate));
+      const matchesCategory = !category || trans.category === category;
+      const matchesTitle = !title || trans.title.includes(title);
+
+      return matchesDate && matchesCategory && matchesTitle;
+    }
+    /**
+     * 필터링된 거래내역 불러오기
+     */
+     const filteredItems = computed(() => {
+      return items.filter(trans => matchCondition(trans, props.filterCondition));
+    })
+
+    /**
+     * 날짜별로 거래내역 그룹화
+     */
+     const groupedItems = computed(() => {
+      const groups = {};
+      filteredItems.value.forEach(trans => {
+        const date = new Date(trans.date).toLocaleDateString();
+        if (!groups[date]) {
+          groups[date] = [];
+        }
+        groups[date].push(trans);
+      });
+      return groups;
+    });
+     
     /**
     * 팝업 오픈
     * 
@@ -48,7 +86,7 @@ export default {
     const openPopup = () => {
         context.emit('openPopup')
     }
-    return { requestItems, items, openPopup }
+    return { requestItems, items, openPopup, groupedItems, filteredItems  }
   }
 }
 </script>

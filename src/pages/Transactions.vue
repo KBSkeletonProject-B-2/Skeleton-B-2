@@ -4,7 +4,7 @@
     <div>
         <FilterBar @search="searchTransByFilter" />
         <hr>
-        <TransList @openPopup="changeIsOpen" />
+        <TransList @openPopup="changeIsOpen" :filterCondition="filterCondition" />
         <TransInfoCreate @sendIsOpen="setIsOpen" v-bind:isOpen="isOpen" v-show="isOpen" />
     </div>
 </template>
@@ -18,7 +18,7 @@ import TransInfoCreate from './TransInfoCreate.vue';
 export default {
     components: { FilterBar, TransList, TransInfoCreate },
     setup() {
-        const data = ref({
+        const filterCondition = ref({
             startDate: '',
             endDate: '',
             category: '',
@@ -33,9 +33,8 @@ export default {
         * 조건에 맞는 거래 목록을 json서버로부터 가져오고, TransList 컴포넌트에 전달해야 함
         */
         const searchTransByFilter = (startDate, endDate, category, title) => {
-            data.value = { startDate, endDate, category, title };
-            console.log(data.value)
-
+            filterCondition.value = { startDate, endDate, category, title };
+            console.log(filterCondition.value)
         };
 
         /**
@@ -58,7 +57,7 @@ export default {
             isOpen.value = !isOpen.value
             console.log(isOpen.value)
         }
-        return { data, isOpen, searchTransByFilter, setIsOpen, changeIsOpen }
+        return { filterCondition, isOpen, searchTransByFilter, setIsOpen, changeIsOpen }
     }
 }
 </script>
