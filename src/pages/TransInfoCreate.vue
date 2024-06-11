@@ -32,9 +32,10 @@
 
 <script>
 import axios from 'axios'
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 export default {
-    setup() {
+    props: ['isOpen'],
+    setup(props, context) {
         let cList = reactive([])
         let transInfo = reactive({
             id: Date.now(),
@@ -43,6 +44,7 @@ export default {
             amount: "",
             memo: ""
         })
+        let isOpen = ref(false)
 
         /**
          * onMounted
@@ -51,7 +53,9 @@ export default {
          */
         onMounted(async () => {
             try {
-                const url = "http://localhost:3001/category"
+                sendIsOpen()
+
+                const url = "http://localhost:3000/category"
                 const response = await axios.get(url)
 
                 Object.assign(cList, response.data)
@@ -70,16 +74,24 @@ export default {
          */
         const clickSaveButtonHandler = async () => {
             try {
-                if (document.getElementById("category").value === "") {
+                if (document.getElementById("date").value === "") {
+                    alert("날짜를 선택해주세요.")
+                } else if (document.getElementById("category").value === "") {
                     alert("카테고리를 선택해주세요.")
+                } else if (document.getElementById("amount").value === "") {
+                    alert("금액을 입력해주세요.")
                 } else {
-                    const url = "http://localhost:3001/transInfo"
+                    const url = "http://localhost:3000/transInfo"
                     const response = await axios.post(url, transInfo)
 
                     document.getElementById("date").value = ""
                     document.getElementById("category").value = ""
                     document.getElementById("amount").value = ""
                     document.getElementById("memo").value = ""
+
+                    isOpen.value = props.isOpen
+                    changeIsOpen()
+                    sendIsOpen()
 
                     console.log(response.data)
                 }
@@ -99,8 +111,32 @@ export default {
             document.getElementById("category").value = ""
             document.getElementById("amount").value = ""
             document.getElementById("memo").value = ""
+            
+            isOpen.value = props.isOpen
+            changeIsOpen()
+            sendIsOpen()
         }
-        return { cList, transInfo, clickSaveButtonHandler, clickCancelButtonHandler }
+
+        /**
+         * isOpen 변경
+         * 
+         * isOpen의 반대값을 저장하는 메소드이다.
+         */
+        const changeIsOpen = () => {
+            console.log(isOpen.value)
+            isOpen.value = !isOpen.value
+            console.log(isOpen.value)
+        }
+
+        /**
+         * isOpen 전달
+         * 
+         * isOpen 값을 부모 컴포넌트인 TransList.vue에 전달하기 위한 메소드이다.
+         */
+        const sendIsOpen = () => {
+            context.emit('sendIsOpen', isOpen.value)
+        }
+        return { cList, transInfo, clickSaveButtonHandler, clickCancelButtonHandler, isOpen, changeIsOpen, sendIsOpen }
     }
 }
 </script>

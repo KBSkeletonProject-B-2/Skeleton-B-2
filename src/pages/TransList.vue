@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="trans in items" :key="trans.id">
+        <tr @click="openPopup" v-for="trans in items" :key="trans.id">
           <td>{{ trans.category }}</td>
           <td>{{ trans.title }}</td>
           <td>{{ trans.amount }}</td>
@@ -29,7 +29,7 @@ import { reactive, onMounted } from 'vue'
 import axios from 'axios'
 export default {
   name: "TransList",
-  setup() {
+  setup(props, context) {
     let items = reactive([])
     onMounted(async () => {
       const result = await requestItems()
@@ -40,7 +40,15 @@ export default {
       console.log(response)
       return response.data
     }
-    return { requestItems, items }
+    /**
+    * 팝업 오픈
+    * 
+    * 팝업창 오픈을 위해 부모 컴포넌트인 Transactions.vue를 호출하는 메소드이다.
+    */
+    const openPopup = () => {
+        context.emit('openPopup')
+    }
+    return { requestItems, items, openPopup }
   }
 }
 </script>

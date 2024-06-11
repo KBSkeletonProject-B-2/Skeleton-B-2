@@ -1,59 +1,81 @@
 {
-    "category": [
-        {
-            "kor": "식비",
-            "eng": "food"
-        },
-        {
-            "kor": "생활",
-            "eng": "lifestyle"
-        },
-        {
-            "kor": "교통",
-            "eng": "traffic"
-        },
-        {
-            "kor": "주거",
-            "eng": "house"
-        },
-        {
-            "kor": "의료",
-            "eng": "healthcare"
-        },
-        {
-            "kor": "금융",
-            "eng": "finance"
-        },
-        {
-            "kor": "여행",
-            "eng": "travel"
-        },
-        {
-            "kor": "자녀",
-            "eng": "children"
-        }
-    ],
-    "transInfo": [
-        {
-            "id": 1718077089905,
-            "date": "2024-06-11",
-            "category": "food",
-            "amount": "10000",
-            "memo": "컵밥"
-        },
-        {
-            "id": 1718077089906,
-            "date": "2024-06-11",
-            "category": "food",
-            "amount": "15000",
-            "memo": "냉면 너무 비싸다..."
-        },
-        {
-            "id": 1718077381139,
-            "date": "2024-06-11",
-            "category": "lifestyle",
-            "amount": "생수",
-            "memo": "2L 6개"
-        }
-    ]
+  "category": [
+    {
+      "kor": "식비",
+      "eng": "food",
+      "id": "a1ad"
+    },
+    {
+      "kor": "생활",
+      "eng": "lifestyle",
+      "id": "2c57"
+    },
+    {
+      "kor": "교통",
+      "eng": "traffic",
+      "id": "0d02"
+    },
+    {
+      "kor": "주거",
+      "eng": "house",
+      "id": "3efc"
+    },
+    {
+      "kor": "의료",
+      "eng": "healthcare",
+      "id": "df2a"
+    },
+    {
+      "kor": "금융",
+      "eng": "finance",
+      "id": "f89e"
+    },
+    {
+      "kor": "여행",
+      "eng": "travel",
+      "id": "638a"
+    },
+    {
+      "kor": "자녀",
+      "eng": "children",
+      "id": "a318"
+    }
+  ],
+  "transInfo": [
+    {
+      "id": "1718077089905",
+      "date": "2024-06-11",
+      "category": "food",
+      "amount": "10000",
+      "memo": "컵밥"
+    },
+    {
+      "id": "1718077089906",
+      "date": "2024-06-11",
+      "category": "food",
+      "amount": "15000",
+      "memo": "냉면 너무 비싸다..."
+    },
+    {
+      "id": "1718077381139",
+      "date": "2024-06-11",
+      "category": "lifestyle",
+      "amount": "생수",
+      "memo": "2L 6개"
+    },
+    {
+      "id": 1718091945809,
+      "date": "2024-06-11",
+      "category": "healthcare",
+      "amount": "50000",
+      "memo": "스케일링"
+    },
+    {
+      "id": 1718091986153,
+      "date": "2024-06-11",
+      "category": "finance",
+      "amount": "적금",
+      "memo": "100000"
+    }
+  ]
 }
