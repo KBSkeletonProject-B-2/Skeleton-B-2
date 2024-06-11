@@ -7,3 +7,10 @@
 - **기술 스택**
   - Vue.js, node.js, Javascript, HTML, CSS, pigma, json server
 
+- **공통 사항**
+  - CSS는 src - assets - main.css를 통해 작성한다.
+  - 작성할 컴포넌트는 pages 폴더를 통해 작성한다.
+  - components 폴더의 Header.vue와 Footer.vue를 통해 공통부를 작성한다.
+  - 페이지 경로는 router 폴더의 index.js를 통해 작성한다.
+  - 이미지는 public - images 폴더를 통해 업로드한다.
+  - README.me 파일은 모두가 사용가능하니 수정사항은 해당 파일을 통해 작성한다.
