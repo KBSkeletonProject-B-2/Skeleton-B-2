@@ -2,7 +2,7 @@
 <!-- 가계부 내역을 생성하고 수정하는 뷰이다. -->
 <template>
     <div>
-        <form action="/action_page.php" @submit.prevent="createFormSubmitHandler">
+        <form action="/action_page.php" @submit.prevent="clickSaveButtonHandler">
             <div class="mb-3 mt-3">
                 <label for="date" class="form-label transinfocreate-color">날짜</label>
                 <input type="date" class="form-control transinfocreate-input" id="date" required
@@ -24,7 +24,7 @@
                 <label for="memo" class="form-label transinfocreate-color">메모</label>
                 <input type="text" class="form-control transinfocreate-input" id="memo" v-model="transInfo.memo">
             </div>
-            <button @click="clickButtonHandler" type="button" class="btn transinfocreate-cancel">취소</button>
+            <button @click="clickCancelButtonHandler" type="button" class="btn transinfocreate-cancel">취소</button>
             <button type="submit" class="btn transinfocreate-save">저장</button>
         </form>
     </div>
@@ -44,6 +44,11 @@ export default {
             memo: ""
         })
 
+        /**
+         * onMounted
+         * 
+         * 컴포넌트가 마운트된 후 JSON에서 카테고리를 가져온다.
+         */
         onMounted(async () => {
             try {
                 const url = "http://localhost:3001/category"
@@ -58,7 +63,12 @@ export default {
             }
         })
 
-        const createFormSubmitHandler = async () => {
+        /**
+         * 저장버튼클릭 핸들러
+         * 
+         * 저장 버튼을 클릭했을 때 JSON에 날짜, 카테고리, 금액, 메모 정보를 업데이트하는 메소드이다.
+         */
+        const clickSaveButtonHandler = async () => {
             try {
                 if (document.getElementById("category").value === "") {
                     alert("카테고리를 선택해주세요.")
@@ -79,13 +89,18 @@ export default {
             }
         }
 
-        const clickButtonHandler = () => {
+        /**
+         * 취소버튼클릭 핸들러
+         * 
+         * 취소 버튼을 클릭했을 때 화면을 리셋해주고 팝업창을 종료하는 메소드이다.
+         */
+        const clickCancelButtonHandler = () => {
             document.getElementById("date").value = ""
             document.getElementById("category").value = ""
             document.getElementById("amount").value = ""
             document.getElementById("memo").value = ""
         }
-        return { cList, transInfo, createFormSubmitHandler, clickButtonHandler }
+        return { cList, transInfo, clickSaveButtonHandler, clickCancelButtonHandler }
     }
 }
 </script>
