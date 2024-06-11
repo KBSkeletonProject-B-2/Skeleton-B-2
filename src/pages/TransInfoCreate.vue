@@ -111,7 +111,7 @@ export default {
             document.getElementById("category").value = ""
             document.getElementById("amount").value = ""
             document.getElementById("memo").value = ""
-            
+
             isOpen.value = props.isOpen
             changeIsOpen()
             sendIsOpen()
@@ -123,9 +123,8 @@ export default {
          * isOpen의 반대값을 저장하는 메소드이다.
          */
         const changeIsOpen = () => {
-            console.log(isOpen.value)
             isOpen.value = !isOpen.value
-            console.log(isOpen.value)
+            console.log("TransInfoCreate changeIsOpen : " + isOpen.value)
         }
 
         /**

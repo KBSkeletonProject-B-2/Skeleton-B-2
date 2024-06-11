@@ -76,6 +76,13 @@
       "category": "finance",
       "amount": "적금",
       "memo": "100000"
+    },
+    {
+      "id": 1718093287557,
+      "date": "2024-06-11",
+      "category": "healthcare",
+      "amount": "dsfdsfsdf",
+      "memo": "sdfdsfdsfsd"
     }
   ]
 }

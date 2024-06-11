@@ -45,8 +45,8 @@ export default {
          * @param open 
          */
         const setIsOpen = (open) => {
-            console.log(open)
             isOpen.value = open
+            console.log("Transactions.vue setIsOpen : " + isOpen.value)
         }
 
         /**
@@ -56,7 +56,7 @@ export default {
         */
         const changeIsOpen = () => {
             isOpen.value = !isOpen.value
-            console.log(isOpen.value)
+            console.log("Transactions.vue changeIsOpen : " + isOpen.value)
         }
         return { data, isOpen, searchTransByFilter, setIsOpen, changeIsOpen }
     }
