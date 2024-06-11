@@ -13,4 +13,5 @@
   - components 폴더의 Header.vue와 Footer.vue를 통해 공통부를 작성한다.
   - 페이지 경로는 router 폴더의 index.js를 통해 작성한다.
   - 이미지는 public - images 폴더를 통해 업로드한다.
+  - 데이터베이스는 db-server의 json 파일을 이용한다.
   - README.me 파일은 모두가 사용가능하니 수정사항은 해당 파일을 통해 작성한다.
