@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <router-view to="transinfocreate"></router-view>
+    <router-view to="transactions"></router-view>
     <Footer />
   </div>
 </template>
