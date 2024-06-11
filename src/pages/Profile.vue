@@ -1,5 +1,6 @@
 <!-- 설정 내 프로필 뷰 -->
 <template>
+    <Header/>
     <header>
       <p>프로필 관리</p>
     </header>
@@ -30,11 +31,14 @@
         <input type="tel" id="phone" v-model="phone" placeholder="000-0000-0000" />
       </div>
       <button @click="submitProfile">확인</button>
+      <Footer/>
     </div>
     
   </template>
   
   <script>
+  import Header from '@/components/Header.vue';
+  import Footer from '@/components/Footer.vue';
   export default {
     components: {
       
