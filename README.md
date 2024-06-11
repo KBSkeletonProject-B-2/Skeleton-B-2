@@ -7,4 +7,3 @@
 - **기술 스택**
   - Vue.js, node.js, Javascript, HTML, CSS, pigma, json server
 
-  test
