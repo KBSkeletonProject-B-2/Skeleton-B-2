@@ -1,30 +1,30 @@
 <!-- 거래내역 검색 뷰 -->
 <!-- 거래내역 조회 화면의 상단에 위치,
     시작일, 종료일, 카테고리, 내용을 전달하는 조회하는 뷰이다. -->
-<template>
-    <form @submit.prevent="send">
-        <label>
-            시작일<br />
-            <input type="date" v-model="startDate" />
-        </label>
-        <label>
-            종료일<br />
-            <input type="date" v-model="endDate" />
-        </label>
-        <label>
-            카테고리<br />
-            <select v-model="selectedCategory">
-                <option value="">선택</option>
-                <option v-for="c in category">{{ c.name }}</option>
+    <template>
+        <form @submit.prevent="send" class="search-form">
+          <div class="form-group">
+            <label for="startDate">시작일</label>
+            <input id="startDate" type="date" v-model="startDate" />
+          </div>
+          <div class="form-group">
+            <label for="endDate">종료일</label>
+            <input id="endDate" type="date" v-model="endDate" />
+          </div>
+          <div class="form-group">
+            <label for="selectedCategory">카테고리</label>
+            <select id="selectedCategory" v-model="selectedCategory">
+              <option value="">선택</option>
+              <option v-for="c in category" :key="c.id">{{ c.name }}</option>
             </select>
-        </label>
-        <label>
-            내용<br />
-            <input type="text" v-model="memo" />
-        </label>
-        <button type="submit">조회</button>
-    </form>
-</template>
+          </div>
+          <div class="form-group">
+            <label for="memo">내용</label>
+            <input id="memo" type="text" v-model="memo" />
+          </div>
+          <button type="submit" class="search-button">조회</button>
+        </form>
+      </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -60,5 +60,45 @@ const send = () => {
     emit('search', startDate.value, endDate.value, selectedCategory.value, memo.value);
 };
 </script>
+<style scoped>
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px; /* Add padding for space */
+  border-radius: 8px; /* Add rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add box-shadow */
+  background-color: #fff; /* Set background color */
+}
 
-<style scoped></style>
+
+.form-group {
+  margin: 0 10px;
+}
+
+label {
+  margin-bottom: 5px;
+  display: block;
+}
+
+input,
+select {
+  width: 150px;
+}
+
+.search-button {
+  background-color: rgb(255, 204, 0);
+  color: #fff;
+  padding: 8px 20px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.search-button:hover {
+  background-color: rgb(255, 188, 0);
+}
+</style>
