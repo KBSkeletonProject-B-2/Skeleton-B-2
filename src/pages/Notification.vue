@@ -1,7 +1,7 @@
 <template>
     <div>
       <p>알림</p>
-      <!-- <Header /> -->
+      <Header />
       <main>
         <section>
           <div class="setting-item">
@@ -24,18 +24,18 @@
           </div>
         </section>
       </main>
-      <!-- <Footer /> -->
+      <Footer />
     </div>
   </template>
   
   <script>
-  // import Header from '../components/Header.vue';
-  // import Footer from '../components/Footer.vue';
+import Header from '../components/Header.vue';
+import Footer from '../components/Footer.vue';
   
   export default {
     components: {
-      // Header,
-      // Footer,
+      Header,
+      Footer,
     },
     data() {
       return {
