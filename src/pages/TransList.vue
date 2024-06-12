@@ -14,15 +14,18 @@
           <td></td>
         </tr>
       </thead>
-      <tbody v-for="(group, date) in sortedGroupedItems" :key="date">
-        <h5>{{ date }}</h5>
-        <tr @click.native="changeIsOpen(true)" v-for="trans in group" :key="trans.id">
-          <td>{{ trans.category }}</td>
-          <td>{{ trans.title }}</td>
-          <td>{{ trans.amount }}</td>
-          <td><button v-show="true" @click="deleteTransaction(trans.id)">삭제</button></td>
-        </tr>
-        <br>
+      <tbody>
+        <template v-for="(group, date) in sortedGroupedItems">
+          <tr v-if="group.length > 0">
+            <th colspan="4">{{ date }}</th>
+          </tr>
+          <tr v-for="trans in group" :key="trans.id" @click.native="changeIsOpen(true)">
+            <td>{{ trans.category }}</td>
+            <td>{{ trans.title }}</td>
+            <td>{{ trans.amount }}</td>
+            <td><button v-show="true" @click="deleteTransaction(trans.id)">삭제</button></td>
+          </tr>
+        </template>
       </tbody>
     </table>
   </div>
@@ -90,15 +93,15 @@ export default {
      * 
      * 수정 필요
      */
-    //  const deleteTransaction = async (id) => {
-    //   try {
-    //     console.log(id);
-    //     await axios.delete(`http://localhost:3000/transInfo/${id}`);
+     const deleteTransaction = async (id) => {
+      try {
+        console.log(id);
+        await axios.delete(`http://localhost:3000/transInfo/${id}`);
       
-    //   } catch (error) {
-    //     console.error("Error deleting transaction:", error);
-    //   }
-    // };
+      } catch (error) {
+        console.error("Error deleting transaction:", error);
+      }
+    };
 
     /**
     * isOpen 변경
@@ -110,7 +113,7 @@ export default {
       console.log("TransList.vue changeIsOpen : " + isOpen.value)
       context.emit('changeIsOpen', isOpen.value)
     }
-    return { isOpen, changeIsOpen, sortedGroupedItems }
+    return { deleteTransaction,isOpen, changeIsOpen, sortedGroupedItems }
   }
 }
 </script>
