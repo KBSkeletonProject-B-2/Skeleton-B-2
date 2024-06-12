@@ -3,7 +3,7 @@
     json서버에서 조건에 맞는 데이터를 날짜별로 출력하는 뷰이다.
 
     검색 조건이 없을 시 모든 데이터를 출력한다. -->
-    <template>
+<template>
   <div>
     <table class="table table-hover">
       <thead class="table-dark">
@@ -13,9 +13,9 @@
           <td>금액</td>
         </tr>
       </thead>
-      <tbody  v-for="(group, date) in groupedItems" :key="date">
+      <tbody v-for="(group, date) in groupedItems" :key="date">
         <h5>{{ date }}</h5>
-        <tr @click="openPopup" v-for="trans in group" :key="trans.id">
+        <tr @click.native="changeIsOpen(true)" v-for="trans in group" :key="trans.id">
           <td>{{ trans.category }}</td>
           <td>{{ trans.title }}</td>
           <td>{{ trans.amount }}</td>
@@ -24,9 +24,9 @@
     </table>
   </div>
 </template>
-    
+
 <script>
-import { reactive, onMounted, computed, ref  } from 'vue'
+import { reactive, onMounted, computed, ref } from 'vue'
 import axios from 'axios'
 export default {
   name: "TransList",
@@ -35,6 +35,7 @@ export default {
   },
   setup(props, context) {
     let items = reactive([])
+    let isOpen = ref(false)
     onMounted(async () => {
       const result = await requestItems()
       Object.assign(items, result)
@@ -44,13 +45,13 @@ export default {
       console.log(response)
       return response.data
     }
-     /**
-     * 조회 조건 검사
-     */
-     const matchCondition = (trans, condition) => {
+    /**
+    * 조회 조건 검사
+    */
+    const matchCondition = (trans, condition) => {
       const { startDate, endDate, category, title } = condition
       const matchesDate = (!startDate || new Date(trans.date) >= new Date(startDate)) &&
-                          (!endDate || new Date(trans.date) <= new Date(endDate));
+        (!endDate || new Date(trans.date) <= new Date(endDate));
       const matchesCategory = !category || trans.category === category;
       const matchesTitle = !title || trans.title.includes(title);
 
@@ -59,14 +60,14 @@ export default {
     /**
      * 필터링된 거래내역 불러오기
      */
-     const filteredItems = computed(() => {
+    const filteredItems = computed(() => {
       return items.filter(trans => matchCondition(trans, props.filterCondition));
     })
 
     /**
      * 날짜별로 거래내역 그룹화
      */
-     const groupedItems = computed(() => {
+    const groupedItems = computed(() => {
       const groups = {};
       filteredItems.value.forEach(trans => {
         const date = new Date(trans.date).toLocaleDateString();
@@ -77,16 +78,18 @@ export default {
       });
       return groups;
     });
-     
+
     /**
-    * 팝업 오픈
+    * isOpen 변경
     * 
-    * 팝업창 오픈을 위해 부모 컴포넌트인 Transactions.vue를 호출하는 메소드이다.
+    * isOpen에 파라미터 값인 open으로 변경하는 메소드이다.
     */
-    const openPopup = () => {
-        context.emit('openPopup')
+    const changeIsOpen = (open) => {
+      isOpen.value = open
+      console.log("TransList.vue changeIsOpen : " + isOpen.value)
+      context.emit('changeIsOpen', isOpen.value)
     }
-    return { requestItems, items, openPopup, groupedItems, filteredItems  }
+    return { requestItems, items, isOpen, changeIsOpen, groupedItems, filteredItems }
   }
 }
 </script>
