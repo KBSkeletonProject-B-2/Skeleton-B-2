@@ -13,7 +13,7 @@
   - components 폴더의 Header.vue와 Footer.vue를 통해 공통부를 작성한다.
   - 페이지 경로는 router 폴더의 index.js를 통해 작성한다.
   - 이미지는 public - images 폴더를 통해 업로드한다.
-  - 데이터베이스는 db-server의 json 파일을 이용한다.
+  - 데이터베이스는 db-server의 MOCK_DATA.json 파일을 이용한다.
   - commit message는 필수로 입력한다.
   - 문의 사항은 issue나 comment를 통해 기록한다.
   - 백엔드 서버 : json-server --watch MOCK_DATA.json -p 3000
