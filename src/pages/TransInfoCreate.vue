@@ -157,26 +157,27 @@ export default {
 
 <style lang="scss">
 .transinfocreate-color {
-    color: #84B9C0;
+    color: rgb(255, 204, 0);
     font-weight: bold;
 }
 
 .transinfocreate-cancel {
-    color: #C0C0C0;
+    color: rgb(209,209,209);
     font-weight: bold;
     float: left;
 }
 
 .transinfocreate-input {
-    background-color: #D9D9D9;
+    background-color: rgb(132,134,135);
 }
 
 .transinfocreate-select {
-    background-color: #D9D9D9;
+    background-color: rgb(132,134,135);
 }
 
 .transinfocreate-save {
-    color: #84B9C0;
+    color: rgb(255, 204, 0);
+    font-weight: bold;
     float: right;
 }
 

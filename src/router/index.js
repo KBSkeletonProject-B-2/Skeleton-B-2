@@ -9,11 +9,12 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         { path: '/', component: Home },
-        { path: '/transactions', component: Transactions,
-        children: [
-          { name: 'TransList', path: 'list', component: TransList }
-        ] 
-      },
+        {
+            path: '/transactions', component: Transactions,
+            children: [
+                { name: 'TransList', path: 'list', component: TransList }
+            ]
+        },
         { path: '/profile', component: Profile },
         { path: '/transinfocreate', component: TransInfoCreate }
     ]
