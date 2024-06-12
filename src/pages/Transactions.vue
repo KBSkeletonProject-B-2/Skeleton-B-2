@@ -27,9 +27,9 @@ export default {
         let transInfo = reactive({
             id: "",
             date: "",
-            inout: "",
             category: "",
-            asset: "",
+            detail: "",
+            account: "",
             amount: "",
             memo: ""
         })

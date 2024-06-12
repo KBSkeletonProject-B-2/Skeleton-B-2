@@ -11,25 +11,25 @@
                             v-model="transInfo.date">
                     </div>
                     <div class="mb-3">
-                        <label for="inout" class="form-label transinfocreate-color">분류</label>
-                        <select class="form-select transinfocreate-select" id="inout" required
-                            v-model="transInfo.inout">
-                            <option value="" selected disabled hidden>선택</option>
-                            <option v-for="io in ioList" :value="io.name">{{ io.name }}</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="category" class="form-label transinfocreate-color">카테고리</label>
-                        <select class="form-select transinfocreate-select" id="category" required
-                            v-model="transInfo.category">
+                        <label for="category" class="form-label transinfocreate-color">분류</label>
+                        <select @change="changeCategory" class="form-select transinfocreate-select" id="category"
+                            required v-model="transInfo.category">
                             <option value="" selected disabled hidden>선택</option>
                             <option v-for="c in cList" :value="c.name">{{ c.name }}</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="asset" class="form-label transinfocreate-color">계좌</label>
-                        <select class="form-select transinfocreate-select" id="asset" required
-                            v-model="transInfo.asset">
+                        <label for="detail" class="form-label transinfocreate-color">카테고리</label>
+                        <select class="form-select transinfocreate-select" id="detail" required
+                            v-model="transInfo.detail">
+                            <option value="" selected disabled hidden>선택</option>
+                            <option v-for="cd in cdList" :value="cd.name">{{ cd.name }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="account" class="form-label transinfocreate-color">계좌</label>
+                        <select class="form-select transinfocreate-select" id="account" required
+                            v-model="transInfo.account">
                             <option value="" selected disabled hidden>선택</option>
                             <option v-for="a in aList" :value="a.name">{{ a.name }}</option>
                         </select>
@@ -61,14 +61,14 @@ export default {
     props: ["transInfo"],
     setup(props, context) {
         let cList = reactive([])
-        let ioList = reactive([])
+        let cdList = reactive([])
         let aList = reactive([])
         let transInfo = reactive({
             id: "",
             date: "",
-            inout: "",
             category: "",
-            asset: "",
+            detail: "",
+            account: "",
             amount: "",
             memo: ""
         })
@@ -77,24 +77,20 @@ export default {
         /**
          * onMounted
          * 
-         * 컴포넌트가 마운트된 후 JSON에서 카테고리, 분류, 계좌 정보를 가져온다.
+         * 컴포넌트가 마운트된 후 JSON에서 카테고리, 계좌 정보를 가져온다.
          */
         onMounted(async () => {
             try {
                 const urlCategory = "http://localhost:3000/category"
-                const urlInout = "http://localhost:3000/inout"
-                const urlAsset = "http://localhost:3000/asset"
+                const urlAccount = "http://localhost:3000/account"
                 const responseCategory = await axios.get(urlCategory)
-                const responseInout = await axios.get(urlInout)
-                const responseAsset = await axios.get(urlAsset)
+                const responseAccount = await axios.get(urlAccount)
 
                 Object.assign(cList, responseCategory.data)
-                Object.assign(ioList, responseInout.data)
-                Object.assign(aList, responseAsset.data)
+                Object.assign(aList, responseAccount.data)
 
                 console.log("TransInfoCreate.vue onMounted : " + responseCategory.data)
-                console.log("TransInfoCreate.vue onMounted : " + responseInout.data)
-                console.log("TransInfoCreate.vue onMounted : " + responseAsset.data)
+                console.log("TransInfoCreate.vue onMounted : " + responseAccount.data)
             } catch (err) {
                 console.log("TransInfoCreate.vue onMounted : " + err.message)
                 alert("카테고리 조회 실패")
@@ -112,19 +108,46 @@ export default {
         })
 
         /**
+         * isOpen 변경
+         * 
+         * isOpen에 파라미터 값인 open으로 변경하고 transInfo 정보를 업데이트하는 메소드이다.
+         */
+        const changeIsOpen = (open, transInfo) => {
+            isOpen.value = open
+            console.log("TransInfoCreate.vue changeIsOpen : " + isOpen.value)
+            context.emit('changeIsOpen', isOpen.value, transInfo)
+        }
+
+        /**
+         * 분류 변경
+         * 
+         * 분류 드롭박스가 선택되었을 때 카테고리 드롭박스를 필터해주는 메소드이다.
+         */
+        const changeCategory = () => {
+            const cValue = document.getElementById("category").value
+
+            cList.forEach(element => {
+                if (cValue === element.name) {
+                    Object.assign(cdList, element.detail)
+                    console.log("TransInfoCreate.vue changeCategory : " + cdList)
+                }
+            })
+        }
+
+        /**
          * 저장버튼클릭 핸들러
          * 
-         * 저장 버튼을 클릭했을 때 JSON에 날짜, 카테고리, 금액, 메모, 분류, 계좌 정보를 업데이트하는 메소드이다.
+         * 저장 버튼을 클릭했을 때 JSON에 날짜, 분류, 카테고리, 계좌, 금액, 메모 정보를 업데이트하는 메소드이다.
          */
         const clickSaveButtonHandler = async () => {
             try {
                 if (document.getElementById("date").value === "") {
                     alert("날짜를 선택해주세요.")
-                } else if (document.getElementById("inout").value === "") {
-                    alert("분류를 선택해주세요.")
                 } else if (document.getElementById("category").value === "") {
+                    alert("분류를 선택해주세요.")
+                } else if (document.getElementById("detail").value === "") {
                     alert("카테고리를 선택해주세요.")
-                } else if (document.getElementById("asset").value === "") {
+                } else if (document.getElementById("account").value === "") {
                     alert("계좌를 선택해주세요.")
                 } else if (document.getElementById("amount").value === "") {
                     alert("금액을 입력해주세요.")
@@ -138,7 +161,6 @@ export default {
 
                     console.log("TransInfoCreate.vue clickSaveButtonHandler post : " + response.data)
                 } else {
-                    console.log(typeof(transInfo.id))
                     const url = `http://localhost:3000/transInfo/${transInfo.id}`
                     const response = await axios.put(url, transInfo)
 
@@ -151,18 +173,7 @@ export default {
                 alert("가계부 저장 실패")
             }
         }
-
-        /**
-         * isOpen 변경
-         * 
-         * isOpen에 파라미터 값인 open으로 변경하고 transInfo 정보를 업데이트하는 메소드이다.
-         */
-        const changeIsOpen = (open, transInfo) => {
-            isOpen.value = open
-            console.log("TransInfoCreate.vue changeIsOpen : " + isOpen.value)
-            context.emit('changeIsOpen', isOpen.value, transInfo)
-        }
-        return { cList, ioList, aList, transInfo, clickSaveButtonHandler, isOpen, changeIsOpen }
+        return { cList, cdList, aList, transInfo, isOpen, changeIsOpen, changeCategory, clickSaveButtonHandler }
     }
 }
 </script>
