@@ -15,7 +15,7 @@
                         <select class="form-select transinfocreate-select" id="inout" required
                             v-model="transInfo.inout">
                             <option value="" selected disabled hidden>선택</option>
-                            <option v-for="io in ioList" :value="io">{{ io }}</option>
+                            <option v-for="io in ioList" :value="io.name">{{ io.name }}</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -31,7 +31,7 @@
                         <select class="form-select transinfocreate-select" id="asset" required
                             v-model="transInfo.asset">
                             <option value="" selected disabled hidden>선택</option>
-                            <option v-for="a in aList" :value="a">{{ a }}</option>
+                            <option v-for="a in aList" :value="a.name">{{ a.name }}</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -64,7 +64,7 @@ export default {
         let ioList = reactive([])
         let aList = reactive([])
         let transInfo = reactive({
-            id: Date.now(),
+            id: "",
             date: "",
             inout: "",
             category: "",
@@ -128,13 +128,23 @@ export default {
                     alert("계좌를 선택해주세요.")
                 } else if (document.getElementById("amount").value === "") {
                     alert("금액을 입력해주세요.")
-                } else {
+                } else if (!transInfo.id) {
+                    transInfo.id = Date.now()
+
                     const url = "http://localhost:3000/transInfo"
                     const response = await axios.post(url, transInfo)
 
                     changeIsOpen(false, transInfo)
 
-                    console.log("TransInfoCreate.vue clickSaveButtonHandler : " + response.data)
+                    console.log("TransInfoCreate.vue clickSaveButtonHandler post : " + response.data)
+                } else {
+                    console.log(typeof(transInfo.id))
+                    const url = `http://localhost:3000/transInfo/${transInfo.id}`
+                    const response = await axios.put(url, transInfo)
+
+                    changeIsOpen(false, transInfo)
+
+                    console.log("TransInfoCreate.vue clickSaveButtonHandler put : " + response.data)
                 }
             } catch (err) {
                 console.log("TransInfoCreate.vue clickSaveButtonHandler : " + err.message)
