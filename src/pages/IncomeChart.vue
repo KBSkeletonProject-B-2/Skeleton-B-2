@@ -1,25 +1,34 @@
-<!-- 총 지출 그래프를 보여주는 뷰 -->
-<!-- 이번 달에 발생한 총 지출을 파이 그래프를 통해 항목별로 보여준다. -->
+<!-- 총 수입 그래프를 보여주는 뷰 -->
+<!-- 이번 달에 발생한 총 수입을 파이 그래프를 통해 항목별로 보여준다. -->
 
 <template>
   <div class="chartCard">
-    <span>총지출</span>
+    <span>총 수입</span>
     <div class="chartBox">
-      <canvas id="myChart"></canvas>
+      <canvas id="incomeChart"></canvas> 
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 
 export default {
-  name: 'Graph',
-  setup() {
-    let myChart;
+  name: 'IncomeChart',
+  props: {
+    currentYear: {
+      type: Number
+    },
+    currentMonth: {
+      type: Number
+    },
+  },
+  setup(props) {
+
+    let incomeChart;
     let filteredData = ref([]);
     const backgroundColors = ref([]);
 
@@ -44,6 +53,17 @@ export default {
       }
     }
 
+    // props의 변화를 감지하여 데이터 필터링 및 그래프 업데이트
+    watch([() => props.currentYear, () => props.currentMonth], async () => {
+      fetchDataAndFilter();
+    });
+
+  async function fetchDataAndFilter() {
+    const data = await fetchData();
+    const thisMonthData = filterDataByThisMonth(data);
+    updateChart(thisMonthData);
+  }
+
     /**  
      * 데이터 필터링 & 데이터 값 누적
      * 
@@ -51,15 +71,13 @@ export default {
      * categoty 값을 key 값으로 사용하여 카테고리별로 누적된 금액을 저장한다.
      */ 
     function filterDataByThisMonth(data) {
-      const currentMonth = (new Date()).getMonth() + 1;
-      const currentYear = (new Date()).getFullYear();
       const groupedData = {};
 
       data.forEach(transaction => {
         const transactionMonth = (new Date(transaction.date)).getMonth() + 1;
         const transactionYear = (new Date(transaction.date)).getFullYear();
 
-        if (transactionMonth === currentMonth && transactionYear === currentYear && transaction.inout === "지출") {
+        if (transactionMonth === props.currentMonth && transactionYear === props.currentYear && transaction.inout === "수입") {
           if (!groupedData[transaction.category]) {
             groupedData[transaction.category] = 0;
           }
@@ -88,22 +106,24 @@ export default {
      * transInfo 배열의 category 요소를 레이블로, amount의 누적값을 data로 하여 차트를 작성한다.
      */ 
     function updateChart(data) {
+      if (!incomeChart) return; // incomeChart가 정의되어 있지 않으면 함수를 종료합니다.
+
       const categories = Object.keys(data);
       const amounts = Object.values(data);
       backgroundColors.value = categories.map(() => generateRandomColor());
 
-      myChart.config.data.labels = categories;
-      myChart.config.data.datasets[0].data = amounts;
-      myChart.config.data.datasets[0].backgroundColor = backgroundColors.value;
-      myChart.update();
+      incomeChart.config.data.labels = categories;
+      incomeChart.config.data.datasets[0].data = amounts;
+      incomeChart.config.data.datasets[0].backgroundColor = backgroundColors.value;
+      incomeChart.update();
     }
 
     onMounted(async () => {
       const data = await fetchData();
       const thisMonthData = filterDataByThisMonth(data);
 
-      myChart = new Chart(
-        document.getElementById('myChart'),
+      incomeChart = new Chart(
+        document.getElementById('incomeChart'),
         getConfig()
       );
 
