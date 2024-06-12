@@ -1,40 +1,47 @@
 <!-- 거래내역 저장 뷰 -->
 <!-- 가계부 내역을 생성하고 수정하는 뷰이다. -->
 <template>
-    <div>
-        <form action="/action_page.php" @submit.prevent="clickSaveButtonHandler">
-            <div class="mb-3 mt-3">
-                <label for="date" class="form-label transinfocreate-color">날짜</label>
-                <input type="date" class="form-control transinfocreate-input" id="date" required
-                    v-model="transInfo.date">
+    <Transition name="modal" appear>
+        <section class="modal">
+            <div class="modal__window">
+                <form action="/action_page.php" @submit.prevent="clickSaveButtonHandler">
+                    <div class="mb-3 mt-3">
+                        <label for="date" class="form-label transinfocreate-color">날짜</label>
+                        <input type="date" class="form-control transinfocreate-input" id="date" required
+                            v-model="transInfo.date">
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label transinfocreate-color">카테고리</label>
+                        <select class="form-select transinfocreate-select" id="category" required
+                            v-model="transInfo.category">
+                            <option value="" selected disabled hidden>선택</option>
+                            <option v-for="c in cList" :value="c.name">{{ c.name }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="form-label transinfocreate-color">금액</label>
+                        <input type="text" class="form-control transinfocreate-input" id="amount" required
+                            v-model="transInfo.amount">
+                    </div>
+                    <div class="mb-3">
+                        <label for="memo" class="form-label transinfocreate-color">메모</label>
+                        <input type="text" class="form-control transinfocreate-input" id="memo"
+                            v-model="transInfo.memo">
+                    </div>
+                    <button @click="clickCancelButtonHandler" type="button"
+                        class="btn transinfocreate-cancel">취소</button>
+                    <button type="submit" class="btn transinfocreate-save">저장</button>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="category" class="form-label transinfocreate-color">카테고리</label>
-                <select class="form-select transinfocreate-select" id="category" required v-model="transInfo.category">
-                    <option value="" selected disabled hidden>선택</option>
-                    <option v-for="c in cList" :value="c.name">{{ c.name }}</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="amount" class="form-label transinfocreate-color">금액</label>
-                <input type="text" class="form-control transinfocreate-input" id="amount" required
-                    v-model="transInfo.amount">
-            </div>
-            <div class="mb-3">
-                <label for="memo" class="form-label transinfocreate-color">메모</label>
-                <input type="text" class="form-control transinfocreate-input" id="memo" v-model="transInfo.memo">
-            </div>
-            <button @click="clickCancelButtonHandler" type="button" class="btn transinfocreate-cancel">취소</button>
-            <button type="submit" class="btn transinfocreate-save">저장</button>
-        </form>
-    </div>
+            <div class="modal__overlay" @click.self="$emit('close')"></div>
+        </section>
+    </Transition>
 </template>
 
 <script>
 import axios from 'axios'
 import { onMounted, reactive, ref } from 'vue';
 export default {
-    props: ['isOpen'],
     setup(props, context) {
         let cList = reactive([])
         let transInfo = reactive({
@@ -53,8 +60,6 @@ export default {
          */
         onMounted(async () => {
             try {
-                sendIsOpen()
-
                 const url = "http://localhost:3000/category"
                 const response = await axios.get(url)
 
@@ -89,9 +94,7 @@ export default {
                     document.getElementById("amount").value = ""
                     document.getElementById("memo").value = ""
 
-                    isOpen.value = props.isOpen
-                    changeIsOpen()
-                    sendIsOpen()
+                    changeIsOpen(false)
 
                     console.log(response.data)
                 }
@@ -112,35 +115,25 @@ export default {
             document.getElementById("amount").value = ""
             document.getElementById("memo").value = ""
 
-            isOpen.value = props.isOpen
-            changeIsOpen()
-            sendIsOpen()
+            changeIsOpen(false)
         }
 
         /**
          * isOpen 변경
          * 
-         * isOpen의 반대값을 저장하는 메소드이다.
+         * isOpen에 파라미터 값인 open으로 변경하는 메소드이다.
          */
-        const changeIsOpen = () => {
-            isOpen.value = !isOpen.value
-            console.log("TransInfoCreate changeIsOpen : " + isOpen.value)
+        const changeIsOpen = (open) => {
+            isOpen.value = open
+            console.log("TransInfoCreate.vue changeIsOpen : " + isOpen.value)
+            context.emit('changeIsOpen', isOpen.value)
         }
-
-        /**
-         * isOpen 전달
-         * 
-         * isOpen 값을 부모 컴포넌트인 TransList.vue에 전달하기 위한 메소드이다.
-         */
-        const sendIsOpen = () => {
-            context.emit('sendIsOpen', isOpen.value)
-        }
-        return { cList, transInfo, clickSaveButtonHandler, clickCancelButtonHandler, isOpen, changeIsOpen, sendIsOpen }
+        return { cList, transInfo, clickSaveButtonHandler, clickCancelButtonHandler, isOpen, changeIsOpen }
     }
 }
 </script>
 
-<style>
+<style lang="scss">
 .transinfocreate-color {
     color: #84B9C0;
     font-weight: bold;
@@ -163,5 +156,45 @@ export default {
 .transinfocreate-save {
     color: #84B9C0;
     float: right;
+}
+
+.modal {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    &__overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        background-color: black;
+        opacity: 0.8;
+    }
+
+    &__window {
+        width: 30rem;
+        height: 40rem;
+        border-radius: 0.4rem;
+        overflow: hidden;
+        padding: 1rem;
+        z-index: 1;
+
+        background-color: white;
+    }
+
+    &-enter,
+    &-leave-to {
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    &-enter-to,
+    &-leave {
+        transition: opacity 0.4s ease;
+    }
 }
 </style>

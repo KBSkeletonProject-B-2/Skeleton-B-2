@@ -4,8 +4,8 @@
     <div>
         <FilterBar @search="searchTransByFilter" />
         <hr>
-        <TransList @openPopup="changeIsOpen" :filterCondition="filterCondition" />
-        <TransInfoCreate @sendIsOpen="setIsOpen" v-bind:isOpen="isOpen" v-show="isOpen" />
+        <TransList @changeIsOpen="changeIsOpen" :filterCondition="filterCondition" />
+        <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" />
     </div>
 </template>
 
@@ -38,26 +38,15 @@ export default {
         };
 
         /**
-         * isOpen set 메소드
+         * isOpen 변경
          * 
-         * 자식 컴포넌트인 TransInfoCreate.vue에서 가져온 open 값을 세팅하는 메소드이다.
-         * @param open 
+         * isOpen에 파라미터 값인 open으로 변경하는 메소드이다.
          */
-        const setIsOpen = (open) => {
+        const changeIsOpen = (open) => {
             isOpen.value = open
-            console.log("Transactions.vue setIsOpen : " + isOpen.value)
-        }
-
-        /**
-        * isOpen 변경
-        * 
-        * isOpen의 반대값을 저장하는 메소드이다.
-        */
-        const changeIsOpen = () => {
-            isOpen.value = !isOpen.value
             console.log("Transactions.vue changeIsOpen : " + isOpen.value)
         }
-        return { filterCondition, isOpen, searchTransByFilter, setIsOpen, changeIsOpen }
+        return { filterCondition, isOpen, searchTransByFilter, changeIsOpen }
     }
 }
 </script>

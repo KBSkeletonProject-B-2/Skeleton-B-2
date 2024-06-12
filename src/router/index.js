@@ -2,13 +2,15 @@ import { createRouter, createWebHistory } from "vue-router";
 import Transactions from "@/pages/Transactions.vue";
 import Home from "@/pages/Home.vue";
 import Profile from "@/pages/Profile.vue";
+import TransInfoCreate from "@/pages/TransInfoCreate.vue";
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
+        { path: '/', component: Home },
         { path: '/transactions', component: Transactions },
         { path: '/profile', component: Profile },
-        { path: '/', component: Home }
+        { path: '/transinfocreate', component: TransInfoCreate }
     ]
 })
 
