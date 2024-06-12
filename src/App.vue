@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <router-view to="transactions"></router-view>
+    <router-view></router-view>
     <Footer />
   </div>
 </template>
