@@ -44,7 +44,8 @@
                         <input type="text" class="form-control transinfocreate-input" id="memo"
                             v-model="transInfo.memo">
                     </div>
-                    <button @click="changeIsOpen(false)" type="button" class="btn transinfocreate-cancel">취소</button>
+                    <button @click="changeIsOpen(false, transInfo)" type="button"
+                        class="btn transinfocreate-cancel">취소</button>
                     <button type="submit" class="btn transinfocreate-save">저장</button>
                 </form>
             </div>
@@ -57,6 +58,7 @@
 import axios from 'axios'
 import { onMounted, onUpdated, reactive, ref } from 'vue';
 export default {
+    props: ["transInfo"],
     setup(props, context) {
         let cList = reactive([])
         let ioList = reactive([])
@@ -75,7 +77,7 @@ export default {
         /**
          * onMounted
          * 
-         * 컴포넌트가 마운트된 후 JSON에서 카테고리를 가져온다.
+         * 컴포넌트가 마운트된 후 JSON에서 카테고리, 분류, 계좌 정보를 가져온다.
          */
         onMounted(async () => {
             try {
@@ -90,11 +92,11 @@ export default {
                 Object.assign(ioList, responseInout.data)
                 Object.assign(aList, responseAsset.data)
 
-                console.log(responseCategory.data)
-                console.log(responseInout.data)
-                console.log(responseAsset.data)
+                console.log("TransInfoCreate.vue onMounted : " + responseCategory.data)
+                console.log("TransInfoCreate.vue onMounted : " + responseInout.data)
+                console.log("TransInfoCreate.vue onMounted : " + responseAsset.data)
             } catch (err) {
-                console.log(err.message)
+                console.log("TransInfoCreate.vue onMounted : " + err.message)
                 alert("카테고리 조회 실패")
             }
         })
@@ -102,15 +104,11 @@ export default {
         /**
          * onUpdated
          * 
-         * 컴포넌트의 업데이트가 발생했을 때 transInfo 값을 초기화한다.
+         * 컴포넌트의 업데이트가 발생했을 때 transInfo 값을 가져온다.
          */
         onUpdated(() => {
-            transInfo.date = ""
-            transInfo.inout = ""
-            transInfo.category = ""
-            transInfo.asset = ""
-            transInfo.amount = ""
-            transInfo.memo = ""
+            Object.assign(transInfo, props.transInfo)
+            console.log("TransInfoCreate.vue onUpdated : " + transInfo)
         })
 
         /**
@@ -122,20 +120,24 @@ export default {
             try {
                 if (document.getElementById("date").value === "") {
                     alert("날짜를 선택해주세요.")
+                } else if (document.getElementById("inout").value === "") {
+                    alert("분류를 선택해주세요.")
                 } else if (document.getElementById("category").value === "") {
                     alert("카테고리를 선택해주세요.")
+                } else if (document.getElementById("asset").value === "") {
+                    alert("계좌를 선택해주세요.")
                 } else if (document.getElementById("amount").value === "") {
                     alert("금액을 입력해주세요.")
                 } else {
                     const url = "http://localhost:3000/transInfo"
                     const response = await axios.post(url, transInfo)
 
-                    changeIsOpen(false)
+                    changeIsOpen(false, transInfo)
 
-                    console.log(response.data)
+                    console.log("TransInfoCreate.vue clickSaveButtonHandler : " + response.data)
                 }
             } catch (err) {
-                console.log(err.message)
+                console.log("TransInfoCreate.vue clickSaveButtonHandler : " + err.message)
                 alert("가계부 저장 실패")
             }
         }
@@ -143,12 +145,12 @@ export default {
         /**
          * isOpen 변경
          * 
-         * isOpen에 파라미터 값인 open으로 변경하는 메소드이다.
+         * isOpen에 파라미터 값인 open으로 변경하고 transInfo 정보를 업데이트하는 메소드이다.
          */
-        const changeIsOpen = (open) => {
+        const changeIsOpen = (open, transInfo) => {
             isOpen.value = open
             console.log("TransInfoCreate.vue changeIsOpen : " + isOpen.value)
-            context.emit('changeIsOpen', isOpen.value)
+            context.emit('changeIsOpen', isOpen.value, transInfo)
         }
         return { cList, ioList, aList, transInfo, clickSaveButtonHandler, isOpen, changeIsOpen }
     }
@@ -162,17 +164,17 @@ export default {
 }
 
 .transinfocreate-cancel {
-    color: rgb(209,209,209);
+    color: rgb(209, 209, 209);
     font-weight: bold;
     float: left;
 }
 
 .transinfocreate-input {
-    background-color: rgb(132,134,135);
+    background-color: rgb(132, 134, 135);
 }
 
 .transinfocreate-select {
-    background-color: rgb(132,134,135);
+    background-color: rgb(132, 134, 135);
 }
 
 .transinfocreate-save {
