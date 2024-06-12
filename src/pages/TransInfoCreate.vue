@@ -12,7 +12,7 @@
                 <label for="category" class="form-label transinfocreate-color">카테고리</label>
                 <select class="form-select transinfocreate-select" id="category" required v-model="transInfo.category">
                     <option value="" selected disabled hidden>선택</option>
-                    <option v-for="c in cList" :value="c.eng">{{ c.kor }}</option>
+                    <option v-for="c in cList" :value="c.name">{{ c.name }}</option>
                 </select>
             </div>
             <div class="mb-3">
