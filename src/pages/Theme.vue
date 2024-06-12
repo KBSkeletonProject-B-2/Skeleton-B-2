@@ -1,4 +1,6 @@
+<!-- 설정 내 테마 뷰 -->
 <template>
+  <Header/>
     <p>테마</p>
     <div class="theme-page">
       <div class="theme-buttons">
@@ -17,10 +19,13 @@
           </button>
         </div>
       </div>
+      <Footer/>
     </div>
   </template>
   
   <script>
+  import Header from '@/components/Header.vue';
+  import Footer from '@/components/Footer.vue';
     export default {
       name: 'ThemePage',
       components: {
