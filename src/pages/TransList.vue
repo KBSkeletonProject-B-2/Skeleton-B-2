@@ -19,7 +19,7 @@
           <tr v-if="group.length > 0">
             <th colspan="4">{{ date }}</th>
           </tr>
-          <tr v-for="trans in group" :key="trans.id" @click.native="changeIsOpen(true)">
+          <tr v-for="trans in group" :key="trans.id" @click.native="changeIsOpen(true, trans)">
             <td>{{ trans.category }}</td>
             <td>{{ trans.title }}</td>
             <td>{{ trans.amount }}</td>
@@ -65,11 +65,11 @@ export default {
 
       return matchesDate && matchesCategory && matchesTitle;
     }
-    
+
     /**
      * 날짜별로 거래내역 그룹화
      */
-     const sortedGroupedItems = computed(() => {
+    const sortedGroupedItems = computed(() => {
       const groups = {}
       items.filter(trans => matchCondition(trans, props.filterCondition))
         .forEach(trans => {
@@ -93,7 +93,7 @@ export default {
      * 
      * 삭제 버튼 클릭시 
      */
-     const deleteTransaction = async (id) => {
+    const deleteTransaction = async (id) => {
       try {
         console.log(id);
         await axios.delete(`http://localhost:3000/transInfo/${id}`);
@@ -110,14 +110,14 @@ export default {
     /**
     * isOpen 변경
     * 
-    * isOpen에 파라미터 값인 open으로 변경하는 메소드이다.
+    * isOpen에 파라미터 값인 open으로 변경하고 trans 정보를 전달하는 메소드이다.
     */
-    const changeIsOpen = (open) => {
+    const changeIsOpen = (open, trans) => {
       isOpen.value = open
       console.log("TransList.vue changeIsOpen : " + isOpen.value)
-      context.emit('changeIsOpen', isOpen.value)
+      context.emit('changeIsOpen', isOpen.value, trans)
     }
-    return { deleteTransaction,isOpen, changeIsOpen, sortedGroupedItems }
+    return { deleteTransaction, isOpen, changeIsOpen, sortedGroupedItems }
   }
 }
 </script>

@@ -5,12 +5,12 @@
         <FilterBar @search="searchTransByFilter" />
         <hr>
         <TransList @changeIsOpen="changeIsOpen" :filterCondition="filterCondition" />
-        <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" />
+        <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" :transInfo="transInfo" />
     </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import FilterBar from './FilterBar.vue';
 import TransList from './TransList.vue';
 import TransInfoCreate from './TransInfoCreate.vue';
@@ -24,6 +24,15 @@ export default {
             category: '',
             title: '',
         });
+        let transInfo = reactive({
+            id: "",
+            date: "",
+            inout: "",
+            category: "",
+            asset: "",
+            amount: "",
+            memo: ""
+        })
         const isOpen = ref(false)
 
         /**
@@ -40,13 +49,14 @@ export default {
         /**
          * isOpen 변경
          * 
-         * isOpen에 파라미터 값인 open으로 변경하는 메소드이다.
+         * isOpen에 파라미터 값인 open으로 변경하고 transInfo 정보를 업데이트하는 메소드이다.
          */
-        const changeIsOpen = (open) => {
+        const changeIsOpen = (open, trans) => {
             isOpen.value = open
+            Object.assign(transInfo, trans)
             console.log("Transactions.vue changeIsOpen : " + isOpen.value)
         }
-        return { filterCondition, isOpen, searchTransByFilter, changeIsOpen }
+        return { filterCondition, isOpen, searchTransByFilter, changeIsOpen, transInfo }
     }
 }
 </script>
