@@ -11,15 +11,18 @@
           <td>카테고리</td>
           <td>내용</td>
           <td>금액</td>
+          <td></td>
         </tr>
       </thead>
-      <tbody v-for="(group, date) in groupedItems" :key="date">
+      <tbody v-for="(group, date) in sortedGroupedItems" :key="date">
         <h5>{{ date }}</h5>
         <tr @click.native="changeIsOpen(true)" v-for="trans in group" :key="trans.id">
           <td>{{ trans.category }}</td>
           <td>{{ trans.title }}</td>
           <td>{{ trans.amount }}</td>
+          <td><button v-show="true" @click="deleteTransaction(trans.id)">삭제</button></td>
         </tr>
+        <br>
       </tbody>
     </table>
   </div>
@@ -42,12 +45,14 @@ export default {
     })
     const requestItems = async () => {
       const response = await axios.get("http://localhost:3000/transInfo ")
-      console.log(response)
+      // console.log(response)
       return response.data
     }
     /**
-    * 조회 조건 검사
-    */
+     * 조회 조건 검사
+     * 
+     * 상위 컴포넌트로부터 전달받은 조건 계산
+     */
     const matchCondition = (trans, condition) => {
       const { startDate, endDate, category, title } = condition
       const matchesDate = (!startDate || new Date(trans.date) >= new Date(startDate)) &&
@@ -57,27 +62,43 @@ export default {
 
       return matchesDate && matchesCategory && matchesTitle;
     }
-    /**
-     * 필터링된 거래내역 불러오기
-     */
-    const filteredItems = computed(() => {
-      return items.filter(trans => matchCondition(trans, props.filterCondition));
-    })
-
+    
     /**
      * 날짜별로 거래내역 그룹화
      */
-    const groupedItems = computed(() => {
-      const groups = {};
-      filteredItems.value.forEach(trans => {
-        const date = new Date(trans.date).toLocaleDateString();
-        if (!groups[date]) {
-          groups[date] = [];
-        }
-        groups[date].push(trans);
+     const sortedGroupedItems = computed(() => {
+      const groups = {}
+      items.filter(trans => matchCondition(trans, props.filterCondition))
+        .forEach(trans => {
+          const date = new Date(trans.date).toLocaleDateString()
+          if (!groups[date]) {
+            groups[date] = []
+          }
+          groups[date].push(trans)
+        });
+
+      const sortedDates = Object.keys(groups).sort((a, b) => new Date(b) - new Date(a))
+      const sortedGroups = {}
+      sortedDates.forEach(date => {
+        sortedGroups[date] = groups[date]
       });
-      return groups;
+      return sortedGroups
     });
+
+    /**
+     * 거래내역 삭제
+     * 
+     * 수정 필요
+     */
+    //  const deleteTransaction = async (id) => {
+    //   try {
+    //     console.log(id);
+    //     await axios.delete(`http://localhost:3000/transInfo/${id}`);
+      
+    //   } catch (error) {
+    //     console.error("Error deleting transaction:", error);
+    //   }
+    // };
 
     /**
     * isOpen 변경
@@ -89,7 +110,7 @@ export default {
       console.log("TransList.vue changeIsOpen : " + isOpen.value)
       context.emit('changeIsOpen', isOpen.value)
     }
-    return { requestItems, items, isOpen, changeIsOpen, groupedItems, filteredItems }
+    return { isOpen, changeIsOpen, sortedGroupedItems }
   }
 }
 </script>
