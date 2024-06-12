@@ -29,7 +29,8 @@
     export default {
       name: 'ThemePage',
       components: {
-  
+        Header,
+        Footer,
       },
       methods: {
         setLightMode() {
