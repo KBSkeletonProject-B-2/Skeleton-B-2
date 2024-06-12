@@ -24,6 +24,9 @@
         <div id="incomechart">
             <IncomeChart />
         </div>
+        <div id="expenseschart">
+            <ExpensesChart />
+        </div>
         <div class="list2">
             <span>최근 거래 목록</span>
             <table class="table-hover">
@@ -66,10 +69,12 @@
 import axios from 'axios';
 import { ref, onMounted, computed } from 'vue';
 import IncomeChart from './IncomeChart.vue';
+import ExpensesChart from "@/pages/ExpensesChart.vue";
 
 export default {
     components: {
         IncomeChart,
+        ExpensesChart
     },
 
     setup() {
