@@ -9,8 +9,8 @@
 
 - **공통 사항**
   - 배포전 자동정렬 필수
-    - Windows : Shift + Alt + F(자동정렬)
-    - macOS : Shift(⇧) + Option(⌥) + F(자동정렬)
+    - Windows : Shift + Alt + F
+    - macOS : Shift(⇧) + Option(⌥) + F
   - CSS는 src - assets - main.css를 통해 작성한다.
   - 작성할 컴포넌트는 pages 폴더를 통해 작성한다.
   - components 폴더의 Header.vue와 Footer.vue를 통해 공통부를 작성한다.
