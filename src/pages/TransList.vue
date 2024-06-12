@@ -9,7 +9,7 @@
       <thead class="table-dark">
         <tr>
           <td>카테고리</td>
-          <td>내용</td>
+          <td>분류</td>
           <td>금액</td>
           <td></td>
         </tr>
@@ -21,7 +21,7 @@
           </tr>
           <tr v-for="trans in group" :key="trans.id" @click.native="changeIsOpen(true, trans)">
             <td>{{ trans.category }}</td>
-            <td>{{ trans.title }}</td>
+            <td>{{ trans.asset }}</td>
             <td>{{ trans.amount }}</td>
             <td><button v-show="true" @click.stop="deleteTransaction(trans.id)">삭제</button></td>
           </tr>
@@ -57,13 +57,13 @@ export default {
      * 상위 컴포넌트로부터 전달받은 조건 계산
      */
     const matchCondition = (trans, condition) => {
-      const { startDate, endDate, category, title } = condition
+      const { startDate, endDate, category, memo } = condition
       const matchesDate = (!startDate || new Date(trans.date) >= new Date(startDate)) &&
         (!endDate || new Date(trans.date) <= new Date(endDate));
       const matchesCategory = !category || trans.category === category;
-      const matchesTitle = !title || trans.title.includes(title);
+      const matchesMemo = !memo || trans.memo.includes(memo);
 
-      return matchesDate && matchesCategory && matchesTitle;
+      return matchesDate && matchesCategory && matchesMemo;
     }
 
     /**
