@@ -11,11 +11,27 @@
                             v-model="transInfo.date">
                     </div>
                     <div class="mb-3">
+                        <label for="inout" class="form-label transinfocreate-color">분류</label>
+                        <select class="form-select transinfocreate-select" id="inout" required
+                            v-model="transInfo.inout">
+                            <option value="" selected disabled hidden>선택</option>
+                            <option v-for="io in ioList" :value="io">{{ io }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label for="category" class="form-label transinfocreate-color">카테고리</label>
                         <select class="form-select transinfocreate-select" id="category" required
                             v-model="transInfo.category">
                             <option value="" selected disabled hidden>선택</option>
                             <option v-for="c in cList" :value="c.name">{{ c.name }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="asset" class="form-label transinfocreate-color">계좌</label>
+                        <select class="form-select transinfocreate-select" id="asset" required
+                            v-model="transInfo.asset">
+                            <option value="" selected disabled hidden>선택</option>
+                            <option v-for="a in aList" :value="a">{{ a }}</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -28,8 +44,7 @@
                         <input type="text" class="form-control transinfocreate-input" id="memo"
                             v-model="transInfo.memo">
                     </div>
-                    <button @click="clickCancelButtonHandler" type="button"
-                        class="btn transinfocreate-cancel">취소</button>
+                    <button @click="changeIsOpen(false)" type="button" class="btn transinfocreate-cancel">취소</button>
                     <button type="submit" class="btn transinfocreate-save">저장</button>
                 </form>
             </div>
@@ -44,10 +59,14 @@ import { onMounted, onUpdated, reactive, ref } from 'vue';
 export default {
     setup(props, context) {
         let cList = reactive([])
+        let ioList = reactive([])
+        let aList = reactive([])
         let transInfo = reactive({
             id: Date.now(),
             date: "",
+            inout: "",
             category: "",
+            asset: "",
             amount: "",
             memo: ""
         })
@@ -59,14 +78,21 @@ export default {
          * 컴포넌트가 마운트된 후 JSON에서 카테고리를 가져온다.
          */
         onMounted(async () => {
-            console.log('onMounted')
             try {
-                const url = "http://localhost:3000/category"
-                const response = await axios.get(url)
+                const urlCategory = "http://localhost:3000/category"
+                const urlInout = "http://localhost:3000/inout"
+                const urlAsset = "http://localhost:3000/asset"
+                const responseCategory = await axios.get(urlCategory)
+                const responseInout = await axios.get(urlInout)
+                const responseAsset = await axios.get(urlAsset)
 
-                Object.assign(cList, response.data)
+                Object.assign(cList, responseCategory.data)
+                Object.assign(ioList, responseInout.data)
+                Object.assign(aList, responseAsset.data)
 
-                console.log(response.data)
+                console.log(responseCategory.data)
+                console.log(responseInout.data)
+                console.log(responseAsset.data)
             } catch (err) {
                 console.log(err.message)
                 alert("카테고리 조회 실패")
@@ -80,7 +106,9 @@ export default {
          */
         onUpdated(() => {
             transInfo.date = ""
+            transInfo.inout = ""
             transInfo.category = ""
+            transInfo.asset = ""
             transInfo.amount = ""
             transInfo.memo = ""
         })
@@ -88,7 +116,7 @@ export default {
         /**
          * 저장버튼클릭 핸들러
          * 
-         * 저장 버튼을 클릭했을 때 JSON에 날짜, 카테고리, 금액, 메모 정보를 업데이트하는 메소드이다.
+         * 저장 버튼을 클릭했을 때 JSON에 날짜, 카테고리, 금액, 메모, 분류, 계좌 정보를 업데이트하는 메소드이다.
          */
         const clickSaveButtonHandler = async () => {
             try {
@@ -113,15 +141,6 @@ export default {
         }
 
         /**
-         * 취소버튼클릭 핸들러
-         * 
-         * 취소 버튼을 클릭했을 때 화면을 리셋해주고 팝업창을 종료하는 메소드이다.
-         */
-        const clickCancelButtonHandler = () => {
-            changeIsOpen(false)
-        }
-
-        /**
          * isOpen 변경
          * 
          * isOpen에 파라미터 값인 open으로 변경하는 메소드이다.
@@ -131,7 +150,7 @@ export default {
             console.log("TransInfoCreate.vue changeIsOpen : " + isOpen.value)
             context.emit('changeIsOpen', isOpen.value)
         }
-        return { cList, transInfo, clickSaveButtonHandler, clickCancelButtonHandler, isOpen, changeIsOpen }
+        return { cList, ioList, aList, transInfo, clickSaveButtonHandler, isOpen, changeIsOpen }
     }
 }
 </script>
