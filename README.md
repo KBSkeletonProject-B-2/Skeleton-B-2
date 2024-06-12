@@ -17,6 +17,7 @@
   - commit message는 필수로 입력한다.
   - 문의 사항은 issue나 comment를 통해 기록한다.
   - 백엔드 서버 : json-server --watch MOCK_DATA.json -p 3000
+  - 프론트엔드 서버 : http://localhost:5173/
   - README.me 파일은 모두가 사용가능하니 수정사항은 해당 파일을 통해 작성한다.
 
 - **피그마 링크**
