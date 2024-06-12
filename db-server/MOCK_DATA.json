@@ -9033,13 +9033,6 @@
       "memo": "orci nullam molestie nibh in lectus pellentesque at nulla suspendisse",
       "inout": "지출",
       "asset": "신용카드"
-    },
-    {
-      "id": 1718162237491,
-      "date": "2024-06-12",
-      "category": "여행",
-      "amount": "200000",
-      "memo": "취업 여행"
     }
   ]
 }

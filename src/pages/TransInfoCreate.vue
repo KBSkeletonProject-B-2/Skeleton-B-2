@@ -33,14 +33,14 @@
                     <button type="submit" class="btn transinfocreate-save">저장</button>
                 </form>
             </div>
-            <div class="modal__overlay" @click.self="$emit('close')"></div>
+            <div class="modal__overlay"></div>
         </section>
     </Transition>
 </template>
 
 <script>
 import axios from 'axios'
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, onUpdated, reactive, ref } from 'vue';
 export default {
     setup(props, context) {
         let cList = reactive([])
@@ -59,6 +59,7 @@ export default {
          * 컴포넌트가 마운트된 후 JSON에서 카테고리를 가져온다.
          */
         onMounted(async () => {
+            console.log('onMounted')
             try {
                 const url = "http://localhost:3000/category"
                 const response = await axios.get(url)
@@ -70,6 +71,18 @@ export default {
                 console.log(err.message)
                 alert("카테고리 조회 실패")
             }
+        })
+
+        /**
+         * onUpdated
+         * 
+         * 컴포넌트의 업데이트가 발생했을 때 transInfo 값을 초기화한다.
+         */
+        onUpdated(() => {
+            transInfo.date = ""
+            transInfo.category = ""
+            transInfo.amount = ""
+            transInfo.memo = ""
         })
 
         /**
@@ -89,11 +102,6 @@ export default {
                     const url = "http://localhost:3000/transInfo"
                     const response = await axios.post(url, transInfo)
 
-                    document.getElementById("date").value = ""
-                    document.getElementById("category").value = ""
-                    document.getElementById("amount").value = ""
-                    document.getElementById("memo").value = ""
-
                     changeIsOpen(false)
 
                     console.log(response.data)
@@ -110,11 +118,6 @@ export default {
          * 취소 버튼을 클릭했을 때 화면을 리셋해주고 팝업창을 종료하는 메소드이다.
          */
         const clickCancelButtonHandler = () => {
-            document.getElementById("date").value = ""
-            document.getElementById("category").value = ""
-            document.getElementById("amount").value = ""
-            document.getElementById("memo").value = ""
-
             changeIsOpen(false)
         }
 
