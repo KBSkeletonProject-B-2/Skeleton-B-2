@@ -21,6 +21,9 @@
                 </tbody>
             </table>
         </div>
+        <div id="incomechart">
+            <IncomeChart />
+        </div>
         <div class="list2">
             <span>최근 거래 목록</span>
             <table class="table-hover">
@@ -38,10 +41,10 @@
                     <!-- 최근 거래 목록을 10개까지만 보여줌 -->
                     <tr class="recent_transaction_list" v-for="wallet in walletList.slice(0, 10)" :key="wallet.id">
                         <td>{{ wallet.date }}</td>
-                        <td>{{ wallet.content }}</td>
-                        <td>{{ wallet.type }}</td>
+                        <td>{{ wallet.memo }}</td>
+                        <td>{{ wallet.category }}</td>
                         <td>{{ wallet.asset }}</td>
-                        <td :style="{ color: wallet.inout === '지출' ? 'red' : (wallet.inout === '수입' ? 'blue' : 'black') }">{{ wallet.price }}</td>
+                        <td :style="{ color: wallet.inout === '지출' ? 'red' : (wallet.inout === '수입' ? 'blue' : 'black') }">{{ wallet.amount }}</td>
                         <!-- <td :style="{ color: wallet.inout === '지출' ? 'red' : (wallet.inout === '수입' ? 'blue' : 'black') }">{{ wallet.inout }}</td> -->
                     </tr>
                     <tr>
@@ -62,8 +65,12 @@
 <script>
 import axios from 'axios';
 import { ref, onMounted, computed } from 'vue';
+import IncomeChart from './IncomeChart.vue';
 
 export default {
+    components: {
+        IncomeChart,
+    },
 
     setup() {
         const walletList = ref([]);  
@@ -80,9 +87,10 @@ export default {
                 const transactionDate = new Date(transaction.date);
                 return transaction.inout === "수입" && transactionDate.getMonth() === currentMonth && transactionDate.getFullYear() === currentYear;
             })
-            .reduce((acc, transaction) => acc + parseInt(transaction.price.replace(/,/g, "")), 0)
+            .reduce((acc, transaction) => acc + parseInt(transaction.amount), 0)
             .toLocaleString();
         });
+        console.log(walletList.value);
 
         /*
         총 지출 계산 
@@ -94,20 +102,20 @@ export default {
                 const transactionDate = new Date(transaction.date);
                 return transaction.inout === "지출" && transactionDate.getMonth() === currentMonth && transactionDate.getFullYear() === currentYear;
             })
-            .reduce((acc, transaction) => acc + parseInt(transaction.price.replace(/,/g, "")), 0)
+            .reduce((acc, transaction) => acc + parseInt(transaction.amount), 0)
             .toLocaleString();
         });
 
         /* 순수익 계산 */
         const Profit = computed(() => {
-            const income = parseInt(totalIncome.value.replace(/,/g, ""));
-            const expenses = parseInt(totalExpenses.value.replace(/,/g, ""));
+            const income = parseInt(totalIncome.value);
+            const expenses = parseInt(totalExpenses.value);
             return (income - expenses).toLocaleString();
         });
 
         const requestAPI = async () => {
             try {
-                const url = 'http://localhost:3001/transInfo';
+                const url = 'http://localhost:3000/transInfo';
                 const response = await axios.get(url) 
                 walletList.value = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));  /* 날짜를 내림차순으로 정렬하여 최신 값부터 보여줌 */ 
             } catch (error) {
