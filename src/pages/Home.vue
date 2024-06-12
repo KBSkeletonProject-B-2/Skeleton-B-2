@@ -1,9 +1,16 @@
 <!-- 홈 화면 뷰 -->
 <!-- 월별 수입 및 지출을 요약하는 뷰이다.-->
 <!-- 최근 거래 내역을 출력하는 뷰이다.-->
+
 <template>
     <div class="center-content">
         <div class="list1">
+            <span id="before" @click="goToPreviousMonth"><< </span>
+            <span>{{currentYear}}</span>
+            <span>년 </span>
+            <span>{{currentMonth}}</span>
+            <span>월</span>
+            <span id="after" @click="goToNextMonth"> >></span>
             <table class="table_1">
                 <thead>
                     <tr>
@@ -21,12 +28,15 @@
                 </tbody>
             </table>
         </div>
-        <div id="incomechart">
-            <IncomeChart />
+        <div class="chart">
+            <div id="incomechart">
+                <IncomeChart :currentYear="currentYear" :currentMonth="currentMonth"/>
+            </div>
+            <div id="expenseschart">
+                <ExpensesChart />
+            </div>
         </div>
-        <div id="expenseschart">
-            <ExpensesChart />
-        </div>
+
         <div class="list2">
             <span>최근 거래 목록</span>
             <table class="table-hover">
@@ -47,13 +57,15 @@
                         <td>{{ wallet.memo }}</td>
                         <td>{{ wallet.category }}</td>
                         <td>{{ wallet.asset }}</td>
-                        <td :style="{ color: wallet.inout === '지출' ? 'red' : (wallet.inout === '수입' ? 'blue' : 'black') }">{{ wallet.amount }}</td>
+                        <td
+                            :style="{ color: wallet.inout === '지출' ? 'red' : (wallet.inout === '수입' ? 'blue' : 'black') }">
+                            {{ wallet.amount }}</td>
                         <!-- <td :style="{ color: wallet.inout === '지출' ? 'red' : (wallet.inout === '수입' ? 'blue' : 'black') }">{{ wallet.inout }}</td> -->
                     </tr>
                     <tr>
                         <td colspan="5">...</td>
                     </tr>
-                </tbody> 
+                </tbody>
             </table>
             <router-link to="/">
                 <span>내역 전체 보기</span>
@@ -79,42 +91,64 @@ export default {
 
     setup() {
         const walletList = ref([]);  
-        const currentMonth = (new Date()).getMonth();
-        const currentYear = (new Date()).getFullYear();
+        const currentMonth = ref((new Date()).getMonth() + 1);
+        const currentYear = ref((new Date()).getFullYear());
         
-        /* 
-        총 수입 계산 
-        JSON 파일에 저장된 날짜와 현재 날짜를 비교하여 해당 년도 해당 월의 총 수입만 계산
-        */
+        const goToPreviousMonth = () => {
+            if(currentMonth.value === 1) {
+                currentMonth.value = 12;
+                currentYear.value -= 1;
+            } else {
+                currentMonth.value -= 1
+            }
+        };
+        
+        const goToNextMonth = () => {
+            if(currentMonth.value === 12) {
+                currentMonth.value = 1;
+                currentYear.value += 1;
+            } else {
+                currentMonth.value += 1
+            }
+        };
+
+        /**
+         * 총 수입 계산
+         * 
+         * JSON 파일에 저장된 날짜와 현재 날짜를 비교하여 해당 년도 해당 월의 총 수입만 계산
+         */
         const totalIncome = computed(() => {
             return walletList.value
             .filter(transaction => {
                 const transactionDate = new Date(transaction.date);
-                return transaction.inout === "수입" && transactionDate.getMonth() === currentMonth && transactionDate.getFullYear() === currentYear;
+                return transaction.inout === "수입" && transactionDate.getMonth() + 1 === currentMonth.value && transactionDate.getFullYear() === currentYear.value;
             })
             .reduce((acc, transaction) => acc + parseInt(transaction.amount), 0)
             .toLocaleString();
         });
-        console.log(walletList.value);
+        console.log(totalIncome);
 
-        /*
-        총 지출 계산 
-        JSON 파일에 저장된 날짜와 현재 날짜를 비교하여 해당 년도 해당 월의 총 수입만 계산
-        */
+        /**
+         * 총 지출 계산
+         * 
+         * JSON 파일에 저장된 날짜와 현재 날짜를 비교하여 해당 년도 해당 월의 총 수입만 계산
+         */
         const totalExpenses = computed(() => {
             return walletList.value
             .filter(transaction => {
                 const transactionDate = new Date(transaction.date);
-                return transaction.inout === "지출" && transactionDate.getMonth() === currentMonth && transactionDate.getFullYear() === currentYear;
+                return transaction.inout === "지출" && transactionDate.getMonth() + 1 === currentMonth.value && transactionDate.getFullYear() === currentYear.value;
             })
             .reduce((acc, transaction) => acc + parseInt(transaction.amount), 0)
             .toLocaleString();
         });
 
-        /* 순수익 계산 */
+        /**
+         * 순수익 계산
+         */
         const Profit = computed(() => {
-            const income = parseInt(totalIncome.value);
-            const expenses = parseInt(totalExpenses.value);
+            const income = parseInt(totalIncome.value.replace(/,/g, '')); 
+            const expenses = parseInt(totalExpenses.value.replace(/,/g, '')); 
             return (income - expenses).toLocaleString();
         });
 
@@ -135,6 +169,10 @@ export default {
             totalIncome,
             totalExpenses,
             Profit,
+            currentMonth,
+            currentYear,
+            goToPreviousMonth,
+            goToNextMonth
         };
     }
 }
@@ -201,5 +239,9 @@ th, td {
     border: #ffca1a;
     border-radius: 5px;
     margin-top: 20px
+}
+
+#chart {
+    display: flex;
 }
 </style>
