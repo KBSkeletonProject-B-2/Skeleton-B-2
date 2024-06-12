@@ -1,7 +1,7 @@
 <template>
     <div>
       <p>언어</p>
-      <!-- <Header /> -->
+      <Header />
       <div class="language-selection">
         <h2>Select Language</h2>
         <select v-model="selectedLanguage" @change="changeLanguage">
@@ -11,18 +11,18 @@
           <option value="ja">日本語 (Japanese)</option>
         </select>
       </div>
-      <!-- <Footer /> -->
+      <Footer />
     </div>
   </template>
   
   <script>
-  // import Header from '../components/Header.vue';
-  // import Footer from '../components/Footer.vue';
+  import Header from '../components/Header.vue';
+  import Footer from '../components/Footer.vue';
   
   export default {
     components: {
-      // Header,
-      // Footer,
+      Header,
+      Footer,
     },
     data() {
       return {
