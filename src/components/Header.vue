@@ -8,11 +8,11 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <router-link class="nav-link" id="header-router-link" to="/transactions">거래 내역</router-link>
-                    <router-link class="nav-link" id="header-router-link" to="/profile">프로필</router-link>
-                    <router-link class="nav-link" id="header-router-link" to="/language">언어</router-link>
-                    <router-link class="nav-link" id="header-router-link" to="/notification">알림</router-link>
-                    <router-link class="nav-link" id="header-router-link" to="/theme">테마</router-link>
+                    <router-link class="nav-link" id="header-router-link" to="/transactions">{{ $t('transaction_list') }}</router-link>
+                    <router-link class="nav-link" id="header-router-link" to="/profile">{{ $t('profile') }}</router-link>
+                    <router-link class="nav-link" id="header-router-link" to="/language">{{ $t('language_settings') }}</router-link>
+                    <router-link class="nav-link" id="header-router-link" to="/notification">{{ $t('notification') }}</router-link>
+                    <router-link class="nav-link" id="header-router-link" to="/theme">{{ $t('theme') }}</router-link>
                 </div>
             </div>
         </div>
