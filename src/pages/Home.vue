@@ -5,12 +5,12 @@
 <template>
     <div class="center-content">
         <div class="list1">
-            <span id="before" @click="goToPreviousMonth"><< </span>
+            <span id="before" @click="goToPreviousMonth">◀ &nbsp;&nbsp;</span>
             <span>{{currentYear}}</span>
             <span>년 </span>
             <span>{{currentMonth}}</span>
             <span>월</span>
-            <span id="after" @click="goToNextMonth"> >></span>
+            <span id="after" @click="goToNextMonth">&nbsp;&nbsp; ▶</span>
             <table class="table_1">
                 <thead>
                     <tr>
@@ -242,7 +242,7 @@ th, td {
     margin-top: 20px
 }
 
-#chart {
+.chart {
     display: flex;
 }
 </style>
