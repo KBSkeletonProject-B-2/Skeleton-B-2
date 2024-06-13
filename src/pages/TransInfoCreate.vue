@@ -44,6 +44,7 @@
                         <input type="text" class="form-control transinfocreate-input" id="memo"
                             v-model="transInfo.memo">
                     </div>
+                    <!-- <router-link to="/transactions">취소</router-link> -->
                     <button @click="changeIsOpen(false, transInfo)" type="button"
                         class="btn transinfocreate-cancel">취소</button>
                     <button type="submit" class="btn transinfocreate-save">저장</button>
@@ -56,10 +57,12 @@
 
 <script>
 import axios from 'axios'
-import { onMounted, onUnmounted, onUpdated, reactive, ref } from 'vue';
+import { onMounted, onUpdated, reactive, ref } from 'vue';
+import { useRoute } from 'vue-router';
 export default {
     props: ["transInfo", "isOpen"],
     setup(props, context) {
+        const route = useRoute()
         let cList = reactive([])
         let cdList = reactive([])
         let aList = reactive([])
@@ -81,7 +84,6 @@ export default {
          * 컴포넌트가 마운트된 후 JSON에서 카테고리, 계좌 정보를 가져온다.
          */
         onMounted(async () => {
-            document.getElementById("category").value = "지출"
             try {
                 const urlCategory = "http://localhost:3000/category"
                 const urlAccount = "http://localhost:3000/account"
@@ -130,7 +132,6 @@ export default {
             isOpen.value = open
             console.log("TransInfoCreate.vue changeIsOpen : " + isOpen.value)
             context.emit('changeIsOpen', isOpen.value, transInfo)
-            // window.location.reload()
         }
 
         /**
@@ -167,7 +168,6 @@ export default {
          * 분류 드롭박스가 선택되었을 때 카테고리 드롭박스를 필터해주는 메소드이다.
          */
         const changeCategory = () => {
-            console.log(transInfo.category)
             const cValue = transInfo.category
 
             cList.forEach(element => {
@@ -196,7 +196,7 @@ export default {
                 } else if (document.getElementById("amount").value === "") {
                     alert("금액을 입력해주세요.")
                 } else if (!transInfo.id) {
-                    transInfo.id = Date.now()
+                    transInfo.id = Date.now().toString()
 
                     const url = "http://localhost:3000/transInfo"
                     const response = await axios.post(url, transInfo)

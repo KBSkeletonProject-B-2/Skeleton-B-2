@@ -231,7 +231,6 @@
       "username": "익명1",
       "email": "asfdfe@naver.com",
       "phone": "010-2222-2222"
-<<<<<<< HEAD
     },
     {
       "id": "b6e1",
@@ -262,8 +261,6 @@
       "emailDomain": "naver.com",
       "phone": "010-5566-2234",
       "imageUrl": "/images/image3.JPG"
-=======
->>>>>>> 8e9535c59835189c220f239598a59940b3b7099d
     }
   ],
   "transInfo": [
