@@ -74,6 +74,7 @@ export default {
       state.phonePart3 = phoneParts[2] || '';
       state.imageUrl = profile.imageUrl || state.images[state.selectedProfileIndex].src;
       state.userName = profile.userName || `닉네임${state.selectedProfileIndex + 1}`;
+      updatePhone(); // Load data 후 phone 업데이트
     };
 
     const updateProfile = (index) => {
@@ -113,7 +114,6 @@ export default {
       axios.post('http://localhost:3000/person', formData)
         .then(response => {
           console.log('성공적으로 추가되었습니다:', response.data);
-          alert('프로필이 성공적으로 추가되었습니다');
           persistData();
         })
         .catch(error => {
@@ -122,6 +122,7 @@ export default {
     };
 
     const persistData = () => {
+      updatePhone(); // persistData 전에 phone 업데이트
       let profileData = JSON.parse(localStorage.getItem('profileData')) || [];
       profileData[state.selectedProfileIndex] = {
         emailId: state.emailId,
@@ -261,6 +262,7 @@ button:hover {
 }
 
 </style>
+
 
 
   
