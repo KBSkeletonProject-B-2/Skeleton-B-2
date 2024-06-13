@@ -3,7 +3,6 @@ import Transactions from "@/pages/Transactions.vue";
 import Home from "@/pages/Home.vue";
 import Profile from "@/pages/Profile.vue";
 import TransInfoCreate from "@/pages/TransInfoCreate.vue";
-import TransList from "@/pages/TransList.vue";
 import IncomeChart from "@/pages/IncomeChart.vue";
 import ExpensesChart from "@/pages/ExpensesChart.vue";
 
@@ -11,16 +10,11 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         { path: '/', component: Home },
-        {
-            path: '/transactions', component: Transactions,
-            children: [
-                { name: 'TransList', path: 'list', component: TransList }
-            ]
-        },
+        { path: '/transactions', component: Transactions },
         { path: '/profile', component: Profile },
         { path: '/transinfocreate', component: TransInfoCreate },
-        { path: '/incomechart', component: IncomeChart},
-        { path: '/expensesChart', component: ExpensesChart},
+        { path: '/incomechart', component: IncomeChart },
+        { path: '/expensesChart', component: ExpensesChart },
     ]
 })
 

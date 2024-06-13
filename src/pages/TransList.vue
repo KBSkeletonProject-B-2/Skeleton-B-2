@@ -6,7 +6,7 @@
 <template>
   <div>
     <table class="table table-hover">
-      <thead class="table-dark">
+      <thead class="table-light">
         <tr>
           <td>카테고리</td>
           <td>분류</td>
@@ -22,7 +22,8 @@
           <tr v-for="trans in group" :key="trans.id" @click.native="changeIsOpen(true, trans)">
             <td>{{ trans.category }}</td>
             <td>{{ trans.detail }}</td>
-            <td>{{ trans.amount }}</td>
+            <td :class="{ 'text-out': trans.category === '지출', 'text-in': trans.category === '수입' }">{{ trans.amount }}
+            </td>
             <td><button v-show="true" @click.stop="deleteTransaction(trans.id)">삭제</button></td>
           </tr>
         </template>
@@ -122,14 +123,17 @@ export default {
   }
 }
 </script>
-<style scoped>
+
+<style lang="scss" scoped>
 .table-hover tbody tr:hover {
   background-color: #f5f5f5;
 }
 
-.table-dark {
-  background-color: #343a40;
+.table-light {
+  background-color: #262a2e;
   color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* 그림자 추가 */
 }
 
 th,
@@ -138,15 +142,37 @@ td {
   text-align: left;
 }
 
+/* 분류 항목 왼쪽 정렬 */
+td:nth-child(2) {
+  text-align: left;
+}
+
 button {
+  visibility: hidden;
   background-color: #dc3545;
   color: white;
   border: none;
   padding: 5px 10px;
+  margin-right: 10px;
   cursor: pointer;
+}
+
+tr:hover button {
+  visibility: visible;
+  float: right;
+  /* 오른쪽 끝으로 이동 */
+
 }
 
 button:hover {
   background-color: #c82333;
+}
+
+.text-out {
+  color: red;
+}
+
+.text-in {
+  color: blue;
 }
 </style>

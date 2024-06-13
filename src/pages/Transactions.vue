@@ -1,9 +1,9 @@
 <!-- 거래 내역 전체 화면 뷰 -->
 <!-- 거래 내역 검색 및 검색 결과를 출력하는 뷰이다.-->
 <template>
-    <div>
+    <div class="container">
         <FilterBar @search="searchTransByFilter" />
-        <hr>
+        <hr class="divider">
         <TransList @changeIsOpen="changeIsOpen" :filterCondition="filterCondition" />
         <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" :transInfo="transInfo" />
     </div>
@@ -22,7 +22,7 @@ export default {
             startDate: '',
             endDate: '',
             category: '',
-            detail:'',
+            detail: '',
             memo: '',
         });
         let transInfo = reactive({
@@ -62,4 +62,15 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style lang="scss">
+.container {
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.divider {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+</style>
