@@ -2,8 +2,10 @@
 <!-- 이번 달에 발생한 총 수입을 파이 그래프를 통해 항목별로 보여준다. -->
 
 <template>
+  <span>{{currentMonth}}</span>
+  <span>월&nbsp;</span>
+  <span>총 지출</span>
   <div class="chartCard">
-    <span>총 수입</span>
     <div class="chartBox">
       <canvas id="incomeChart"></canvas>
     </div>
@@ -12,9 +14,10 @@
 
 <script>
 import { onMounted, ref, watch } from 'vue';
-import { Chart, registerables } from 'chart.js';
+import { Chart, plugins, registerables } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-Chart.register(...registerables);
+Chart.register(...registerables, ChartDataLabels);
 
 export default {
   name: 'IncomeChart',
@@ -29,7 +32,6 @@ export default {
   setup(props) {
 
     let incomeChart;
-    let filteredData = ref([]);
     const backgroundColors = ref([]);
 
     /**  
@@ -134,7 +136,7 @@ export default {
 
     function getConfig() {
       return {
-        type: 'pie',
+        type: 'doughnut',
         data: {
           labels: [],
           datasets: [{
@@ -146,8 +148,25 @@ export default {
           }]
         },
         options: {
-          scales: {
-          }
+          plugins: {
+            datalabels: {
+              color: '#fff',
+              display: true,
+              formatter: (value, context) => {
+                // const label = context.chart.data.labels[context.dataIndex];
+                // const amount = value.toLocaleString();
+                const totalAmount = context.dataset.data.reduce((acc, val) => acc + val, 0);
+                const percentage = ((value / totalAmount) * 100).toFixed(2);
+                return `${percentage}%`;
+              },
+              align: 'center',
+              offset: -30,
+              textAlign: 'center',
+            },
+            legend: {
+              position: 'right'
+            }
+          },
         }
       };
     }
@@ -163,15 +182,16 @@ export default {
 
 <style>
 .chartCard {
-  width: 1000px;
-  height: 800px;
+
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
 .chartBox {
-  width: 700px;
-  padding: 20px;
+  width: 600px; 
+  height: 600px; 
 }
+
 </style>
