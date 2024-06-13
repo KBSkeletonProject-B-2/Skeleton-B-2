@@ -1,6 +1,5 @@
 <!-- 설정 내 테마 뷰 -->
 <template>
-  <Header/>
     <p>테마</p>
     <div class="theme-page">
       <div class="theme-buttons">
@@ -19,7 +18,6 @@
           </button>
         </div>
       </div>
-      <Footer/>
     </div>
   </template>
   
@@ -106,7 +104,7 @@
     cursor: pointer;
     border: none;
     border-radius: 5px;
-    background-color: #f6d14c;
+    background-color: rgb(255,188,0);
     color: white;
     transition: background-color 0.3s;
   }
@@ -116,15 +114,15 @@
   }
   
   button:hover {
-    background-color: #000;
+    background-color: rgb(255,204,80);
   }
   :global(body.light-mode) {
     background-color: white;
-    color: black;
+    color: rgb(84,80,69);
   }
   
   :global(body.dark-mode) {
-    background-color: black;
+    background-color: rgb(84,80,69);
     color: white;
   }
   </style>

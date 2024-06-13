@@ -1,8 +1,7 @@
 <template>
     <div>
-      <p>언어</p>
+      <p>언어 설정</p>
       <div class="language-selection">
-        <h2>Select Language</h2>
         <select v-model="selectedLanguage" @change="changeLanguage">
           <option value="ko">한국어</option>
           <option value="en">English</option>

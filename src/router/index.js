@@ -3,6 +3,7 @@ import Transactions from "@/pages/Transactions.vue";
 import Home from "@/pages/Home.vue";
 import Profile from "@/pages/Profile.vue";
 import Language from "@/pages/Language.vue";
+import Theme from "@/pages/Theme.vue"
 import Notification from "@/pages/Notification.vue";
 import TransInfoCreate from "@/pages/TransInfoCreate.vue";
 import IncomeChart from "@/pages/IncomeChart.vue";
@@ -19,6 +20,7 @@ const router = createRouter({
         { path: '/incomechart', component: IncomeChart },
         { path: '/expensesChart', component: ExpensesChart },
         { path: '/language', component: Language },
+        { path: '/theme', component: Theme },
     ]
 })
 

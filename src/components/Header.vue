@@ -12,6 +12,7 @@
                     <router-link class="nav-link" id="header-router-link" to="/profile">프로필</router-link>
                     <router-link class="nav-link" id="header-router-link" to="/language">언어</router-link>
                     <router-link class="nav-link" id="header-router-link" to="/notification">알림</router-link>
+                    <router-link class="nav-link" id="header-router-link" to="/theme">테마</router-link>
                 </div>
             </div>
         </div>
