@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { reactive, onMounted, computed, ref, onBeforeUpdate } from 'vue'
+import { reactive, onMounted, computed, ref, onUpdated } from 'vue'
 import axios from 'axios'
 export default {
   name: "TransList",
@@ -58,13 +58,21 @@ export default {
       return response.data
     }
 
-    onBeforeUpdate(() => {
-      // if (props.transInfo) {
-      //   console.log("1.", props.transInfo)
-      //   console.log("2.", items)
-      // }
-      // console.log("3.", props.transInfo)
-      // console.log("4.", items)
+    /**
+     * onMounted
+     * 
+     * 컴포넌트가 마운트된 후 items에 변경된 transInfo 정보를 수정한다.
+     */
+    onUpdated(() => {
+      if (props.transInfo.id) {
+        const index = items.findIndex(element => element.id === props.transInfo.id)
+        items[index].date = props.transInfo.date
+        items[index].category = props.transInfo.category
+        items[index].detail = props.transInfo.detail
+        items[index].account = props.transInfo.account
+        items[index].amount = props.transInfo.amount
+        items[index].memo = props.transInfo.memo
+      }
     })
 
     /**

@@ -101,7 +101,7 @@ export default {
         /**
          * onUpdated
          * 
-         * 컴포넌트의 업데이트가 발생했을 때 transInfo 값을 가져온다.
+         * 컴포넌트의 업데이트가 발생했을 때 transInfo 값을 가져오고 isOpen을 업데이트, 스크롤 block 여부를 판단한다.
          */
         onUpdated(() => {
             transInfo.date = changeDateFormat()
@@ -144,7 +144,7 @@ export default {
         /**
          * 스크롤 방지
          * 
-         * 팝업창 띄울시 스크롤바를 방지하는 메소드이다.
+         * 팝업창 띄울시 스크롤바를 block하고 화면 최상단으로 이동시키는 메소드이다.
          */
         const blockScroll = () => {
             if (isOpen.value) {
