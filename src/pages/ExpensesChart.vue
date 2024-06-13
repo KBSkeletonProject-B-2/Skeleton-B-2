@@ -2,12 +2,14 @@
 <!-- 이번 달에 발생한 총 지출을 파이 그래프를 통해 항목별로 보여준다. -->
 
 <template>
-  <span>{{currentMonth}}</span>
-  <span>월&nbsp;</span>
-  <span>지출</span>
   <div class="chartCard">
+    <div id="title">
+      <span>{{currentMonth}}</span>
+      <span>월&nbsp;</span>
+      <span>지출</span>
+    </div>
     <div class="chartBox">
-      <div v-if="!hasData" class="no-data-message">데이터가 없습니다.</div>
+      <div v-if="!hasData" id="noDataMessage">데이터가 없습니다.</div>
       <canvas id="expensesChart"></canvas>
     </div>
   </div>
@@ -16,8 +18,9 @@
 <script>
 import { onMounted, ref, watch } from 'vue';
 import { Chart, registerables } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-Chart.register(...registerables);
+Chart.register(...registerables, ChartDataLabels);
 
 export default {
   name: 'ExpensesChart',
@@ -156,7 +159,7 @@ export default {
                 // const amount = value.toLocaleString();
                 const totalAmount = context.dataset.data.reduce((acc, val) => acc + val, 0);
                 const percentage = ((value / totalAmount) * 100).toFixed(2);
-                return `${percentage}%`;
+                return `${percentage} %`;
               },
               align: 'center',
               anchor: 'center',
@@ -183,17 +186,22 @@ export default {
 
 <style>
 .chartCard {
-  width: 600px;
-  height: 700px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.chartBox {
   width: 600px; 
   height: 600px; 
 }
 
+#title {
+  color: rgb(96, 88, 76);
+  font-size: 20px;
+  font-weight: bold;
+  /* margin-right: 115px */
+}
+
+#noDataMessage {
+  color: rgb(96, 88, 76);
+  font-size: 18px;
+  font-weight: bold;
+  /* margin-right: 110px; */
+  margin-top: 50px
+}
 </style>
