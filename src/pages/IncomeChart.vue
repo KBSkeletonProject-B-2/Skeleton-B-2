@@ -5,7 +5,7 @@
   <div class="chartCard">
     <span>총 수입</span>
     <div class="chartBox">
-      <canvas id="incomeChart"></canvas> 
+      <canvas id="incomeChart"></canvas>
     </div>
   </div>
 </template>
@@ -36,7 +36,7 @@ export default {
      * 데이터 추출
      * 
      * db-server에 있는 데이터를 가져온다.
-     */ 
+     */
     async function fetchData() {
       try {
         const url = 'http://localhost:3000/transInfo';
@@ -53,23 +53,25 @@ export default {
       }
     }
 
-    // props의 변화를 감지하여 데이터 필터링 및 그래프 업데이트
+    /**
+     * props.currentYead & props.currentMonth 변화 감지하여 데이터 수정한다.
+     */
     watch([() => props.currentYear, () => props.currentMonth], async () => {
       fetchDataAndFilter();
     });
 
-  async function fetchDataAndFilter() {
-    const data = await fetchData();
-    const thisMonthData = filterDataByThisMonth(data);
-    updateChart(thisMonthData);
-  }
+    async function fetchDataAndFilter() {
+      const data = await fetchData();
+      const thisMonthData = filterDataByThisMonth(data);
+      updateChart(thisMonthData);
+    }
 
     /**  
      * 데이터 필터링 & 데이터 값 누적
      * 
      * 주어진 데이터 중 지출이면서 현재 월에 해당하는 데이터만 필터링한다.
      * categoty 값을 key 값으로 사용하여 카테고리별로 누적된 금액을 저장한다.
-     */ 
+     */
     function filterDataByThisMonth(data) {
       const groupedData = {};
 
@@ -77,11 +79,11 @@ export default {
         const transactionMonth = (new Date(transaction.date)).getMonth() + 1;
         const transactionYear = (new Date(transaction.date)).getFullYear();
 
-        if (transactionMonth === props.currentMonth && transactionYear === props.currentYear && transaction.inout === "수입") {
-          if (!groupedData[transaction.category]) {
-            groupedData[transaction.category] = 0;
+        if (transactionMonth === props.currentMonth && transactionYear === props.currentYear && transaction.category === "수입") {
+          if (!groupedData[transaction.detail]) {
+            groupedData[transaction.detail] = 0;
           }
-          groupedData[transaction.category] += parseInt(transaction.amount);
+          groupedData[transaction.detail] += parseInt(transaction.amount);
         }
       });
 
@@ -92,7 +94,7 @@ export default {
      * 색상 랜덤 추출
      * 
      * 색상을 랜덤으로 추출한다.
-     */ 
+     */
     function generateRandomColor() {
       const r = Math.floor(Math.random() * 255);
       const g = Math.floor(Math.random() * 255);
@@ -103,8 +105,8 @@ export default {
     /**  
      * 차트 업데이트
      * 
-     * transInfo 배열의 category 요소를 레이블로, amount의 누적값을 data로 하여 차트를 작성한다.
-     */ 
+     * transInfo 배열의 detail 요소를 레이블로, amount의 누적값을 data로 하여 차트를 작성한다.
+     */
     function updateChart(data) {
       if (!incomeChart) return; // incomeChart가 정의되어 있지 않으면 함수를 종료합니다.
 

@@ -33,7 +33,7 @@
                 <IncomeChart :currentYear="currentYear" :currentMonth="currentMonth"/>
             </div>
             <div id="expenseschart">
-                <ExpensesChart />
+                <ExpensesChart :currentYear="currentYear" :currentMonth="currentMonth"/>
             </div>
         </div>
 
@@ -54,13 +54,14 @@
                     <!-- 최근 거래 목록을 10개까지만 보여줌 -->
                     <tr class="recent_transaction_list" v-for="wallet in walletList.slice(0, 10)" :key="wallet.id">
                         <td>{{ wallet.date }}</td>
-                        <td>{{ wallet.memo }}</td>
+                        <td>{{ wallet.detail }}</td>
                         <td>{{ wallet.category }}</td>
-                        <td>{{ wallet.asset }}</td>
                         <td
-                            :style="{ color: wallet.inout === '지출' ? 'red' : (wallet.inout === '수입' ? 'blue' : 'black') }">
-                            {{ wallet.amount }}</td>
-                        <!-- <td :style="{ color: wallet.inout === '지출' ? 'red' : (wallet.inout === '수입' ? 'blue' : 'black') }">{{ wallet.inout }}</td> -->
+                            :style="{ color: wallet.category === '지출' ? 'red' : (wallet.category === '수입' ? 'blue' : 'black') }">
+                            {{ wallet.amount }}
+                        </td>
+                        <td>{{ wallet.memo }}</td>
+                        <!-- <td :style="{ color: wallet.category === '지출' ? 'red' : (wallet.category === '수입' ? 'blue' : 'black') }">{{ wallet.category }}</td> -->
                     </tr>
                     <tr>
                         <td colspan="5">...</td>
@@ -121,7 +122,7 @@ export default {
             return walletList.value
             .filter(transaction => {
                 const transactionDate = new Date(transaction.date);
-                return transaction.inout === "수입" && transactionDate.getMonth() + 1 === currentMonth.value && transactionDate.getFullYear() === currentYear.value;
+                return transaction.category === "수입" && transactionDate.getMonth() + 1 === currentMonth.value && transactionDate.getFullYear() === currentYear.value;
             })
             .reduce((acc, transaction) => acc + parseInt(transaction.amount), 0)
             .toLocaleString();
@@ -137,7 +138,7 @@ export default {
             return walletList.value
             .filter(transaction => {
                 const transactionDate = new Date(transaction.date);
-                return transaction.inout === "지출" && transactionDate.getMonth() + 1 === currentMonth.value && transactionDate.getFullYear() === currentYear.value;
+                return transaction.category === "지출" && transactionDate.getMonth() + 1 === currentMonth.value && transactionDate.getFullYear() === currentYear.value;
             })
             .reduce((acc, transaction) => acc + parseInt(transaction.amount), 0)
             .toLocaleString();

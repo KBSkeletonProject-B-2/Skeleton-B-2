@@ -4,6 +4,8 @@ import Home from "@/pages/Home.vue";
 import Profile from "@/pages/Profile.vue";
 import TransInfoCreate from "@/pages/TransInfoCreate.vue";
 import TransList from "@/pages/TransList.vue";
+import IncomeChart from "@/pages/IncomeChart.vue";
+import ExpensesChart from "@/pages/ExpensesChart.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -16,7 +18,9 @@ const router = createRouter({
             ]
         },
         { path: '/profile', component: Profile },
-        { path: '/transinfocreate', component: TransInfoCreate }
+        { path: '/transinfocreate', component: TransInfoCreate },
+        { path: '/incomechart', component: IncomeChart},
+        { path: '/expensesChart', component: ExpensesChart},
     ]
 })
 

@@ -80,11 +80,11 @@ export default {
         const transactionMonth = (new Date(transaction.date)).getMonth() + 1;
         const transactionYear = (new Date(transaction.date)).getFullYear();
 
-        if (transactionMonth === props.currentMonth && transactionYear === props.currentYear && transaction.inout === "지출") {
-          if (!groupedData[transaction.category]) {
-            groupedData[transaction.category] = 0;
+        if (transactionMonth === props.currentMonth && transactionYear === props.currentYear && transaction.category === "지출") {
+          if (!groupedData[transaction.detail]) {
+            groupedData[transaction.detail] = 0;
           }
-          groupedData[transaction.category] += parseInt(transaction.amount);
+          groupedData[transaction.detail] += parseInt(transaction.amount);
         }
       });
 
@@ -106,7 +106,7 @@ export default {
     /**  
      * 차트 업데이트
      * 
-     * transInfo 배열의 category 요소를 레이블로, amount의 누적값을 data로 하여 차트를 작성한다.
+     * transInfo 배열의 detail 요소를 레이블로, amount의 누적값을 data로 하여 차트를 작성한다.
      */
     function updateChart(data) {
       const categories = Object.keys(data);
