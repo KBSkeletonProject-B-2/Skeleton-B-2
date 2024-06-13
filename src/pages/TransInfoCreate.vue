@@ -56,7 +56,7 @@
 
 <script>
 import axios from 'axios'
-import { onMounted, onUpdated, reactive, ref } from 'vue';
+import { onMounted, onUnmounted, onUpdated, reactive, ref } from 'vue';
 export default {
     props: ["transInfo", "isOpen"],
     setup(props, context) {
@@ -81,6 +81,7 @@ export default {
          * 컴포넌트가 마운트된 후 JSON에서 카테고리, 계좌 정보를 가져온다.
          */
         onMounted(async () => {
+            document.getElementById("category").value = "지출"
             try {
                 const urlCategory = "http://localhost:3000/category"
                 const urlAccount = "http://localhost:3000/account"
@@ -89,7 +90,6 @@ export default {
 
                 Object.assign(cList, responseCategory.data)
                 Object.assign(aList, responseAccount.data)
-                transInfo.date = changeDateFormat()
 
                 console.log("TransInfoCreate.vue onMounted : " + responseCategory.data)
                 console.log("TransInfoCreate.vue onMounted : " + responseAccount.data)
@@ -105,6 +105,13 @@ export default {
          * 컴포넌트의 업데이트가 발생했을 때 transInfo 값을 가져온다.
          */
         onUpdated(() => {
+            transInfo.date = changeDateFormat()
+            transInfo.category = ""
+            transInfo.detail = ""
+            transInfo.account = ""
+            transInfo.amount = ""
+            transInfo.memo = ""
+
             Object.assign(transInfo, props.transInfo)
             isOpen.value = props.isOpen
 
@@ -123,6 +130,7 @@ export default {
             isOpen.value = open
             console.log("TransInfoCreate.vue changeIsOpen : " + isOpen.value)
             context.emit('changeIsOpen', isOpen.value, transInfo)
+            // window.location.reload()
         }
 
         /**
@@ -145,6 +153,7 @@ export default {
                 scrollY.value = window.scrollY
                 document.body.style.overflow = "hidden"
                 window.scrollTo({ top: 0, behavior: "smooth" })
+                changeCategory()
             } else {
                 document.body.style.overflow = "auto"
                 window.scrollTo({ top: scrollY.value, behavior: "smooth" })
@@ -157,7 +166,8 @@ export default {
          * 분류 드롭박스가 선택되었을 때 카테고리 드롭박스를 필터해주는 메소드이다.
          */
         const changeCategory = () => {
-            const cValue = document.getElementById("category").value
+            console.log(transInfo.category)
+            const cValue = transInfo.category
 
             cList.forEach(element => {
                 if (cValue === element.name) {
