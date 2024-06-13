@@ -44,7 +44,8 @@ export default {
   props: {
     filterCondition: Object,
     transInfo: Object,
-    isOpen: Boolean
+    isOpen: Boolean,
+    isCancel: Boolean
   },
   setup(props, context) {
     let items = reactive([])
@@ -64,7 +65,8 @@ export default {
      * 컴포넌트가 마운트된 후 items에 변경된 transInfo 정보를 수정한다.
      */
     onUpdated(() => {
-      if (props.transInfo.id) {
+      if (props.transInfo.id && !props.isCancel) {
+        console.log("11111")
         const index = items.findIndex(element => element.id === props.transInfo.id)
         items[index].date = props.transInfo.date
         items[index].category = props.transInfo.category

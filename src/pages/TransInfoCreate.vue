@@ -44,7 +44,7 @@
                         <input type="text" class="form-control transinfocreate-input" id="memo"
                             v-model="transInfo.memo">
                     </div>
-                    <button @click="changeIsOpen(false, transInfo)" type="button"
+                    <button @click="changeIsOpen(false, transInfo, true)" type="button"
                         class="btn transinfocreate-cancel">취소</button>
                     <button type="submit" class="btn transinfocreate-save">저장</button>
                 </form>
@@ -125,10 +125,10 @@ export default {
          * 
          * isOpen에 파라미터 값인 open으로 변경하고 transInfo 정보를 업데이트하는 메소드이다.
          */
-        const changeIsOpen = (open, transInfo) => {
+        const changeIsOpen = (open, transInfo, cancel) => {
             isOpen.value = open
             console.log("TransInfoCreate.vue changeIsOpen : ", isOpen.value)
-            context.emit('changeIsOpen', isOpen.value, transInfo)
+            context.emit('changeIsOpen', isOpen.value, transInfo, cancel)
         }
 
         /**
@@ -205,7 +205,7 @@ export default {
                     const url = `http://localhost:3000/transInfo/${transInfo.id}`
                     const response = await axios.put(url, transInfo)
 
-                    changeIsOpen(false, transInfo)
+                    changeIsOpen(false, transInfo, false)
 
                     console.log("TransInfoCreate.vue clickSaveButtonHandler put : ", response.data)
                 }

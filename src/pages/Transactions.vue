@@ -5,7 +5,7 @@
         <div class="container">
             <FilterBar @search="searchTransByFilter" />
             <br>
-            <TransList @changeIsOpen="changeIsOpen" :filterCondition="filterCondition" :transInfo="transInfo" :isOpen="isOpen" />
+            <TransList @changeIsOpen="changeIsOpen" :filterCondition="filterCondition" :transInfo="transInfo" :isOpen="isOpen" :isCancel="isCancel"/>
             <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" :transInfo="transInfo" :isOpen="isOpen" />
         </div>
     </div>
@@ -37,6 +37,7 @@ export default {
             memo: ""
         })
         const isOpen = ref(false)
+        const isCancel = ref(false)
 
         /**
         * 거래내역 조회
@@ -54,13 +55,15 @@ export default {
          * 
          * isOpen에 파라미터 값인 open으로 변경하고 transInfo 정보를 업데이트하는 메소드이다.
          */
-        const changeIsOpen = (open, trans) => {
+        const changeIsOpen = (open, trans, cancel) => {
             isOpen.value = open
+            isCancel.value = cancel
             Object.assign(transInfo, trans)
             console.log("Transactions.vue changeIsOpen : ", trans)
             console.log("Transactions.vue changeIsOpen : ", isOpen.value)
+            console.log("Transactions.vue changeIsOpen : ", isCancel.value)
         }
-        return { filterCondition, isOpen, searchTransByFilter, changeIsOpen, transInfo }
+        return { filterCondition, isOpen, searchTransByFilter, changeIsOpen, transInfo, isCancel }
     }
 }
 </script>

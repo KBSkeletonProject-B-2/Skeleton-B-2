@@ -75,7 +75,7 @@
             </table>
         </div>
         <router-link to="/">
-            <button @click.native="changeIsOpen(true)" type="button" class="submitBtn">
+            <button @click.native="changeIsOpen(true, transInfo)" type="button" class="submitBtn">
                 <span id="logoBtn">내역 추가</span>
             </button>
         </router-link>
@@ -85,7 +85,7 @@
 
 <script>
 import axios from 'axios';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, reactive } from 'vue';
 import IncomeChart from './IncomeChart.vue';
 import ExpensesChart from "@/pages/ExpensesChart.vue";
 import TransInfoCreate from './TransInfoCreate.vue';
@@ -103,6 +103,7 @@ export default {
         const walletList = ref([]);
         const currentMonth = ref((new Date()).getMonth() + 1);
         const currentYear = ref((new Date()).getFullYear());
+        const transInfo = reactive([])
         const isOpen = ref(false)
 
         const goToPreviousMonth = () => {
@@ -168,13 +169,13 @@ export default {
          * 
          * isOpen에 파라미터 값인 open으로 변경하고 transInfo 정보를 동기화하는 메소드이다.
          */
-        const changeIsOpen = (open, transInfo) => {
+        const changeIsOpen = (open, trans) => {
             isOpen.value = open
 
-            if (transInfo) {
-                let trans = {}
-                Object.assign(trans, transInfo)
-                walletList.value.unshift(trans)
+            if (trans.id) {
+                let t = {}
+                Object.assign(t, trans)
+                walletList.value.unshift(t)
                 console.log("Home.vue changeIsOpen : ", walletList.value)
             }
             console.log("Home.vue changeIsOpen : ", isOpen.value)
@@ -210,7 +211,8 @@ export default {
             goToNextMonth,
             isOpen,
             changeIsOpen,
-            formatAmount
+            formatAmount,
+            transInfo
         };
     }
 }
