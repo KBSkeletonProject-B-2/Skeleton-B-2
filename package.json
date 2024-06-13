@@ -13,7 +13,6 @@
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.3",
     "chartjs-plugin-datalabels": "^2.2.0",
-    "chartjs-plugin-piechart-outlabels": "^0.1.4",
     "sass": "^1.77.5",
     "vue": "^3.4.21",
     "vue-axios": "^3.5.2",
