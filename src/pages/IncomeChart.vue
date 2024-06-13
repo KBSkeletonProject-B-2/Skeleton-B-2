@@ -4,7 +4,7 @@
 <template>
   <span>{{currentMonth}}</span>
   <span>월&nbsp;</span>
-  <span>총 지출</span>
+  <span>수입</span>
   <div class="chartCard">
     <div class="chartBox">
       <canvas id="incomeChart"></canvas>
