@@ -225,6 +225,12 @@
       "name": "토스 간편결제"
     }
   ],
+  "person": [
+    {"email": "kim@naver.com",
+     "phone-number": "010-1234-1234"},
+    {"email": "lee@naver.com",
+     "phone-number": "010-9090-1998"}
+  ],
   "transInfo": [
     {
       "id": "3125612144",

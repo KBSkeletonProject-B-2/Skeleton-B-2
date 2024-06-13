@@ -1,9 +1,7 @@
 <!-- 설정 내 프로필 뷰 -->
 <template>
-  <header>
-    <Sidebar/>
+  <Sidebar/>
     <p>프로필 관리</p>
-  </header>
   <div class="container">
     <main>
       <div>
@@ -41,15 +39,7 @@
 
   
 <script>
-import Header from '@/components/Header.vue';
-import Footer from '@/components/Footer.vue';
-import Sidebar from './Sidebar.vue';
-
 export default {
-  components: {
-    Header,
-    Footer,
-  },
   data() {
     return {
       emailId: '',
@@ -66,14 +56,52 @@ export default {
     };
   },
   methods: {
+    onFileChange(e) {
+      const file=e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imageUrl = reader.result;
+          this.persistData();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        this.imageUrl = null;
+      }
+    },
     updateProfile(index) {
       this.imageUrl = this.images[index].src;
       this.userName = '익명' + (index + 1);
+      this.persistData();
     },
     submitProfile() {
       console.log('Email:', this.emailId + '@' + this.emailDomain);
       console.log('Phone:', this.phone);
+      this.persistData();
     },
+    persistData() {
+      const data = {
+        emailId: this.emailId,
+        emailDomain: this.emailDomain,
+        phone: this.phone,
+        imageUrl: this.imageUrl,
+        userName: this.userName
+      };
+      localStorage.setItem('profileData', JSON.stringfy(data));
+    },
+    localData() {
+      const data = JSON.parse(localStorage.getItem('profileData'));
+      if (data) {
+        this.emailId = data.emailId;
+        this.emailDomain = data.emailDomain;
+        this.phone = data.phone;
+        this.imageUrl = data.imageUrl;
+        this.userName = data.userName;
+      }
+    }
+  },
+  mounted() {
+    this.localData();
   },
 }
 </script>
@@ -83,7 +111,7 @@ export default {
 p {
   font-size: 20px;
   font-weight: bold;
-  margin : 20px 0;
+  margin : 20px 20px;
   color : rgb(84,80,69)
 }
 .containter {
@@ -160,7 +188,7 @@ button {
   display: block;
   width: auto;
   margin: 20px 0;
-  padding: 10px 200px;
+  padding: 10px 170px;
   background-color: rgb(255,188,0);
   color: white;
   border: rgb(255,188,0);

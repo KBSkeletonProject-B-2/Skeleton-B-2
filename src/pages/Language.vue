@@ -42,6 +42,7 @@
     font-size: 20px;
     font-weight: bold;
     margin : 20px 20px;
+    color : rgb(84,80,69)
   }
   
   h2 {
