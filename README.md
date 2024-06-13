@@ -22,6 +22,7 @@
   - 백엔드 서버 : json-server --watch MOCK_DATA.json -p 3000
   - 프론트엔드 서버 : http://localhost:5173/
   - CSS 컬러 링크 : https://omoney.kbstar.com/quics?page=C017667#loading
+  - Git 배포시 MOCK_DATA.json 파일은 제외(테이블 구조 변경시 문의바람)
   - README.me 파일은 모두가 사용가능하니 수정사항은 해당 파일을 통해 작성한다.
 
 - **피그마 링크**
