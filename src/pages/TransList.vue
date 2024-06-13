@@ -21,7 +21,7 @@
           </tr>
           <tr v-for="trans in group" :key="trans.id" @click.native="changeIsOpen(true, trans)">
             <td>{{ trans.category }}</td>
-            <td>{{ trans.asset }}</td>
+            <td>{{ trans.detail }}</td>
             <td>{{ trans.amount }}</td>
             <td><button v-show="true" @click.stop="deleteTransaction(trans.id)">삭제</button></td>
           </tr>
@@ -47,7 +47,7 @@ export default {
       Object.assign(items, result)
     })
     const requestItems = async () => {
-      const response = await axios.get("http://localhost:3000/transInfo ")
+      const response = await axios.get("http://localhost:3000/transInfo")
       // console.log(response)
       return response.data
     }
@@ -57,13 +57,14 @@ export default {
      * 상위 컴포넌트로부터 전달받은 조건 계산
      */
     const matchCondition = (trans, condition) => {
-      const { startDate, endDate, category, memo } = condition
+      const { startDate, endDate, category, detail, memo } = condition
       const matchesDate = (!startDate || new Date(trans.date) >= new Date(startDate)) &&
         (!endDate || new Date(trans.date) <= new Date(endDate));
       const matchesCategory = !category || trans.category === category;
+      const matchesDetail = !detail || trans.detail === detail;
       const matchesMemo = !memo || trans.memo.includes(memo);
 
-      return matchesDate && matchesCategory && matchesMemo;
+      return matchesDate && matchesCategory && matchesDetail && matchesMemo;
     }
 
     /**
@@ -121,6 +122,31 @@ export default {
   }
 }
 </script>
-<style lang="">
+<style scoped>
+.table-hover tbody tr:hover {
+  background-color: #f5f5f5;
+}
 
+.table-dark {
+  background-color: #343a40;
+  color: white;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+}
+
+button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #c82333;
+}
 </style>

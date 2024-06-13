@@ -22,6 +22,7 @@ export default {
             startDate: '',
             endDate: '',
             category: '',
+            detail:'',
             memo: '',
         });
         let transInfo = reactive({
@@ -41,8 +42,8 @@ export default {
         * 날짜 및 카테고리 조건으로 거래 목록을 조회한다.
         * 조건에 맞는 거래 목록을 json서버로부터 가져오고, TransList 컴포넌트에 전달해야 함
         */
-        const searchTransByFilter = (startDate, endDate, category, memo) => {
-            filterCondition.value = { startDate, endDate, category, memo };
+        const searchTransByFilter = (startDate, endDate, category, detail, memo) => {
+            filterCondition.value = { startDate, endDate, category, detail, memo };
             console.log(filterCondition.value)
         };
 
