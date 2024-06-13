@@ -5,29 +5,30 @@
 <template>
     <div class="center-content">
         <div class="list1">
-            <span id="before" @click="goToPreviousMonth">
-                << </span>
-                    <span>{{ currentYear }}</span>
-                    <span>년 </span>
-                    <span>{{ currentMonth }}</span>
-                    <span>월</span>
-                    <span id="after" @click="goToNextMonth"> >></span>
-                    <table class="table_1">
-                        <thead>
-                            <tr>
-                                <td>총수입</td>
-                                <td>총지출</td>
-                                <td>순수익</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{ totalIncome }}</td>
-                                <td>{{ totalExpenses }}</td>
-                                <td>{{ Profit }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="selectDate">
+                <span id="before" @click="goToPreviousMonth">◀ &nbsp;&nbsp;</span>
+                <span>{{currentYear}}</span>
+                <span>년 </span>
+                <span>{{currentMonth}}</span>
+                <span>월</span>
+                <span id="after" @click="goToNextMonth">&nbsp;&nbsp; ▶</span>
+            </div>
+            <table class="total">
+                <thead>
+                    <tr>
+                        <td>수입</td>
+                        <td>지출</td>
+                        <td>합계</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="color: blue;">{{ totalIncome }}</td>
+                        <td style="color: red;">{{ totalExpenses }}</td>
+                        <td>{{ Profit }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="chart">
             <div id="incomechart">
@@ -37,7 +38,6 @@
                 <ExpensesChart :currentYear="currentYear" :currentMonth="currentMonth" />
             </div>
         </div>
-
         <div class="list2">
             <span>최근 거래 목록</span>
             <table class="table-hover">
@@ -201,28 +201,74 @@ export default {
 
 <style scoped>
 .center-content {
-    width: 90%;
-    margin: 50px auto;
+    width: 100%;
+    margin: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    background-color: rgb(255, 204, 0, 0.1);
+}
+
+.list1 {
+    margin-bottom: 30px;
+    border-radius: 30px;
+    background-color: rgb(255, 204, 0, 0.4);
+    font-weight: 600;
+    margin-top: 50px;
+}
+
+.selectDate {
+    margin-top: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(96, 88, 76);
+}
+
+.chart {
+    display: flex;
+}
+
+.list2 {
+    /* border: 1px solid black; */
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-hover {
+    margin: 20px 30px 30px 30px
+}
+
+.table-hover tbody tr:hover {
+  background-color: black
 }
 
 table {
-    width: 1000px;
-    border: 3px solid #ddd;
-    border-left: none;
-    border-right: none;
+    width: 1200px;
+    margin: 20px 30px 30px 30px;
+    border: 3px solid rgb(96, 88, 76, 0.8);
+    border-left:none;
+    border-right:none;
 }
 
-th,
-td {
+
+
+th, td {
     padding: 8px;
-    border: 1px solid #ddd;
-    border-left: none;
-    border-right: none;
-    width: 20%;
+    border: 1px solid rgb(96, 88, 76, 0.8);
+    border-left:none;
+    border-right:none;
+    width: 20%;   
+    
+}
+
+tbody {
+    color: rgb(96, 88, 76);
+}
+
+thead {
+    background-color: rgb(96, 88, 76, 0.8);
+    color: white;
 }
 
 .recent_transaction_list {
@@ -233,29 +279,6 @@ td {
     width: 20%;
 }
 
-.table-hover {
-    margin: 20px 30px 30px 30px
-}
-
-.table_1 {
-    margin: 20px 30px 30px 30px
-}
-
-.list1 {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.list2 {
-    /* border: 1px solid black; */
-    margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.table-hover tbody tr:hover {
-    background-color: #fffde7;
-    /* 원하는 색상으로 변경 */
-}
-
 .submitBtn {
     width: 1000px;
     background-color: #ffca1a;
@@ -264,7 +287,5 @@ td {
     margin-top: 20px
 }
 
-.chart {
-    display: flex;
-}
+
 </style>
