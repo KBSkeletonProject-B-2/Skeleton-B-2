@@ -111,6 +111,7 @@ export default {
       axios.post('http://localhost:3000/person', formData)
         .then(response => {
           console.log('성공적으로 추가되었습니다:', response.data);
+          alert('프로필이 성공적으로 추가되었습니다');
           persistData();
         })
         .catch(error => {
