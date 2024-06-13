@@ -10,9 +10,9 @@
         <div class="list1">
             <div class="selectDate">
                 <span id="before" @click="goToPreviousMonth">◀ &nbsp;&nbsp;&nbsp;</span>
-                <span>{{currentYear}}</span>
+                <span>{{ currentYear }}</span>
                 <span>&nbsp;년&nbsp;&nbsp;</span>
-                <span>{{currentMonth}}</span>
+                <span>{{ currentMonth }}</span>
                 <span>&nbsp;월</span>
                 <span id="after" @click="goToNextMonth">&nbsp;&nbsp;&nbsp; ▶</span>
             </div>
@@ -62,8 +62,8 @@
                     <tr class="recent_transaction_list" v-for="wallet in walletList.slice(0, 10)" :key="wallet.id">
                         <td>{{ wallet.date }}</td>
                         <td>{{ wallet.category }}</td>
-                        <td>{{ wallet.detail }}</td> 
-                        <td>{{ wallet.account }}</td> 
+                        <td>{{ wallet.detail }}</td>
+                        <td>{{ wallet.account }}</td>
                         <td
                             :style="{ color: wallet.category === '지출' ? 'red' : (wallet.category === '수입' ? 'blue' : 'black') }">
                             {{ formatAmount(wallet.amount) }}
@@ -166,11 +166,18 @@ export default {
         /**
          * isOpen 변경
          * 
-         * isOpen에 파라미터 값인 open으로 변경하고 trans 정보를 전달하는 메소드이다.
+         * isOpen에 파라미터 값인 open으로 변경하고 transInfo 정보를 동기화하는 메소드이다.
          */
-        const changeIsOpen = (open) => {
+        const changeIsOpen = (open, transInfo) => {
             isOpen.value = open
-            console.log("Home.vue changeIsOpen : " + isOpen.value)
+
+            if (transInfo) {
+                let trans = {}
+                Object.assign(trans, transInfo)
+                walletList.value.unshift(trans)
+                console.log("Home.vue changeIsOpen : ", walletList.value)
+            }
+            console.log("Home.vue changeIsOpen : ", isOpen.value)
         }
 
         const requestAPI = async () => {
@@ -183,10 +190,10 @@ export default {
             }
         };
 
-         /**
-         * 금액 형식화
-         */
-         const formatAmount = (amount) => {
+        /**
+        * 금액 형식화
+        */
+        const formatAmount = (amount) => {
             return parseInt(amount).toLocaleString();
         };
 
@@ -211,7 +218,6 @@ export default {
 </script>
 
 <style scoped>
-
 .center-content {
     width: 100%;
     margin: auto;
@@ -226,7 +232,8 @@ export default {
     margin-top: 40px;
 }
 
-.list1, .list2 {
+.list1,
+.list2 {
     margin-bottom: 50px;
     border-radius: 10px;
     background-color: rgb(255, 204, 0, 0.2);
@@ -234,7 +241,8 @@ export default {
     margin-top: 40px;
 }
 
-.selectDate, .currentList {
+.selectDate,
+.currentList {
     margin-top: 30px;
     font-size: 20px;
     font-weight: bold;
@@ -250,16 +258,16 @@ export default {
 }
 
 .table-hover tbody tr:hover {
-  background-color: gray;
-  color: white;
+    background-color: gray;
+    color: white;
 }
 
 table {
     width: 1200px;
     margin: 20px 30px 40px 30px;
     border: 3px solid rgb(96, 88, 76, 0.8);
-    border-left:none;
-    border-right:none;
+    border-left: none;
+    border-right: none;
 }
 
 thead {
@@ -271,12 +279,13 @@ tbody {
     color: rgb(96, 88, 76);
 }
 
-th, td {
+th,
+td {
     padding: 7px;
     border: 1px solid rgb(96, 88, 76, 0.8);
-    border-left:none;
-    border-right:none;
-    width: 20%;   
+    border-left: none;
+    border-right: none;
+    width: 20%;
 }
 
 .submitBtn {
@@ -292,5 +301,4 @@ th, td {
     font-size: 16px;
     font-weight: bold;
 }
-
 </style>

@@ -5,7 +5,7 @@
         <div class="container">
             <FilterBar @search="searchTransByFilter" />
             <br>
-            <TransList @changeIsOpen="changeIsOpen" :filterCondition="filterCondition" />
+            <TransList @changeIsOpen="changeIsOpen" :filterCondition="filterCondition" :transInfo="transInfo" :isOpen="isOpen" />
             <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" :transInfo="transInfo" :isOpen="isOpen" />
         </div>
     </div>
@@ -57,7 +57,8 @@ export default {
         const changeIsOpen = (open, trans) => {
             isOpen.value = open
             Object.assign(transInfo, trans)
-            console.log("Transactions.vue changeIsOpen : " + isOpen.value)
+            console.log("Transactions.vue changeIsOpen : ", trans)
+            console.log("Transactions.vue changeIsOpen : ", isOpen.value)
         }
         return { filterCondition, isOpen, searchTransByFilter, changeIsOpen, transInfo }
     }

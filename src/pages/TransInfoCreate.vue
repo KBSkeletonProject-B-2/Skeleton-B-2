@@ -90,10 +90,10 @@ export default {
                 Object.assign(cList, responseCategory.data)
                 Object.assign(aList, responseAccount.data)
 
-                console.log("TransInfoCreate.vue onMounted : " + responseCategory.data)
-                console.log("TransInfoCreate.vue onMounted : " + responseAccount.data)
+                console.log("TransInfoCreate.vue onMounted : ", responseCategory.data)
+                console.log("TransInfoCreate.vue onMounted : ", responseAccount.data)
             } catch (err) {
-                console.log("TransInfoCreate.vue onMounted : " + err.message)
+                console.log("TransInfoCreate.vue onMounted : ", err.message)
                 alert("카테고리 조회 실패")
             }
         })
@@ -116,8 +116,8 @@ export default {
 
             blockScroll()
 
-            console.log("TransInfoCreate.vue onUpdated : " + transInfo)
-            console.log("TransInfoCreate.vue onUpdated : " + isOpen.value)
+            console.log("TransInfoCreate.vue onUpdated : ", transInfo)
+            console.log("TransInfoCreate.vue onUpdated : ", isOpen.value)
         })
 
         /**
@@ -127,7 +127,7 @@ export default {
          */
         const changeIsOpen = (open, transInfo) => {
             isOpen.value = open
-            console.log("TransInfoCreate.vue changeIsOpen : " + isOpen.value)
+            console.log("TransInfoCreate.vue changeIsOpen : ", isOpen.value)
             context.emit('changeIsOpen', isOpen.value, transInfo)
         }
 
@@ -170,7 +170,7 @@ export default {
             cList.forEach(element => {
                 if (cValue === element.name) {
                     Object.assign(cdList, element.detail)
-                    console.log("TransInfoCreate.vue changeCategory : " + cdList)
+                    console.log("TransInfoCreate.vue changeCategory : ", cdList)
                 }
             })
         }
@@ -200,17 +200,17 @@ export default {
 
                     changeIsOpen(false, transInfo)
 
-                    console.log("TransInfoCreate.vue clickSaveButtonHandler post : " + response.data)
+                    console.log("TransInfoCreate.vue clickSaveButtonHandler post : ", response.data)
                 } else {
                     const url = `http://localhost:3000/transInfo/${transInfo.id}`
                     const response = await axios.put(url, transInfo)
 
                     changeIsOpen(false, transInfo)
 
-                    console.log("TransInfoCreate.vue clickSaveButtonHandler put : " + response.data)
+                    console.log("TransInfoCreate.vue clickSaveButtonHandler put : ", response.data)
                 }
             } catch (err) {
-                console.log("TransInfoCreate.vue clickSaveButtonHandler : " + err.message)
+                console.log("TransInfoCreate.vue clickSaveButtonHandler : ", err.message)
                 alert("가계부 저장 실패")
             }
         }

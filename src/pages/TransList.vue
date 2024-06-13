@@ -25,7 +25,7 @@
             <td class="cell">{{ trans.detail }}</td>
             <td class="cell">{{ trans.account }}</td>
             <td class="cell" :class="{ 'text-out': trans.category === '지출', 'text-in': trans.category === '수입' }">
-            {{ trans.amount }}
+              {{ trans.amount }}
             </td>
             <td class="cell"><button v-show="true" @click.stop="deleteTransaction(trans.id)">삭제</button>
             </td>
@@ -37,12 +37,14 @@
 </template>
 
 <script>
-import { reactive, onMounted, computed, ref } from 'vue'
+import { reactive, onMounted, computed, ref, onBeforeUpdate } from 'vue'
 import axios from 'axios'
 export default {
   name: "TransList",
   props: {
-    filterCondition: Object
+    filterCondition: Object,
+    transInfo: Object,
+    isOpen: Boolean
   },
   setup(props, context) {
     let items = reactive([])
@@ -55,6 +57,15 @@ export default {
       const response = await axios.get("http://localhost:3000/transInfo")
       return response.data
     }
+
+    onBeforeUpdate(() => {
+      // if (props.transInfo) {
+      //   console.log("1.", props.transInfo)
+      //   console.log("2.", items)
+      // }
+      // console.log("3.", props.transInfo)
+      // console.log("4.", items)
+    })
 
     /**
      * 조회 조건 검사
@@ -105,15 +116,15 @@ export default {
     const deleteTransaction = async (id) => {
       try {
         const del = confirm("삭제하시겠습니까?")
-        if(del){
+        if (del) {
           await axios.delete(`http://localhost:3000/transInfo/${id}`);
-        const index = items.findIndex(trans => trans.id === id)
-        if (index !== -1) {
-          items.splice(index, 1)
+          const index = items.findIndex(trans => trans.id === id)
+          if (index !== -1) {
+            items.splice(index, 1)
+          }
+          alert('삭제되었습니다.')
         }
-        alert('삭제되었습니다.')
-        }
-        
+
       } catch (error) {
         console.error("Error deleting transaction:", error);
       }
@@ -126,7 +137,7 @@ export default {
      */
     const changeIsOpen = (open, trans) => {
       isOpen.value = open
-      console.log("TransList.vue changeIsOpen : " + isOpen.value)
+      console.log("TransList.vue changeIsOpen : ", isOpen.value)
       context.emit('changeIsOpen', isOpen.value, trans)
     }
     return { deleteTransaction, isOpen, changeIsOpen, sortedGroupedItems }
