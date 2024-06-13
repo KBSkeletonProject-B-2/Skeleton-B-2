@@ -5,35 +5,36 @@
 <template>
     <div class="center-content">
         <div class="list1">
-            <span id="before" @click="goToPreviousMonth">◀ &nbsp;&nbsp;</span>
-            <span>{{currentYear}}</span>
-            <span>년 </span>
-            <span>{{currentMonth}}</span>
-            <span>월</span>
-            <span id="after" @click="goToNextMonth">&nbsp;&nbsp; ▶</span>
-            <table class="table_1">
-                <thead>
-                    <tr>
-                        <td>수입</td>
-                        <td>지출</td>
-                        <td>합계</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="color: blue;">{{ totalIncome }}</td>
-                        <td style="color: red;">{{ totalExpenses }}</td>
-                        <td>{{ Profit }}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <span id="before" @click="goToPreviousMonth">
+                << </span>
+                    <span>{{ currentYear }}</span>
+                    <span>년 </span>
+                    <span>{{ currentMonth }}</span>
+                    <span>월</span>
+                    <span id="after" @click="goToNextMonth"> >></span>
+                    <table class="table_1">
+                        <thead>
+                            <tr>
+                                <td>총수입</td>
+                                <td>총지출</td>
+                                <td>순수익</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ totalIncome }}</td>
+                                <td>{{ totalExpenses }}</td>
+                                <td>{{ Profit }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
         </div>
         <div class="chart">
             <div id="incomechart">
-                <IncomeChart :currentYear="currentYear" :currentMonth="currentMonth"/>
+                <IncomeChart :currentYear="currentYear" :currentMonth="currentMonth" />
             </div>
             <div id="expenseschart">
-                <ExpensesChart :currentYear="currentYear" :currentMonth="currentMonth"/>
+                <ExpensesChart :currentYear="currentYear" :currentMonth="currentMonth" />
             </div>
         </div>
 
@@ -75,9 +76,10 @@
             </router-link>
         </div>
         <router-link to="/">
-            <button type="submit" class="submitBtn">+</button>
+            <button @click.native="changeIsOpen(true)" type="button" class="submitBtn">+</button>
         </router-link>
     </div>
+    <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" :isOpen="isOpen" />
 </template>
 
 <script>
@@ -85,29 +87,32 @@ import axios from 'axios';
 import { ref, onMounted, computed } from 'vue';
 import IncomeChart from './IncomeChart.vue';
 import ExpensesChart from "@/pages/ExpensesChart.vue";
+import TransInfoCreate from './TransInfoCreate.vue';
 
 export default {
     components: {
         IncomeChart,
-        ExpensesChart
+        ExpensesChart,
+        TransInfoCreate
     },
 
     setup() {
-        const walletList = ref([]);  
+        const walletList = ref([]);
         const currentMonth = ref((new Date()).getMonth() + 1);
         const currentYear = ref((new Date()).getFullYear());
-        
+        const isOpen = ref(false)
+
         const goToPreviousMonth = () => {
-            if(currentMonth.value === 1) {
+            if (currentMonth.value === 1) {
                 currentMonth.value = 12;
                 currentYear.value -= 1;
             } else {
                 currentMonth.value -= 1
             }
         };
-        
+
         const goToNextMonth = () => {
-            if(currentMonth.value === 12) {
+            if (currentMonth.value === 12) {
                 currentMonth.value = 1;
                 currentYear.value += 1;
             } else {
@@ -122,12 +127,12 @@ export default {
          */
         const totalIncome = computed(() => {
             return walletList.value
-            .filter(transaction => {
-                const transactionDate = new Date(transaction.date);
-                return transaction.category === "수입" && transactionDate.getMonth() + 1 === currentMonth.value && transactionDate.getFullYear() === currentYear.value;
-            })
-            .reduce((acc, transaction) => acc + parseInt(transaction.amount), 0)
-            .toLocaleString();
+                .filter(transaction => {
+                    const transactionDate = new Date(transaction.date);
+                    return transaction.category === "수입" && transactionDate.getMonth() + 1 === currentMonth.value && transactionDate.getFullYear() === currentYear.value;
+                })
+                .reduce((acc, transaction) => acc + parseInt(transaction.amount), 0)
+                .toLocaleString();
         });
         console.log(totalIncome);
 
@@ -138,28 +143,38 @@ export default {
          */
         const totalExpenses = computed(() => {
             return walletList.value
-            .filter(transaction => {
-                const transactionDate = new Date(transaction.date);
-                return transaction.category === "지출" && transactionDate.getMonth() + 1 === currentMonth.value && transactionDate.getFullYear() === currentYear.value;
-            })
-            .reduce((acc, transaction) => acc + parseInt(transaction.amount), 0)
-            .toLocaleString();
+                .filter(transaction => {
+                    const transactionDate = new Date(transaction.date);
+                    return transaction.category === "지출" && transactionDate.getMonth() + 1 === currentMonth.value && transactionDate.getFullYear() === currentYear.value;
+                })
+                .reduce((acc, transaction) => acc + parseInt(transaction.amount), 0)
+                .toLocaleString();
         });
 
         /**
          * 순수익 계산
          */
         const Profit = computed(() => {
-            const income = parseInt(totalIncome.value.replace(/,/g, '')); 
-            const expenses = parseInt(totalExpenses.value.replace(/,/g, '')); 
+            const income = parseInt(totalIncome.value.replace(/,/g, ''));
+            const expenses = parseInt(totalExpenses.value.replace(/,/g, ''));
             return (income - expenses).toLocaleString();
         });
+
+        /**
+         * isOpen 변경
+         * 
+         * isOpen에 파라미터 값인 open으로 변경하고 trans 정보를 전달하는 메소드이다.
+         */
+        const changeIsOpen = (open) => {
+            isOpen.value = open
+            console.log("Home.vue changeIsOpen : " + isOpen.value)
+        }
 
         const requestAPI = async () => {
             try {
                 const url = 'http://localhost:3000/transInfo';
-                const response = await axios.get(url) 
-                walletList.value = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));  /* 날짜를 내림차순으로 정렬하여 최신 값부터 보여줌 */ 
+                const response = await axios.get(url)
+                walletList.value = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));  /* 날짜를 내림차순으로 정렬하여 최신 값부터 보여줌 */
             } catch (error) {
                 console.log(error);
             }
@@ -175,15 +190,16 @@ export default {
             currentMonth,
             currentYear,
             goToPreviousMonth,
-            goToNextMonth
+            goToNextMonth,
+            isOpen,
+            changeIsOpen
         };
     }
 }
 
 </script>
 
-<style  scoped>
-
+<style scoped>
 .center-content {
     width: 90%;
     margin: 50px auto;
@@ -194,25 +210,26 @@ export default {
 }
 
 table {
-    width: 1200px;
-    border: 3px solid #ddd; 
-    border-left:none;
-    border-right:none;
+    width: 1000px;
+    border: 3px solid #ddd;
+    border-left: none;
+    border-right: none;
 }
 
-th, td {
+th,
+td {
     padding: 8px;
-    border: 1px solid #ddd; 
-    border-left:none;
-    border-right:none;
+    border: 1px solid #ddd;
+    border-left: none;
+    border-right: none;
     width: 20%;
 }
 
 .recent_transaction_list {
     padding: 8px;
     border: 1px solid #ddd;
-    border-left:none;
-    border-right:none;
+    border-left: none;
+    border-right: none;
     width: 20%;
 }
 
@@ -235,7 +252,8 @@ th, td {
 }
 
 .table-hover tbody tr:hover {
-  background-color: #fffde7; /* 원하는 색상으로 변경 */
+    background-color: #fffde7;
+    /* 원하는 색상으로 변경 */
 }
 
 .submitBtn {

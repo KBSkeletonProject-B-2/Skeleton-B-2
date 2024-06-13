@@ -5,7 +5,7 @@
         <FilterBar @search="searchTransByFilter" />
         <br>
         <TransList @changeIsOpen="changeIsOpen" :filterCondition="filterCondition" />
-        <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" :transInfo="transInfo" />
+        <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" :transInfo="transInfo" :isOpen="isOpen" />
     </div>
 </template>
 

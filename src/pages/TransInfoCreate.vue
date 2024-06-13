@@ -58,7 +58,7 @@
 import axios from 'axios'
 import { onMounted, onUpdated, reactive, ref } from 'vue';
 export default {
-    props: ["transInfo"],
+    props: ["transInfo", "isOpen"],
     setup(props, context) {
         let cList = reactive([])
         let cdList = reactive([])
@@ -73,6 +73,7 @@ export default {
             memo: ""
         })
         let isOpen = ref(false)
+        let scrollY = ref(0)
 
         /**
          * onMounted
@@ -105,7 +106,12 @@ export default {
          */
         onUpdated(() => {
             Object.assign(transInfo, props.transInfo)
+            isOpen.value = props.isOpen
+
+            blockScroll()
+
             console.log("TransInfoCreate.vue onUpdated : " + transInfo)
+            console.log("TransInfoCreate.vue onUpdated : " + isOpen.value)
         })
 
         /**
@@ -127,6 +133,22 @@ export default {
         const changeDateFormat = () => {
             let date = new Date()
             return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
+        }
+
+        /**
+         * 스크롤 방지
+         * 
+         * 팝업창 띄울시 스크롤바를 방지하는 메소드이다.
+         */
+        const blockScroll = () => {
+            if (isOpen.value) {
+                scrollY.value = window.scrollY
+                document.body.style.overflow = "hidden"
+                window.scrollTo({ top: 0, behavior: "smooth" })
+            } else {
+                document.body.style.overflow = "auto"
+                window.scrollTo({ top: scrollY.value, behavior: "smooth" })
+            }
         }
 
         /**
@@ -213,6 +235,14 @@ export default {
     color: rgb(255, 204, 0);
     font-weight: bold;
     float: right;
+}
+
+.transinfocreate-hidden {
+    overflow: hidden;
+}
+
+.transinfocreate-auto {
+    overflow: auto;
 }
 
 .modal {
