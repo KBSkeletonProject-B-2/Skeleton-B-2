@@ -39,70 +39,96 @@
 
   
 <script>
+import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+
 export default {
-  data() {
-    return {
-      emailId: '',
-      emailDomain: 'naver.com',
-      phone: '',
-      imageUrl: '/images/normal.JPG',
-      userName: '익명1',
-      images: [
-        { id: 1, src: '/images/image1.JPG' },
-        { id: 2, src: '/images/image2.JPG' },
-        { id: 3, src: '/images/image3.JPG' },
-        { id: 4, src: '/images/image4.JPG' }
-      ]
-    };
-  },
-  methods: {
-    onFileChange(e) {
-      const file=e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.imageUrl = reader.result;
-          this.persistData();
-        };
-        reader.readAsDataURL(file);
-      } else {
-        this.imageUrl = null;
-      }
-    },
-    updateProfile(index) {
-      this.imageUrl = this.images[index].src;
-      this.userName = '익명' + (index + 1);
-      this.persistData();
-    },
-    submitProfile() {
-      console.log('Email:', this.emailId + '@' + this.emailDomain);
-      console.log('Phone:', this.phone);
-      this.persistData();
-    },
-    persistData() {
-      const data = {
-        emailId: this.emailId,
-        emailDomain: this.emailDomain,
-        phone: this.phone,
-        imageUrl: this.imageUrl,
-        userName: this.userName
+  setup() {
+    const email = ref('');
+
+    const submitProfile = () => {
+      const formData = {
+        email: email.value
       };
-      localStorage.setItem('profileData', JSON.stringfy(data));
-    },
-    localData() {
-      const data = JSON.parse(localStorage.getItem('profileData'));
-      if (data) {
-        this.emailId = data.emailId;
-        this.emailDomain = data.emailDomain;
-        this.phone = data.phone;
-        this.imageUrl = data.imageUrl;
-        this.userName = data.userName;
-      }
-    }
-  },
-  mounted() {
-    this.localData();
-  },
+
+      axios.post('http://localhost:3000/person', formData)
+        .then(response => {
+          console.log('성공적으로 추가되었습니다:', response.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    };
+
+    return {
+      email,
+      submitProfile
+    };
+  }
+  // data() {
+  //   return {
+  //     emailId: '',
+  //     emailDomain: 'naver.com',
+  //     phone: '',
+  //     imageUrl: '/images/normal.JPG',
+  //     userName: '익명1',
+  //     images: [
+  //       { id: 1, src: '/images/image1.JPG' },
+  //       { id: 2, src: '/images/image2.JPG' },
+  //       { id: 3, src: '/images/image3.JPG' },
+  //       { id: 4, src: '/images/image4.JPG' }
+  //     ]
+  //   };
+  // },
+  // methods: {
+  //   onFileChange(e) {
+  //     const file=e.target.files[0];
+  //     if (file) {
+  //       const reader = new FileReader();
+  //       reader.onload = () => {
+  //         this.imageUrl = reader.result;
+  //         this.persistData();
+  //       };
+  //       reader.readAsDataURL(file);
+  //     } else {
+  //       this.imageUrl = null;
+  //     }
+  //   },
+  //   updateProfile(index) {
+  //     this.imageUrl = this.images[index].src;
+  //     this.userName = '익명' + (index + 1);
+  //     this.persistData();
+  //   },
+  //   submitProfile() {
+  //     console.log('Email:', this.emailId + '@' + this.emailDomain);
+  //     console.log('Phone:', this.phone);
+  //     this.persistData();
+  //   },
+  //   persistData() {
+  //     const data = {
+  //       emailId: this.emailId,
+  //       emailDomain: this.emailDomain,
+  //       phone: this.phone,
+  //       imageUrl: this.imageUrl,
+  //       userName: this.userName
+  //     };
+  //     localStorage.setItem('profileData', JSON.stringfy(data));
+  //   },
+  //   localData() {
+  //     const data = JSON.parse(localStorage.getItem('profileData'));
+  //     if (data) {
+  //       this.emailId = data.emailId;
+  //       this.emailDomain = data.emailDomain;
+  //       this.phone = data.phone;
+  //       this.imageUrl = data.imageUrl;
+  //       this.userName = data.userName;
+  //     }
+  //   }
+  // },
+  // mounted() {
+  //   this.localData();
+  // },
 }
 </script>
   
