@@ -261,7 +261,6 @@
       "emailDomain": "naver.com",
       "phone": "010-5566-2234",
       "imageUrl": "/images/image3.JPG"
-<<<<<<< HEAD
     },
     {
       "id": "fcd4",
@@ -294,8 +293,6 @@
       "emailDomain": "naver.com",
       "phone": "010-1545-3345",
       "imageUrl": "/images/image4.JPG"
-=======
->>>>>>> 0834b7528c5e438f3866986931de5f9694237223
     }
   ],
   "transInfo": [
