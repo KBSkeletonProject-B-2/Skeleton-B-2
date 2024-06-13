@@ -6,29 +6,29 @@
 <template>
   <div>
     <table class="table table-hover">
-      <thead class="table-light">
+      <thead>
         <tr>
-          <th class="col-category text-center">분류</th>
-          <th class="col-detail text-center">카테고리</th>
-          <th class="col-account text-center">자산</th>
-          <th class="col-amount text-center">금액</th>
-          <th class="col-action text-center"></th>
+          <th class="col-1">분류</th>
+          <th class="col-1">카테고리</th>
+          <th class="col-1">자산</th>
+          <th class="col-1">금액</th>
+          <th class="col-action"></th>
         </tr>
       </thead>
       <tbody>
         <template v-for="(group, date) in sortedGroupedItems">
           <tr v-if="group.length > 0">
-            <th colspan="5">{{ date }}</th>
+            <th class="date-cell" colspan="5">{{ date }}</th>
           </tr>
-          <tr v-for="trans in group" :key="trans.id" @click.native="changeIsOpen(true, trans)">
-            <td class="text-center">{{ trans.category }}</td>
-            <td class="text-center">{{ trans.detail }}</td>
-            <td class="text-center">{{ trans.account }}</td>
-            <td
-              :class="{ 'text-out text-center': trans.category === '지출', 'text-in text-center': trans.category === '수입' }">
+          <tr class="trans-cell" v-for="trans in group" :key="trans.id" @click.native="changeIsOpen(true, trans)">
+            <td class="cell">{{ trans.category }}</td>
+            <td class="cell">{{ trans.detail }}</td>
+            <td class="cell">{{ trans.account }}</td>
+            <td :class="{ 'cell text-out': trans.category === '지출', 'cell text-in': trans.category === '수입' }">
               {{ trans.amount }}
             </td>
-            <td class="text-center"><button v-show="true" @click.stop="deleteTransaction(trans.id)">삭제</button></td>
+            <td class="cell"><button v-show="true" @click.stop="deleteTransaction(trans.id)">삭제</button>
+            </td>
           </tr>
         </template>
       </tbody>
@@ -53,9 +53,9 @@ export default {
     })
     const requestItems = async () => {
       const response = await axios.get("http://localhost:3000/transInfo")
-      // console.log(response)
       return response.data
     }
+
     /**
      * 조회 조건 검사
      * 
@@ -114,10 +114,10 @@ export default {
     };
 
     /**
-    * isOpen 변경
-    * 
-    * isOpen에 파라미터 값인 open으로 변경하고 trans 정보를 전달하는 메소드이다.
-    */
+     * isOpen 변경
+     * 
+     * isOpen에 파라미터 값인 open으로 변경하고 trans 정보를 전달하는 메소드이다.
+     */
     const changeIsOpen = (open, trans) => {
       isOpen.value = open
       console.log("TransList.vue changeIsOpen : " + isOpen.value)
@@ -129,15 +129,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.table-light {
-  background-color: #262a2e;
-  color: white;
-}
-
 th,
 td {
   padding: 8px;
+  border: 1px solid rgb(96, 88, 76, 0.8);
+  border-left: none;
+  border-right: none;
+  text-align: center;
+  padding: 5px;
+}
+
+thead th {
+  padding: 12px;
+  border: 3px solid rgb(96, 88, 76, 0.8);
+  border-left: none;
+  border-right: none;
 }
 
 button {
@@ -153,7 +159,6 @@ button {
 tr:hover button {
   visibility: visible;
   float: right;
-  /* 오른쪽 끝으로 이동 */
 }
 
 button:hover {
@@ -168,15 +173,27 @@ button:hover {
   color: blue;
 }
 
-.text-center {
-  text-align: center;
+.col-1 {
+  width: 22%;
+  background-color: rgb(96, 88, 76, 0.8);
+  color: white;
 }
 
-.col-category,
-.col-detail,
-.col-account,
-.col-amount,
 .col-action {
-  width: 20%;
+  background-color: rgb(96, 88, 76, 0.8)
+}
+
+.table {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-collapse: collapse;
+}
+
+.date-cell {
+  text-align: left;
+  background-color: rgb(255, 204, 0, 0.2);
+}
+
+.cell {
+  background-color: rgb(255, 204, 0, 0.1);
 }
 </style>
