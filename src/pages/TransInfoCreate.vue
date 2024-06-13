@@ -88,6 +88,7 @@ export default {
 
                 Object.assign(cList, responseCategory.data)
                 Object.assign(aList, responseAccount.data)
+                transInfo.date = changeDateFormat()
 
                 console.log("TransInfoCreate.vue onMounted : " + responseCategory.data)
                 console.log("TransInfoCreate.vue onMounted : " + responseAccount.data)
@@ -116,6 +117,16 @@ export default {
             isOpen.value = open
             console.log("TransInfoCreate.vue changeIsOpen : " + isOpen.value)
             context.emit('changeIsOpen', isOpen.value, transInfo)
+        }
+
+        /**
+         * 날짜포맷 변경
+         * 
+         * 날짜포맷을 YYYY-MM-DD로 변경하는 메소드이다.
+         */
+        const changeDateFormat = () => {
+            let date = new Date()
+            return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
         }
 
         /**
@@ -185,17 +196,17 @@ export default {
 }
 
 .transinfocreate-cancel {
-    color: rgb(209, 209, 209);
+    color: rgb(132, 134, 135);
     font-weight: bold;
     float: left;
 }
 
 .transinfocreate-input {
-    background-color: rgb(132, 134, 135);
+    background-color: rgb(209, 209, 209);
 }
 
 .transinfocreate-select {
-    background-color: rgb(132, 134, 135);
+    background-color: rgb(209, 209, 209);
 }
 
 .transinfocreate-save {

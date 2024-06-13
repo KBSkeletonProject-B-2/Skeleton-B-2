@@ -60,9 +60,6 @@ export default {
     };
   },
   methods: {
-    onFileChange(e) {
-      // Your existing file change handler
-    },
     updateProfile(index) {
       this.imageUrl = this.images[index].src;
       this.userName = '익명' + (index + 1);
