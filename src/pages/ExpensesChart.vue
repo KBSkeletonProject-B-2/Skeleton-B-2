@@ -4,7 +4,7 @@
 <template>
   <span>{{currentMonth}}</span>
   <span>월&nbsp;</span>
-  <span>총 지출</span>
+  <span>지출</span>
   <div class="chartCard">
     <div class="chartBox">
       <canvas id="expensesChart"></canvas>
@@ -183,7 +183,7 @@ export default {
 
 <style>
 .chartCard {
-  width: 500px;
+  width: 600px;
   height: 700px;
   display: flex;
   flex-direction: column;

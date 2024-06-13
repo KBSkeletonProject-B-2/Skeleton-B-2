@@ -14,15 +14,15 @@
             <table class="table_1">
                 <thead>
                     <tr>
-                        <td>총수입</td>
-                        <td>총지출</td>
-                        <td>순수익</td>
+                        <td>수입</td>
+                        <td>지출</td>
+                        <td>합계</td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ totalIncome }}</td>
-                        <td>{{ totalExpenses }}</td>
+                        <td style="color: blue;">{{ totalIncome }}</td>
+                        <td style="color: red;">{{ totalExpenses }}</td>
                         <td>{{ Profit }}</td>
                     </tr>
                 </tbody>
@@ -43,10 +43,11 @@
                 <thead>
                     <tr class="recent_transaction_list_thead">
                         <td>날짜</td>
-                        <td>내용</td>
+                        <td>카테고리</td>
                         <td>분류</td>
                         <td>자산</td>
                         <td>금액</td>
+                        <!-- <td>메모</td> -->
                         <!-- <td>수입/지출</td> -->
                     </tr>
                 </thead>
@@ -54,13 +55,14 @@
                     <!-- 최근 거래 목록을 10개까지만 보여줌 -->
                     <tr class="recent_transaction_list" v-for="wallet in walletList.slice(0, 10)" :key="wallet.id">
                         <td>{{ wallet.date }}</td>
-                        <td>{{ wallet.detail }}</td>
                         <td>{{ wallet.category }}</td>
+                        <td>{{ wallet.detail }}</td> 
+                        <td>{{ wallet.account }}</td> 
                         <td
                             :style="{ color: wallet.category === '지출' ? 'red' : (wallet.category === '수입' ? 'blue' : 'black') }">
                             {{ wallet.amount }}
                         </td>
-                        <td>{{ wallet.memo }}</td>
+                        <!-- <td>{{ wallet.memo }}</td> -->
                         <!-- <td :style="{ color: wallet.category === '지출' ? 'red' : (wallet.category === '수입' ? 'blue' : 'black') }">{{ wallet.category }}</td> -->
                     </tr>
                     <tr>
@@ -181,16 +183,18 @@ export default {
 </script>
 
 <style  scoped>
+
 .center-content {
+    width: 90%;
+    margin: 50px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-top: 50px;
 }
 
 table {
-    width: 1000px;
+    width: 1200px;
     border: 3px solid #ddd; 
     border-left:none;
     border-right:none;
