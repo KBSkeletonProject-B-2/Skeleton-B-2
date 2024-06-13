@@ -140,6 +140,7 @@ td {
   border-right: none;
   text-align: center;
   padding: 5px;
+  font-weight: 600;
 }
 
 thead th {
