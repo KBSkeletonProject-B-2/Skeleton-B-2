@@ -7,8 +7,8 @@
   <span>지출</span>
   <div class="chartCard">
     <div class="chartBox">
+      <div v-if="!hasData" class="no-data-message">데이터가 없습니다.</div>
       <canvas id="expensesChart"></canvas>
-      <canvas id="legendCanvas" width="100" height="100"></canvas>
     </div>
   </div>
 </template>
@@ -31,8 +31,8 @@ export default {
   },
   setup(props) {
     let expensesChart;
-    let filteredData = ref([]);
     const backgroundColors = ref([]);
+    const hasData = ref(true);
 
     /**  
      * 데이터 추출
@@ -75,8 +75,6 @@ export default {
      * categoty 값을 key 값으로 사용하여 카테고리별로 누적된 금액을 저장한다.
      */
     function filterDataByThisMonth(data) {
-      const currentMonth = (new Date()).getMonth() + 1;
-      const currentYear = (new Date()).getFullYear();
       const groupedData = {};
 
       data.forEach(transaction => {
@@ -91,6 +89,7 @@ export default {
         }
       });
 
+      hasData.value = Object.keys(groupedData).length > 0;
       return groupedData;
     }
 
@@ -175,7 +174,8 @@ export default {
     return {
       fetchData,
       filterDataByThisMonth,
-      updateChart
+      updateChart,
+      hasData
     };
   }
 };
