@@ -6,12 +6,12 @@
     <div class="center-content">
         <div class="list1">
             <div class="selectDate">
-                <span id="before" @click="goToPreviousMonth">◀ &nbsp;&nbsp;</span>
+                <span id="before" @click="goToPreviousMonth">◀ &nbsp;&nbsp;&nbsp;</span>
                 <span>{{currentYear}}</span>
-                <span>년 </span>
+                <span>&nbsp;년&nbsp;&nbsp;</span>
                 <span>{{currentMonth}}</span>
-                <span>월</span>
-                <span id="after" @click="goToNextMonth">&nbsp;&nbsp; ▶</span>
+                <span>&nbsp;월</span>
+                <span id="after" @click="goToNextMonth">&nbsp;&nbsp;&nbsp; ▶</span>
             </div>
             <table class="total">
                 <thead>
@@ -39,7 +39,9 @@
             </div>
         </div>
         <div class="list2">
-            <span>최근 거래 목록</span>
+            <div class="currentList">
+                <span>최근 거래 목록</span>
+            </div>
             <table class="table-hover">
                 <thead>
                     <tr class="recent_transaction_list_thead">
@@ -61,22 +63,18 @@
                         <td>{{ wallet.account }}</td> 
                         <td
                             :style="{ color: wallet.category === '지출' ? 'red' : (wallet.category === '수입' ? 'blue' : 'black') }">
-                            {{ wallet.amount }}
+                            {{ formatAmount(wallet.amount) }}
                         </td>
                         <!-- <td>{{ wallet.memo }}</td> -->
                         <!-- <td :style="{ color: wallet.category === '지출' ? 'red' : (wallet.category === '수입' ? 'blue' : 'black') }">{{ wallet.category }}</td> -->
                     </tr>
-                    <tr>
-                        <td colspan="5">...</td>
-                    </tr>
                 </tbody>
             </table>
-            <router-link to="/">
-                <span>내역 전체 보기</span>
-            </router-link>
         </div>
         <router-link to="/">
-            <button @click.native="changeIsOpen(true)" type="button" class="submitBtn">+</button>
+            <button @click.native="changeIsOpen(true)" type="button" class="submitBtn">
+                <span id="logoBtn">내역 추가</span>
+            </button>
         </router-link>
     </div>
     <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" :isOpen="isOpen" />
@@ -180,6 +178,13 @@ export default {
             }
         };
 
+         /**
+         * 금액 형식화
+         */
+         const formatAmount = (amount) => {
+            return parseInt(amount).toLocaleString();
+        };
+
         onMounted(requestAPI);
 
         return {
@@ -192,7 +197,8 @@ export default {
             goToPreviousMonth,
             goToNextMonth,
             isOpen,
-            changeIsOpen
+            changeIsOpen,
+            formatAmount
         };
     }
 }
@@ -200,6 +206,7 @@ export default {
 </script>
 
 <style scoped>
+
 .center-content {
     width: 100%;
     margin: auto;
@@ -210,17 +217,17 @@ export default {
     background-color: rgb(255, 204, 0, 0.1);
 }
 
-.list1 {
-    margin-bottom: 30px;
-    border-radius: 30px;
-    background-color: rgb(255, 204, 0, 0.4);
+.list1, .list2 {
+    margin-bottom: 50px;
+    border-radius: 10px;
+    background-color: rgb(255, 204, 0, 0.2);
     font-weight: 600;
     margin-top: 50px;
 }
 
-.selectDate {
+.selectDate, .currentList {
     margin-top: 30px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     color: rgb(96, 88, 76);
 }
@@ -229,41 +236,21 @@ export default {
     display: flex;
 }
 
-.list2 {
-    /* border: 1px solid black; */
-    margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 .table-hover {
-    margin: 20px 30px 30px 30px
+    margin: 20px 30px 40px 30px;
 }
 
 .table-hover tbody tr:hover {
-  background-color: black
+  background-color: gray;
+  color: white;
 }
 
 table {
     width: 1200px;
-    margin: 20px 30px 30px 30px;
+    margin: 20px 30px 40px 30px;
     border: 3px solid rgb(96, 88, 76, 0.8);
     border-left:none;
     border-right:none;
-}
-
-
-
-th, td {
-    padding: 8px;
-    border: 1px solid rgb(96, 88, 76, 0.8);
-    border-left:none;
-    border-right:none;
-    width: 20%;   
-    
-}
-
-tbody {
-    color: rgb(96, 88, 76);
 }
 
 thead {
@@ -271,21 +258,30 @@ thead {
     color: white;
 }
 
-.recent_transaction_list {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-left: none;
-    border-right: none;
-    width: 20%;
+tbody {
+    color: rgb(96, 88, 76);
+}
+
+th, td {
+    padding: 7px;
+    border: 1px solid rgb(96, 88, 76, 0.8);
+    border-left:none;
+    border-right:none;
+    width: 20%;   
 }
 
 .submitBtn {
-    width: 1000px;
-    background-color: #ffca1a;
-    border: #ffca1a;
-    border-radius: 5px;
-    margin-top: 20px
+    width: 1250px;
+    height: 40px;
+    background-color: rgb(96, 88, 76, 0.8);
+    border-radius: 10px;
+    margin: 0px 30px 80px 30px;
 }
 
+#logoBtn {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
 
 </style>
