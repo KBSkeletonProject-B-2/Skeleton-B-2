@@ -10,6 +10,7 @@
                 <div class="navbar-nav">
                     <router-link class="nav-link" id="header-router-link" to="/transactions">거래 내역</router-link>
                     <router-link class="nav-link" id="header-router-link" to="/profile">프로필</router-link>
+                    <router-link class="nav-link" id="header-router-link" to="/language">언어</router-link>
                     <router-link class="nav-link" id="header-router-link" to="/notification">알림</router-link>
                 </div>
             </div>

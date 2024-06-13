@@ -1,6 +1,7 @@
 <!-- 설정 내 프로필 뷰 -->
 <template>
   <header>
+    <Sidebar/>
     <p>프로필 관리</p>
   </header>
   <div class="container">
@@ -17,10 +18,10 @@
       </div>
       <div class="input-group">
         <div>
-          <label for="email-id">이메일</label>
+          <label for="email-id">1</label>
         </div>
         <div>
-          <input type="text" id="email-id" v-model="emailId" placeholder="아이디" />
+          <input type="text" id="email-id" v-model="emailId" placeholder="이메일 주소" />
           @
           <select v-model="emailDomain">
             <option value="naver.com">naver.com</option>
@@ -31,8 +32,8 @@
       </div>
     </main>
     <div class="input-group">
-      <label for="phone">전화번호</label><br>
-      <input type="tel" id="phone" v-model="phone" placeholder="000-0000-0000" />
+      <label for="phone">2</label><br>
+      <input type="tel" id="phone" v-model="phone" placeholder="전화번호" />
     </div>
     <button @click="submitProfile">확인</button>
   </div>
@@ -42,6 +43,7 @@
 <script>
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
+import Sidebar from './Sidebar.vue';
 
 export default {
   components: {
@@ -89,6 +91,18 @@ p {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  padding: 20px;
+}
+
+.user-name {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.input-group {
+  font-size: 16px;
+  padding: 10px 0px;
 }
 
 .input-group > div {
@@ -128,15 +142,15 @@ p {
 }
 
 .image-options img {
-  width: 100px; /* Smaller view for selection */
-  height: 100px;
+  width: 80px;
+  height: 80px;
   cursor: pointer;
   margin: 5px;
 }
 .image-preview {
-  width: 150px;
-  height: 150px;
-  border: 2px solid rgb(84,80,69);
+  margin-bottom: 20px;
+  width: 100px;
+  height: 100px;
   background-color: #f8f9fa;
   background-size: cover;
   background-position: center;
@@ -144,8 +158,9 @@ p {
 }
 button {
   display: block;
+  width: auto;
   margin: 20px 0;
-  padding: 10px 150px;
+  padding: 10px 200px;
   background-color: rgb(255,188,0);
   color: white;
   border: rgb(255,188,0);

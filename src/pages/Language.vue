@@ -1,7 +1,6 @@
 <template>
     <div>
       <p>언어</p>
-      <Header />
       <div class="language-selection">
         <h2>Select Language</h2>
         <select v-model="selectedLanguage" @change="changeLanguage">
@@ -11,7 +10,6 @@
           <option value="ja">日本語 (Japanese)</option>
         </select>
       </div>
-      <Footer />
     </div>
   </template>
   
