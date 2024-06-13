@@ -44,7 +44,6 @@
                         <input type="text" class="form-control transinfocreate-input" id="memo"
                             v-model="transInfo.memo">
                     </div>
-                    <!-- <router-link to="/transactions">취소</router-link> -->
                     <button @click="changeIsOpen(false, transInfo)" type="button"
                         class="btn transinfocreate-cancel">취소</button>
                     <button type="submit" class="btn transinfocreate-save">저장</button>
@@ -58,11 +57,9 @@
 <script>
 import axios from 'axios'
 import { onMounted, onUpdated, reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
 export default {
     props: ["transInfo", "isOpen"],
     setup(props, context) {
-        const route = useRoute()
         let cList = reactive([])
         let cdList = reactive([])
         let aList = reactive([])
