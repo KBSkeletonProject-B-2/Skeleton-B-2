@@ -97,17 +97,20 @@ export default {
     /**
      * 거래내역 삭제
      * 
-     * 삭제 버튼 클릭시 
+     * 삭제 버튼 클릭시 confirm을 통해 확인 후 삭제
      */
     const deleteTransaction = async (id) => {
       try {
-        console.log(id);
-        await axios.delete(`http://localhost:3000/transInfo/${id}`);
+        const del = confirm("삭제하시겠습니까?")
+        if(del){
+          await axios.delete(`http://localhost:3000/transInfo/${id}`);
         const index = items.findIndex(trans => trans.id === id)
         if (index !== -1) {
           items.splice(index, 1)
         }
         alert('삭제되었습니다.')
+        }
+        
       } catch (error) {
         console.error("Error deleting transaction:", error);
       }
