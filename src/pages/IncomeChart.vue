@@ -2,12 +2,14 @@
 <!-- 이번 달에 발생한 총 수입을 파이 그래프를 통해 항목별로 보여준다. -->
 
 <template>
-  <span>{{currentMonth}}</span>
-  <span>월&nbsp;</span>
-  <span>수입</span>
   <div class="chartCard">
+    <div id="title">
+      <span>{{currentMonth}}</span>
+      <span>월&nbsp;</span>
+      <span>수입</span>
+    </div>
     <div class="chartBox">
-      <div v-if="!hasData" class="no-data-message">데이터가 없습니다.</div>
+      <div v-if="!hasData" id="noDataMessage">데이터가 없습니다.</div>
       <canvas id="incomeChart"></canvas>
     </div>
   </div>
@@ -18,8 +20,7 @@ import { onMounted, ref, watch } from 'vue';
 import { Chart, registerables } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-Chart.register(...registerables);
-Chart.register(ChartDataLabels);
+Chart.register(...registerables, ChartDataLabels);
 
 export default {
   name: 'IncomeChart',
@@ -161,7 +162,7 @@ export default {
                 // const amount = value.toLocaleString();
                 const totalAmount = context.dataset.data.reduce((acc, val) => acc + val, 0);
                 const percentage = ((value / totalAmount) * 100).toFixed(2);
-                return `${percentage}%`;
+                return `${percentage} %`;
               },
               align: 'center',
               offset: -30,
@@ -184,6 +185,5 @@ export default {
   }
 };
 </script>
-<style lang="">
-  
+<style>
 </style>
