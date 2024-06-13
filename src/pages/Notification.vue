@@ -1,7 +1,6 @@
 <template>
     <div>
-      <p>알림</p>
-      <Header />
+      <p>알림 설정</p>
       <main>
         <section>
           <div class="setting-item">
@@ -24,7 +23,6 @@
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   </template>
   
@@ -62,6 +60,7 @@ import Footer from '../components/Footer.vue';
     font-size: 20px;
     font-weight: bold;
     margin : 20px 20px;
+    color : rgb(84,80,69)
   }
   
   main {
