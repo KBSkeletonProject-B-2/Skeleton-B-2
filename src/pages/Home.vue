@@ -4,6 +4,9 @@
 
 <template>
     <div class="center-content">
+        <div id="profile">
+            <Person />
+        </div>
         <div class="list1">
             <div class="selectDate">
                 <span id="before" @click="goToPreviousMonth">◀ &nbsp;&nbsp;&nbsp;</span>
@@ -86,12 +89,14 @@ import { ref, onMounted, computed } from 'vue';
 import IncomeChart from './IncomeChart.vue';
 import ExpensesChart from "@/pages/ExpensesChart.vue";
 import TransInfoCreate from './TransInfoCreate.vue';
+import Person from './Person.vue';
 
 export default {
     components: {
         IncomeChart,
         ExpensesChart,
-        TransInfoCreate
+        TransInfoCreate,
+        Person
     },
 
     setup() {
@@ -217,12 +222,16 @@ export default {
     background-color: rgb(255, 204, 0, 0.1);
 }
 
+#profile {
+    margin-top: 40px;
+}
+
 .list1, .list2 {
     margin-bottom: 50px;
     border-radius: 10px;
     background-color: rgb(255, 204, 0, 0.2);
     font-weight: 600;
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 .selectDate, .currentList {

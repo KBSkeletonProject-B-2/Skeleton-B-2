@@ -1,6 +1,6 @@
 <!-- 거래내역 검색 뷰 -->
 <!-- 거래내역 조회 화면의 상단에 위치,
-    시작일, 종료일, 카테고리, 내용을 전달하는 조회하는 뷰이다. -->
+    시작일, 종료일, 분류, 카테고리, 내용을 전달하는 조회하는 뷰이다. -->
 <template>
   <form @submit.prevent="send" class="search-form">
     <div class="form-group">
@@ -59,7 +59,7 @@ onMounted(async () => {
     const response = await axios.get("http://localhost:3000/category");
     category.value = response.data;
   } catch (error) {
-    console.error('Failed to fetch categories:', error);
+   alert('불러오기 실패');
   }
 });
 
@@ -75,7 +75,7 @@ const send = () => {
 /**
  * 선택된 분류에 따라 하위 카테고리 업데이트
  * 
- * 선택된 상위 카테고리 목록에 따라 하위 카테고리(detail) 목록을 업데이트한다
+ * 선택된 상위 분류(수입 or 지출) 목록에 따라 하위 카테고리(detail) 목록을 업데이트한다
  */
 const updateDetails = () => {
   const selected = category.value.find(c => c.name === selectedCategoryName.value);

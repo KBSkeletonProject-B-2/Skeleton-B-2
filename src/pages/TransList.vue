@@ -24,8 +24,8 @@
             <td class="cell">{{ trans.category }}</td>
             <td class="cell">{{ trans.detail }}</td>
             <td class="cell">{{ trans.account }}</td>
-            <td :class="{ 'cell text-out': trans.category === '지출', 'cell text-in': trans.category === '수입' }">
-              {{ trans.amount }}
+            <td class="cell" :class="{ 'text-out': trans.category === '지출', 'text-in': trans.category === '수입' }">
+            {{ trans.amount }}
             </td>
             <td class="cell"><button v-show="true" @click.stop="deleteTransaction(trans.id)">삭제</button>
             </td>
@@ -59,7 +59,7 @@ export default {
     /**
      * 조회 조건 검사
      * 
-     * 상위 컴포넌트로부터 전달받은 조건 계산
+     * 상위 컴포넌트로부터 전달받은 조건 계산, 모두 참인 조건만 뽑아냄
      */
     const matchCondition = (trans, condition) => {
       const { startDate, endDate, category, detail, memo } = condition
@@ -74,6 +74,9 @@ export default {
 
     /**
      * 날짜별로 거래내역 그룹화
+     * 
+     * 조건을 통과한 거래 내역들에 대해 각각의 날짜를 조회하여 날짜를 index로 한 배열에 추가
+     * 날짜의 내림차순으로 정렬
      */
     const sortedGroupedItems = computed(() => {
       const groups = {}
@@ -140,6 +143,7 @@ td {
   border-right: none;
   text-align: center;
   padding: 5px;
+  font-weight: 600;
 }
 
 thead th {

@@ -8,6 +8,7 @@ import Notification from "@/pages/Notification.vue";
 import TransInfoCreate from "@/pages/TransInfoCreate.vue";
 import IncomeChart from "@/pages/IncomeChart.vue";
 import ExpensesChart from "@/pages/ExpensesChart.vue";
+import Person from "@/pages/Person.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -21,6 +22,7 @@ const router = createRouter({
         { path: '/expensesChart', component: ExpensesChart },
         { path: '/language', component: Language },
         { path: '/theme', component: Theme },
+        { path: '/person', component: Person },
     ]
 })
 

@@ -231,6 +231,7 @@
       "username": "익명1",
       "email": "asfdfe@naver.com",
       "phone": "010-2222-2222"
+<<<<<<< HEAD
     },
     {
       "id": "b6e1",
@@ -261,6 +262,8 @@
       "emailDomain": "naver.com",
       "phone": "010-5566-2234",
       "imageUrl": "/images/image3.JPG"
+=======
+>>>>>>> 8e9535c59835189c220f239598a59940b3b7099d
     }
   ],
   "transInfo": [
@@ -8098,7 +8101,7 @@
       "id": "0946088993",
       "date": "2024-06-11",
       "category": "지출",
-      "detail": "내계좌이체",
+      "detail": "생활",
       "account": "카카오페이 머니",
       "amount": "37550",
       "memo": "a odio in hac habitasse platea dictumst maecenas ut massa quis augue"
@@ -8440,7 +8443,7 @@
       "id": "9789658990",
       "date": "2024-06-09",
       "category": "지출",
-      "detail": "보험",
+      "detail": "경조/선물",
       "account": "토스 간편결제",
       "amount": "56250",
       "memo": "luctus ultricies eu nibh quisque id justo sit amet sapien dignissim vestibulum vestibulum"
