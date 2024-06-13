@@ -157,6 +157,7 @@ export default {
             } else {
                 document.body.style.overflow = "auto"
                 window.scrollTo({ top: scrollY.value, behavior: "smooth" })
+                scrollY.value = 0
             }
         }
 
