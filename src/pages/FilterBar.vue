@@ -29,7 +29,7 @@
       <label for="memo">내용</label>
       <input id="memo" type="text" v-model="memo" />
     </div>
-    <div>
+    <div class="form-actions">
       <button type="submit" class="search-button">조회</button>
       <button type="reset" class="reset-button" @click="resetFilters">초기화</button>
     </div>
@@ -95,7 +95,6 @@ const resetFilters = () => {
   memo.value = '';
   updateDetails(); // 하위 카테고리 목록 업데이트
 };
-
 </script>
 
 <style lang="scss" scoped>
@@ -109,45 +108,59 @@ const resetFilters = () => {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  background-color: #fabf0c35;
-
+  background-color: #f8f4e3;
 }
 
 .form-group {
-  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
+  margin: 10px 15px;
 }
 
 label {
   margin-bottom: 5px;
-  display: block;
+  font-weight: bold;
+  color: #333;
 }
 
 input,
 select {
-  width: 150px;
+  width: 180px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.search-button {
-  background-color: rgb(255, 204, 0);
+input:focus,
+select:focus {
+  outline: none;
+  border-color: rgb(255,204,0);
+  box-shadow: 0 0 5px rgba(250, 191, 12, 0.5);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+button {
+  background-color:rgb(255,204,0);
   color: #fff;
-  padding: 8px 20px;
+  padding: 10px 20px;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
-  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #e0a800;
 }
 
 .reset-button {
-  background-color: rgb(255, 204, 0);
   margin-left: 10px;
-  color: #fff;
-  padding: 8px 15px;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.search-button:hover,
-.reset-button:hover {
-  background-color: rgb(255, 188, 0);
 }
 </style>

@@ -3,7 +3,7 @@
 <template>
     <div class="container">
         <FilterBar @search="searchTransByFilter" />
-        <hr class="divider">
+        <br>
         <TransList @changeIsOpen="changeIsOpen" :filterCondition="filterCondition" />
         <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" :transInfo="transInfo" />
     </div>
@@ -62,15 +62,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .container {
-    max-width: 90%;
+    width: 90%;
+    max-width: 1500px;
     margin: 0 auto;
     padding: 20px;
-}
-
-.divider {
-    margin-top: 20px;
-    margin-bottom: 20px;
 }
 </style>

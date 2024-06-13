@@ -8,23 +8,27 @@
     <table class="table table-hover">
       <thead class="table-light">
         <tr>
-          <td>카테고리</td>
-          <td>분류</td>
-          <td>금액</td>
-          <td></td>
+          <th class="col-category text-center">분류</th>
+          <th class="col-detail text-center">카테고리</th>
+          <th class="col-account text-center">자산</th>
+          <th class="col-amount text-center">금액</th>
+          <th class="col-action text-center"></th>
         </tr>
       </thead>
       <tbody>
         <template v-for="(group, date) in sortedGroupedItems">
           <tr v-if="group.length > 0">
-            <th colspan="4">{{ date }}</th>
+            <th colspan="5">{{ date }}</th>
           </tr>
           <tr v-for="trans in group" :key="trans.id" @click.native="changeIsOpen(true, trans)">
-            <td>{{ trans.category }}</td>
-            <td>{{ trans.detail }}</td>
-            <td :class="{ 'text-out': trans.category === '지출', 'text-in': trans.category === '수입' }">{{ trans.amount }}
+            <td class="text-center">{{ trans.category }}</td>
+            <td class="text-center">{{ trans.detail }}</td>
+            <td class="text-center">{{ trans.account }}</td>
+            <td
+              :class="{ 'text-out text-center': trans.category === '지출', 'text-in text-center': trans.category === '수입' }">
+              {{ trans.amount }}
             </td>
-            <td><button v-show="true" @click.stop="deleteTransaction(trans.id)">삭제</button></td>
+            <td class="text-center"><button v-show="true" @click.stop="deleteTransaction(trans.id)">삭제</button></td>
           </tr>
         </template>
       </tbody>
@@ -125,26 +129,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table-hover tbody tr:hover {
-  background-color: #f5f5f5;
-}
 
 .table-light {
   background-color: #262a2e;
   color: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  /* 그림자 추가 */
 }
 
 th,
 td {
   padding: 8px;
-  text-align: left;
-}
-
-/* 분류 항목 왼쪽 정렬 */
-td:nth-child(2) {
-  text-align: left;
 }
 
 button {
@@ -161,7 +154,6 @@ tr:hover button {
   visibility: visible;
   float: right;
   /* 오른쪽 끝으로 이동 */
-
 }
 
 button:hover {
@@ -174,5 +166,17 @@ button:hover {
 
 .text-in {
   color: blue;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.col-category,
+.col-detail,
+.col-account,
+.col-amount,
+.col-action {
+  width: 20%;
 }
 </style>
