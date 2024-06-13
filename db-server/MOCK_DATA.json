@@ -232,6 +232,36 @@
       "email": "asfdfe@naver.com",
       "phone": "010-2222-2222"
     },
+    {
+      "id": "b6e1",
+      "username": "익명1",
+      "email": "@naver.com",
+      "phone": "--"
+    },
+    {
+      "id": "1ca1",
+      "username": "닉네임1",
+      "emailId": "akskekfj",
+      "emailDomain": "daum.net",
+      "phone": "010-2233-2233",
+      "imageUrl": "/images/image1.JPG"
+    },
+    {
+      "id": "d168",
+      "username": "닉네임2",
+      "emailId": "skelfle",
+      "emailDomain": "naver.com",
+      "phone": "010-5566-3345",
+      "imageUrl": "/images/image2.JPG"
+    },
+    {
+      "id": "f214",
+      "username": "닉네임3",
+      "emailId": "dskelkfl",
+      "emailDomain": "naver.com",
+      "phone": "010-5566-2234",
+      "imageUrl": "/images/image3.JPG"
+    }
   ],
   "transInfo": [
     {

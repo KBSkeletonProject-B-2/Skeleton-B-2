@@ -9,10 +9,10 @@
           <img v-for="(image, index) in images" :src="image.src" :alt="'익명' + (index + 1)" 
                :class="{'selected-image': image.src === imageUrl}" 
                @click="updateProfile(index)" 
-               key="image.id">
+               :key="image.id">
         </div>
         <div class="image-preview" :style="{ backgroundImage: 'url(' + imageUrl + ')'}"></div>
-        <div class="user-name">{{ userName }}님</div>
+        <div class="user-name">{{ userName }}</div>
       </div>
       <div class="input-group1">
         <div>
@@ -31,15 +31,14 @@
     </main>
     <div class="input-group2">
       <label for="phone-part1">전화번호</label><br>
-        <input type="tel" id="phone-part1" v-model="phonePart1" maxlength="3" @input="updatePhone" placeholder="010" /> -
-        <input type="tel" id="phone-part2" v-model="phonePart2" maxlength="4" @input="updatePhone" placeholder="1234" /> -
-        <input type="tel" id="phone-part3" v-model="phonePart3" maxlength="4" @input="updatePhone" placeholder="5678" />
+      <input type="tel" id="phone-part1" v-model="phonePart1" maxlength="3" @input="updatePhone" placeholder="010" /> -
+      <input type="tel" id="phone-part2" v-model="phonePart2" maxlength="4" @input="updatePhone" placeholder="1234" /> -
+      <input type="tel" id="phone-part3" v-model="phonePart3" maxlength="4" @input="updatePhone" placeholder="5678" />
     </div>
     <button @click="submitProfile">확인</button>
   </div>
 </template>
 
-  
 <script>
 import { ref, reactive, onMounted, toRefs } from 'vue';
 import axios from 'axios';
@@ -54,7 +53,8 @@ export default {
       phonePart3: '',
       phone: '',
       imageUrl: '/images/normal.JPG',
-      userName: '익명1',
+      userName: '기본프로필',
+      selectedProfileIndex: 0,
       images: [
         { id: 1, src: '/images/image1.JPG' },
         { id: 2, src: '/images/image2.JPG' },
@@ -64,22 +64,22 @@ export default {
     });
 
     const loadLocalData = () => {
-      const data = JSON.parse(localStorage.getItem('profileData'));
-      if (data) {
-        state.emailId = data.emailId;
-        state.emailDomain = data.emailDomain;
-        state.phonePart1 = data.phone.split('-')[0];
-        state.phonePart2 = data.phone.split('-')[1];
-        state.phonePart3 = data.phone.split('-')[2];
-        state.imageUrl = data.imageUrl;
-        state.userName = data.userName;
-      }
+      const data = JSON.parse(localStorage.getItem('profileData')) || [];
+      const profile = data[state.selectedProfileIndex] || {};
+      state.emailId = profile.emailId || '';
+      state.emailDomain = profile.emailDomain || 'naver.com';
+      const phoneParts = (profile.phone || '---').split('-');
+      state.phonePart1 = phoneParts[0] || '';
+      state.phonePart2 = phoneParts[1] || '';
+      state.phonePart3 = phoneParts[2] || '';
+      state.imageUrl = profile.imageUrl || state.images[state.selectedProfileIndex].src;
+      state.userName = profile.userName || `닉네임${state.selectedProfileIndex + 1}`;
     };
 
     const updateProfile = (index) => {
-      state.imageUrl = state.images[index].src;
-      state.userName = '익명' + (index + 1);
-      persistData();
+      persistData(); // 현재 프로필 데이터 저장
+      state.selectedProfileIndex = index;
+      loadLocalData(); // 선택된 프로필 데이터 로드
     };
 
     const onFileChange = (e) => {
@@ -104,8 +104,10 @@ export default {
       updatePhone();
       const formData = {
         username: state.userName,
-        email: `${state.emailId}@${state.emailDomain}`,
+        emailId: state.emailId,
+        emailDomain: state.emailDomain,
         phone: state.phone,
+        imageUrl: state.imageUrl
       };
 
       axios.post('http://localhost:3000/person', formData)
@@ -119,13 +121,15 @@ export default {
     };
 
     const persistData = () => {
-      localStorage.setItem('profileData', JSON.stringify({
+      let profileData = JSON.parse(localStorage.getItem('profileData')) || [];
+      profileData[state.selectedProfileIndex] = {
         emailId: state.emailId,
         emailDomain: state.emailDomain,
         phone: state.phone,
         imageUrl: state.imageUrl,
         userName: state.userName
-      }));
+      };
+      localStorage.setItem('profileData', JSON.stringify(profileData));
     };
 
     onMounted(() => {
@@ -136,13 +140,12 @@ export default {
       ...toRefs(state),
       updateProfile,
       onFileChange,
-      submitProfile,
+      submitProfile
     };
   }
 };
 </script>
 
-  
 <style scoped>
 
 p {
@@ -162,11 +165,11 @@ p {
 .user-name {
   font-size: 20px;
   font-weight: bold;
-  padding: 10px;
 }
 
 .input-group1 {
   font-size: 16px;
+  font-weight: bold;
   padding: 10px 0px;
 }
 
@@ -178,15 +181,16 @@ p {
 .input-group1 select {
   margin-top: 0; 
   padding: 10px;
-  margin-right: 5px;
 }
 
 .input-group2 {
   font-size: 16px;
+  font-weight: bold;
   padding: 10px 0px;
 }
 
 .input-group2 input {
+  margin-top: 10px;
   height: 40px;
   width: 80px;
 }
@@ -256,5 +260,6 @@ button:hover {
 }
 
 </style>
+
 
   
