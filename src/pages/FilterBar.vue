@@ -103,12 +103,12 @@ const resetFilters = () => {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  width: 80%;
-  margin: 0 auto;
+  width: 90%;
+  margin: 10px auto;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  background-color: #f8f4e3;
+  background-color: rgb(255, 204, 0, 0.4);
 }
 
 .form-group {
@@ -135,7 +135,7 @@ select {
 input:focus,
 select:focus {
   outline: none;
-  border-color: rgb(255,204,0);
+  border-color: rgb(255, 204, 0);
   box-shadow: 0 0 5px rgba(250, 191, 12, 0.5);
 }
 
@@ -147,8 +147,8 @@ select:focus {
 }
 
 button {
-  background-color:rgb(255,204,0);
-  color: #fff;
+  background-color: rgb(255, 204, 0);
+  color: #000000;
   padding: 10px 20px;
   border: none;
   border-radius: 4px;

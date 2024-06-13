@@ -1,11 +1,13 @@
 <!-- 거래 내역 전체 화면 뷰 -->
 <!-- 거래 내역 검색 및 검색 결과를 출력하는 뷰이다.-->
 <template>
-    <div class="container">
-        <FilterBar @search="searchTransByFilter" />
-        <br>
-        <TransList @changeIsOpen="changeIsOpen" :filterCondition="filterCondition" />
-        <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" :transInfo="transInfo" :isOpen="isOpen" />
+    <div class="center-content">
+        <div class="container">
+            <FilterBar @search="searchTransByFilter" />
+            <br>
+            <TransList @changeIsOpen="changeIsOpen" :filterCondition="filterCondition" />
+            <TransInfoCreate @changeIsOpen="changeIsOpen" v-show="isOpen" :transInfo="transInfo" :isOpen="isOpen" />
+        </div>
     </div>
 </template>
 
@@ -63,10 +65,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-    width: 90%;
-    max-width: 1500px;
-    margin: 0 auto;
-    padding: 20px;
+.center-content {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 204, 0, 0.1);
 }
 </style>
