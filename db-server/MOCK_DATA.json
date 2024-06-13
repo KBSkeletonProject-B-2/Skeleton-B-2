@@ -226,10 +226,12 @@
     }
   ],
   "person": [
-    {"email": "kim@naver.com",
-     "phone-number": "010-1234-1234"},
-    {"email": "lee@naver.com",
-     "phone-number": "010-9090-1998"}
+    {
+      "id": "7f45",
+      "username": "익명1",
+      "email": "asfdfe@naver.com",
+      "phone": "010-2222-2222"
+    }
   ],
   "transInfo": [
     {

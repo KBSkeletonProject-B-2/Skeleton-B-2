@@ -87,14 +87,14 @@
   
   .light-mode-box {
     background-color: white;
-    color: #000;
-    border: 2px solid #cecece;
+    color: rgb(84,80,69);
+    border: 2px solid rgb(255,188,0);
   }
   
   .dark-mode-box {
-    background-color: black;
+    background-color: rgb(84,80,69);
     color: white;
-    border: 2px solid #cecece;
+    border: 2px solid rgb(255,188,0);
   }
   
   button {

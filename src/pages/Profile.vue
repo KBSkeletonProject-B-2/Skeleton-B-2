@@ -1,7 +1,7 @@
 <!-- 설정 내 프로필 뷰 -->
 <template>
   <Sidebar/>
-    <p>프로필 관리</p>
+  <p>프로필 관리</p>
   <div class="container">
     <main>
       <div>
@@ -14,12 +14,12 @@
         <div class="image-preview" :style="{ backgroundImage: 'url(' + imageUrl + ')'}"></div>
         <div class="user-name">{{ userName }}님</div>
       </div>
-      <div class="input-group">
+      <div class="input-group1">
         <div>
-          <label for="email-id">1</label>
+          <label for="email-id">이메일</label>
         </div>
         <div>
-          <input type="text" id="email-id" v-model="emailId" placeholder="이메일 주소" />
+          <input type="text" id="email-id" v-model="emailId" placeholder="아이디" />
           @
           <select v-model="emailDomain">
             <option value="naver.com">naver.com</option>
@@ -29,9 +29,11 @@
         </div>   
       </div>
     </main>
-    <div class="input-group">
-      <label for="phone">2</label><br>
-      <input type="tel" id="phone" v-model="phone" placeholder="전화번호" />
+    <div class="input-group2">
+      <label for="phone-part1">전화번호</label><br>
+        <input type="tel" id="phone-part1" v-model="phonePart1" maxlength="3" @input="updatePhone" placeholder="010" /> -
+        <input type="tel" id="phone-part2" v-model="phonePart2" maxlength="4" @input="updatePhone" placeholder="1234" /> -
+        <input type="tel" id="phone-part3" v-model="phonePart3" maxlength="4" @input="updatePhone" placeholder="5678" />
     </div>
     <button @click="submitProfile">확인</button>
   </div>
@@ -39,11 +41,17 @@
 
   
 <script>
+import { ref, reactive, onMounted, toRefs } from 'vue';
+import axios from 'axios';
+
 export default {
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       emailId: '',
       emailDomain: 'naver.com',
+      phonePart1: '',
+      phonePart2: '',
+      phonePart3: '',
       phone: '',
       imageUrl: '/images/normal.JPG',
       userName: '익명1',
@@ -53,58 +61,87 @@ export default {
         { id: 3, src: '/images/image3.JPG' },
         { id: 4, src: '/images/image4.JPG' }
       ]
+    });
+
+    const loadLocalData = () => {
+      const data = JSON.parse(localStorage.getItem('profileData'));
+      if (data) {
+        state.emailId = data.emailId;
+        state.emailDomain = data.emailDomain;
+        state.phonePart1 = data.phone.split('-')[0];
+        state.phonePart2 = data.phone.split('-')[1];
+        state.phonePart3 = data.phone.split('-')[2];
+        state.imageUrl = data.imageUrl;
+        state.userName = data.userName;
+      }
     };
-  },
-  methods: {
-    onFileChange(e) {
-      const file=e.target.files[0];
+
+    const updateProfile = (index) => {
+      state.imageUrl = state.images[index].src;
+      state.userName = '익명' + (index + 1);
+      persistData();
+    };
+
+    const onFileChange = (e) => {
+      const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
-          this.imageUrl = reader.result;
-          this.persistData();
+          state.imageUrl = reader.result;
+          persistData();
         };
         reader.readAsDataURL(file);
       } else {
-        this.imageUrl = null;
+        state.imageUrl = null;
       }
-    },
-    updateProfile(index) {
-      this.imageUrl = this.images[index].src;
-      this.userName = '익명' + (index + 1);
-      this.persistData();
-    },
-    submitProfile() {
-      console.log('Email:', this.emailId + '@' + this.emailDomain);
-      console.log('Phone:', this.phone);
-      this.persistData();
-    },
-    persistData() {
-      const data = {
-        emailId: this.emailId,
-        emailDomain: this.emailDomain,
-        phone: this.phone,
-        imageUrl: this.imageUrl,
-        userName: this.userName
+    };
+
+    const updatePhone = () => {
+      state.phone = `${state.phonePart1}-${state.phonePart2}-${state.phonePart3}`;
+    };
+
+    const submitProfile = () => {
+      updatePhone();
+      const formData = {
+        username: state.userName,
+        email: `${state.emailId}@${state.emailDomain}`,
+        phone: state.phone,
       };
-      localStorage.setItem('profileData', JSON.stringfy(data));
-    },
-    localData() {
-      const data = JSON.parse(localStorage.getItem('profileData'));
-      if (data) {
-        this.emailId = data.emailId;
-        this.emailDomain = data.emailDomain;
-        this.phone = data.phone;
-        this.imageUrl = data.imageUrl;
-        this.userName = data.userName;
-      }
-    }
-  },
-  mounted() {
-    this.localData();
-  },
-}
+
+      axios.post('http://localhost:3000/person', formData)
+        .then(response => {
+          console.log('성공적으로 추가되었습니다:', response.data);
+          persistData();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    };
+
+    const persistData = () => {
+      localStorage.setItem('profileData', JSON.stringify({
+        emailId: state.emailId,
+        emailDomain: state.emailDomain,
+        phone: state.phone,
+        imageUrl: state.imageUrl,
+        userName: state.userName
+      }));
+    };
+
+    onMounted(() => {
+      loadLocalData();
+    });
+
+    return {
+      ...toRefs(state),
+      updateProfile,
+      onFileChange,
+      submitProfile,
+    };
+  }
+};
 </script>
+
   
 <style scoped>
 
@@ -128,20 +165,40 @@ p {
   padding: 10px;
 }
 
-.input-group {
+.input-group1 {
   font-size: 16px;
   padding: 10px 0px;
 }
 
-.input-group > div {
+.input-group1 > div {
   margin-bottom: 10px;
 }
 
-.input-group input,
-.input-group select {
+.input-group1 input,
+.input-group1 select {
   margin-top: 0; 
-  padding: 8px;
+  padding: 10px;
   margin-right: 5px;
+}
+
+.input-group2 {
+  font-size: 16px;
+  padding: 10px 0px;
+}
+
+.input-group2 input {
+  height: 40px;
+  width: 80px;
+}
+
+.input-group1 input {
+  width: 120px;
+  height: 40px;
+}
+
+.input-group1 select {
+  width: 120px;
+  height: 40px;
 }
 
 .profile-form {
@@ -197,6 +254,7 @@ button {
 button:hover {
   background-color: rgb(255,204,80);
 }
+
 </style>
 
   
