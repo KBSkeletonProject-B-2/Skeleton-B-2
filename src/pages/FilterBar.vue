@@ -98,7 +98,7 @@ const resetFilters = () => {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .search-form {
   display: flex;
   flex-wrap: wrap;
@@ -107,12 +107,9 @@ const resetFilters = () => {
   width: 80%;
   margin: 0 auto;
   padding: 20px;
-  /* Add padding for space */
   border-radius: 8px;
-  /* Add rounded corners */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
-  background-color: #f0b61844;
+  background-color: #fabf0c35;
 
 }
 
@@ -149,7 +146,8 @@ select {
   margin-top: 10px;
 }
 
-.search-button:hover {
+.search-button:hover,
+.reset-button:hover {
   background-color: rgb(255, 188, 0);
 }
 </style>

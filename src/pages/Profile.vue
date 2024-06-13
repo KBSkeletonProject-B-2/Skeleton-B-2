@@ -16,7 +16,10 @@
         <div class="user-name">{{ userName }}님</div>
       </div>
       <div class="input-group">
+        <div>
           <label for="email-id">이메일</label>
+        </div>
+        <div>
           <input type="text" id="email-id" v-model="emailId" placeholder="아이디" />
           @
           <select v-model="emailDomain">
@@ -24,7 +27,8 @@
             <option value="daum.net">daum.net</option>
             <option value="gmail.com">gmail.com</option>
           </select>
-        </div>
+        </div>   
+      </div>
     </main>
     <div class="input-group">
       <label for="phone">전화번호</label><br>
@@ -49,7 +53,7 @@ export default {
       emailId: '',
       emailDomain: 'naver.com',
       phone: '',
-      imageUrl: null,
+      imageUrl: '/images/normal.JPG',
       userName: '익명1',
       images: [
         { id: 1, src: '/images/image1.JPG' },
@@ -78,6 +82,7 @@ p {
   font-size: 20px;
   font-weight: bold;
   margin : 20px 0;
+  color : rgb(84,80,69)
 }
 .containter {
   display: flex;
@@ -85,6 +90,18 @@ p {
   align-items: center;
   height: 100vh;
 }
+
+.input-group > div {
+  margin-bottom: 10px;
+}
+
+.input-group input,
+.input-group select {
+  margin-top: 0; 
+  padding: 8px;
+  margin-right: 5px;
+}
+
 .profile-form {
   border: 2px solid #ccc;
   border-radius: 5px;
