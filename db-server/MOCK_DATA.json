@@ -227,19 +227,10 @@
   ],
   "person": [
     {
-<<<<<<< HEAD
       "id": "7f45",
       "username": "익명1",
       "email": "asfdfe@naver.com",
       "phone": "010-2222-2222"
-=======
-      "email": "kim@naver.com",
-      "phone_number": "010-1234-1234"
-    },
-    {
-      "email": "lee@naver.com",
-      "phone_number": "010-9090-1998"
->>>>>>> c7f046379a18557d53465571393c328e2ebf278a
     }
   ],
   "transInfo": [
