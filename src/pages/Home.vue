@@ -165,6 +165,26 @@ export default {
         });
 
         /**
+         * 데이터 날짜순으로 정렬
+         * 
+         * 날짜를 내림차순으로 정렬하여 최신 값부터 보여준다.
+         */
+        const sortWalletListByDate = () => {
+            walletList.value.sort((a, b) => new Date(b.date) - new Date(a.date));
+        };
+
+        const requestAPI = async () => {
+            try {
+                const url = 'http://localhost:3000/transInfo';
+                const response = await axios.get(url)
+                walletList.value = response.data;
+                sortWalletListByDate(); 
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        /**
          * isOpen 변경
          * 
          * isOpen에 파라미터 값인 open으로 변경하고 transInfo 정보를 동기화하는 메소드이다.
@@ -176,20 +196,11 @@ export default {
                 let t = {}
                 Object.assign(t, trans)
                 walletList.value.unshift(t)
+                sortWalletListByDate();
                 console.log("Home.vue changeIsOpen : ", walletList.value)
             }
             console.log("Home.vue changeIsOpen : ", isOpen.value)
         }
-
-        const requestAPI = async () => {
-            try {
-                const url = 'http://localhost:3000/transInfo';
-                const response = await axios.get(url)
-                walletList.value = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));  /* 날짜를 내림차순으로 정렬하여 최신 값부터 보여줌 */
-            } catch (error) {
-                console.log(error);
-            }
-        };
 
         /**
         * 금액 형식화

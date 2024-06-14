@@ -1163,7 +1163,7 @@
       "detail": "용돈",
       "account": "국민내일배움카드(체크)",
       "amount": "32863",
-      "memo": "ut tellus nulla ut erat id mauris vulputate elementum nullam varius nulla facilisi"
+      "memo": "잘 잘리나 테스트"
     },
     {
       "id": "2113193779",
@@ -5093,7 +5093,7 @@
       "id": "1687123462",
       "date": "2024-06-13",
       "category": "지출",
-      "detail": "교통",
+      "detail": "패션/쇼핑",
       "account": "저금통",
       "amount": "99907",
       "memo": "eu felis fusce posuere felis sed lacus morbi sem mauris"
@@ -6662,7 +6662,7 @@
       "detail": "의료/건강",
       "account": "토스머니",
       "amount": "17536",
-      "memo": "dapibus nulla suscipit ligula in lacus curabitur at ipsum ac tellus"
+      "memo": "짧은거"
     },
     {
       "id": "6052724196",
@@ -9399,15 +9399,6 @@
       "account": "카카오페이 머니",
       "amount": "94012",
       "memo": "auctor gravida sem praesent id massa id nisl venenatis lacinia aenean sit amet"
-    },
-    {
-      "id": "5343619878",
-      "date": "2024-06-04",
-      "category": "이체",
-      "detail": "저축",
-      "account": "주택청약종합저축",
-      "amount": "30554",
-      "memo": "blandit ultrices enim lorem ipsum dolor sit amet consectetuer adipiscing elit proin interdum mauris"
     },
     {
       "id": "0619086491",
