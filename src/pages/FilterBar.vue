@@ -5,11 +5,11 @@
   <form @submit.prevent="send" class="search-form">
     <div class="form-group">
       <label for="startDate">시작일</label>
-      <input id="startDate" type="date" v-model="startDate" />
+      <input id="startDate" type="date" v-model="startDate" @change="validDate"/>
     </div>
     <div class="form-group">
       <label for="endDate">종료일</label>
-      <input id="endDate" type="date" v-model="endDate" />
+      <input id="endDate" type="date" v-model="endDate" @change="validDate"/>
     </div>
     <div class="form-group">
       <label for="selectedCategory">분류</label>
@@ -27,7 +27,7 @@
     </div>
     <div class="form-group">
       <label for="memo">내용</label>
-      <input id="memo" type="text" v-model="memo" />
+      <input id="memo" type="text" v-model="memo"/>
     </div>
     <div class="form-actions">
       <button type="submit" class="search-button">조회</button>
@@ -62,6 +62,19 @@ onMounted(async () => {
    alert('불러오기 실패');
   }
 });
+
+/**
+ * 날짜 범위 감시 메소드
+ * 
+ * 종료일 < 시작일이면 에러메세지를 출력하고 날짜값을 초기화함
+ */
+const validDate = () => {
+  if (new Date(startDate.value) > new Date(endDate.value)) {
+    alert('올바른 날짜 범위를 입력해주세요.');
+    endDate.value = '';
+    startDate.value='';
+  }
+};
 
 /**
  * 조회 이벤트 전송
