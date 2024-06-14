@@ -36,7 +36,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="amount" class="form-label transinfocreate-color">금액</label>
-                        <input type="text" class="form-control transinfocreate-input" id="amount" required
+                        <input type="number" class="form-control transinfocreate-input" id="amount" required
                             v-model="transInfo.amount">
                     </div>
                     <div class="mb-3">

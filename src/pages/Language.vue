@@ -24,8 +24,8 @@ export default {
       languages: {
         ko: '한국어',
         en: 'English',
-        zh: '中文 (Chinese)',
-        ja: '日本語 (Japanese)'
+        zh: '中文',
+        ja: '日本語'
       },
     };
   },
@@ -45,9 +45,6 @@ export default {
   methods: {
     toggleDropdown() {
       this.dropdownVisible = !this.dropdownVisible;
-    },
-    filterLanguages() {
-      // 필터링 로직은 computed 속성 filteredLanguages에서 처리
     },
     selectLanguage(code) {
       this.selectedLanguage = code;
