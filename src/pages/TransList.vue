@@ -11,22 +11,28 @@
           <th class="col-1">분류</th>
           <th class="col-1">카테고리</th>
           <th class="col-1">자산</th>
+          <th class="col-1">내용</th>
           <th class="col-1">금액</th>
+          
           <th class="col-action"></th>
         </tr>
       </thead>
       <tbody>
         <template v-for="(group, date) in sortedGroupedItems">
           <tr v-if="group.length > 0">
-            <th class="date-cell" colspan="5">{{ date }}</th>
+            <th class="date-cell" colspan="6">{{ date }}</th>
           </tr>
           <tr class="trans-cell" v-for="trans in group" :key="trans.id" @click.native="changeIsOpen(true, trans)">
             <td class="cell">{{ trans.category }}</td>
             <td class="cell">{{ trans.detail }}</td>
             <td class="cell">{{ trans.account }}</td>
+            <td class="cell">{{ trans.memo.substring(0,5) }}
+              <span v-if="trans.memo.length>5">...</span>
+            </td>     <!--substring, v-if로 문자열 길이 5까지 출력, 5 이상이면 ... 표사-->
             <td class="cell" :class="{ 'text-out': trans.category === '지출', 'text-in': trans.category === '수입' }">
               {{ trans.amount }}
             </td>
+            
             <td class="cell"><button v-show="true" @click.stop="deleteTransaction(trans.id)">삭제</button>
             </td>
           </tr>
@@ -202,7 +208,7 @@ button:hover {
 }
 
 .col-1 {
-  width: 22%;
+  width: 18%;
   background-color: rgb(96, 88, 76, 0.8);
   color: white;
 }
