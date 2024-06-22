@@ -13,16 +13,16 @@ import Person from "@/pages/Person.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/', component: Home },
-        { path: '/transactions', component: Transactions },
-        { path: '/profile', component: Profile},
-        { path: '/notification', component: Notification },
-        { path: '/transinfocreate', component: TransInfoCreate },
-        { path: '/incomechart', component: IncomeChart },
-        { path: '/expensesChart', component: ExpensesChart },
-        { path: '/language', component: Language },
-        { path: '/theme', component: Theme },
-        { path: '/person', component: Person },
+        { path: '/Skeleton-B-2', component: Home },
+        { path: '/Skeleton-B-2/transactions', component: Transactions },
+        { path: '/Skeleton-B-2/profile', component: Profile},
+        { path: '/Skeleton-B-2/notification', component: Notification },
+        { path: '/Skeleton-B-2/transinfocreate', component: TransInfoCreate },
+        { path: '/Skeleton-B-2/incomechart', component: IncomeChart },
+        { path: '/Skeleton-B-2/expensesChart', component: ExpensesChart },
+        { path: '/Skeleton-B-2/language', component: Language },
+        { path: '/Skeleton-B-2/theme', component: Theme },
+        { path: '/Skeleton-B-2/person', component: Person },
     ]
 })
 
