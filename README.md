@@ -24,6 +24,7 @@
   - CSS 컬러 링크 : https://omoney.kbstar.com/quics?page=C017667#loading
   - Git 배포시 MOCK_DATA.json 파일은 제외(테이블 구조 변경시 문의바람)
   - README.me 파일은 모두가 사용가능하니 수정사항은 해당 파일을 통해 작성한다.
+  - Git Test
 
 - **피그마 링크**
   - https://www.figma.com/design/hmoETrtI4WTFxwyWor8e6O/KB%EC%8A%A4%EC%BC%88%EB%A0%88%ED%86%A4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=0-1&t=p4N7aXVz73H73PAU-0
