@@ -8,6 +8,15 @@ on: # main 브랜치에 push 되었을 때 Workflow가 동작
       
 permissions:
   actions: write
+  checks: write
+  contents: write
+  deployments: write
+  issues: write
+  packages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
 
 jobs: # Workflow가 수행할 작업 목록
   build: # Workflow의 첫 번째 Job은 build
